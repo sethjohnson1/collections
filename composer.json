@@ -1,0 +1,10 @@
+{
+    "require": {
+	
+        "paulredmond/chosen-cakephp": "2.1.*",
+		"CakeDC/search": "2.2.*",
+		"CakeDC/utils": "1.4.*",
+		"cakephp/debug_kit": "2.2.*",
+		
+    }
+}

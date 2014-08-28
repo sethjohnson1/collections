@@ -1,0 +1,62 @@
+<h3>This demonstrates use of find('neighbors') which is basically worthless bc the data isn't organized like that</h3>
+<?php
+if  (is_null($nei['prev']['Treasure']['id']) == false){
+ echo $this->Html->link(__('prev'), array('action' => 'view3',$nei['prev']['Treasure']['id'])); 
+ }
+ ?>
+ |
+ <?php
+if  (is_null($nei['next']['Treasure']['id']) == false){
+ echo $this->Html->link(__('next'), array('action' => 'view3',$nei['next']['Treasure']['id'])); 
+ }
+
+echo $this->Form->create('Treasure', array('type' => 'post', 'action' => 'find'));
+
+
+//for multiple, it seems to need that extra empty array
+echo $this->Chosen->select('Treasure.accnum',array(),array('data-placeholder'=>'Type in an Object ID here...','multiple'=>'true'));
+
+//for single select, the extra array screws it up
+echo $this->Chosen->select('Treasure.accnum',array('data-placeholder'=>'Type in an Object ID here...'));
+
+
+//echo $this->Chosen->select('accnum'); ?>
+
+
+
+<?php
+echo $this->Form->submit();
+echo $this->Form->end();
+
+ 
+ //debug($tr['Treasure']);
+ ?>
+ 
+
+ 
+ <!-- script>
+  $(document).ready(function(){  
+    $("#TreasureAccnum").autocomplete("/oc4/treasures/find.json", {
+    minChars: 3
+    });
+  });
+</script -->
+
+<script>
+$("#TreasureAccnum").ajaxChosen({
+    type: 'GET',
+    url: '/oc4/treasures/find.json',
+    dataType: 'json',
+	jsonTermKey: 'q',
+	minTermLength: 2,
+	afterTypeDelay: 500
+}, function (data) {
+    var results = [];
+
+    $.each(data, function (i, val) {
+        results.push({ value: val.value, text: val.text });
+    });
+
+    return results;
+});
+</script>

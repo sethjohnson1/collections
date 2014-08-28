@@ -1,0 +1,13 @@
+/* Custom indentations are needed because the length of custom labels differs from
+   the length of the standard labels - Seth copied this from jQueryMobile example page */
+.custom-label-flipswitch.ui-flipswitch .ui-btn.ui-flipswitch-on {
+    text-indent: -3.4em;
+}
+.custom-label-flipswitch.ui-flipswitch .ui-flipswitch-off {
+    text-indent: 0.5em;
+}
+
+/* jQuery Mobile Remote data example */
+.ui-filter-inset {
+    margin-top: 0;
+}

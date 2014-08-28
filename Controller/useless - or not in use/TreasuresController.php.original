@@ -1,0 +1,489 @@
+<?php
+App::uses('AppController', 'Controller');
+/**
+ * Treasures Controller
+ */
+class TreasuresController extends AppController {
+
+public $components = array('Paginator','Search.Prg','RequestHandler');
+
+//added this for search test
+
+	public function test() {
+		$this->Prg->commonProcess();
+		$this->Treasure->recursive = 0;
+		
+		//with paginator times out
+		$this->Paginator->settings['conditions'] = $this->Treasure->parseCriteria($this->Prg->parsedParams());
+		$this->set('treasures', $this->Paginator->paginate());
+		
+		//with no paginator works in all my tests so far
+		//$conditions = $this->Treasure->parseCriteria($this->Prg->parsedParams());
+		//$this->set('treasures', $this->Treasure->find('all',array('conditions'=>$conditions,'limit'=>20)));
+		//$cnt = $this->Treasure->find('count',array('conditions'=>$conditions));
+		//debug($cnt);
+	}
+	public function indextest() {
+		$this->Prg->commonProcess();
+		$this->Treasure->recursive = 0;
+		//$this->Maker = $this->Treasure->Maker;
+
+		//delete the session variable if it's around
+		$this->Session->delete('scond');
+		
+		//The index is not really an index, it's a bigass search
+		//So we start by building some conditions out of the parameters and URL query values
+		$aquery=array();
+		$bquery=array();
+		$cquery=array();
+		$colquery=array();
+		$locquery=array();
+		$colarray=array();
+
+		//this part is mostly for the API, checking queries (i.e.?creditline=red)
+		foreach ($this->request->query as $tbl => $value){
+			if (
+				$tbl == 'accnum' || 
+				$tbl == 'accnum' || 
+				$tbl == 'objtitle' ||
+				$tbl == 'daterange' ||
+				$tbl == 'dimensions' ||
+				$tbl == 'synopsis' ||
+				$tbl == 'creditline' ||
+				$tbl == 'gloss' ||
+				$tbl == 'inscription' ||
+				//$tbl == 'col' ||
+				//$tbl == 'loc' ||
+				//$tbl == 'searchall' ||
+				$tbl == 'slug'
+				)
+			{	
+			$aquery['Treasure.'.$tbl.' LIKE '] ='%'.$value . '%';
+			}
+		}
+		
+		//TEMP DISablwWD FOR TESTING
+		//deal with checkboxes
+		/*if (array_key_exists('bbm',$this->params['named'])){
+			if ($this->params['named']['bbm']==1) {array_push($colarray, 'bbm');}
+		}
+
+		if (array_key_exists('cfm',$this->params['named'])){
+			if ($this->params['named']['cfm']==1) {array_push($colarray, 'cfm');}
+		}
+		
+		if (array_key_exists('dmnh',$this->params['named'])){
+			if ($this->params['named']['dmnh']==1) {array_push($colarray, 'dmnh');}
+		}
+		
+		if (array_key_exists('pim',$this->params['named'])){
+			if ($this->params['named']['pim']==1) {array_push($colarray, 'pim');}
+		}
+		
+		if (array_key_exists('wg',$this->params['named'])){
+			if ($this->params['named']['wg']==1) {array_push($colarray, 'wg');}
+		}
+		
+		$temp_array = &$colquery;
+
+		foreach ($colarray as $item){
+			$temp_array = &$temp_array['Or'];
+			$temp_array['Collection.name LIKE '] ='%'.$item.'%';
+		}
+		
+		debug($colquery);
+		*/
+		
+		if (array_key_exists('loc',$this->params['named'])){
+		    //no need to worry about fancy loops, there can be only one
+			if (is_array($this->params['named']['loc'])){
+			$this->Session->setFlash(__('A treasure only has one location', true));
+			}
+			else {
+			
+			$locquery['aNd']['Location.name LIKE '] ='%'.$this->params['named']['loc'] . '%';	
+				}
+		}
+
+		
+			 //now make an array from the args
+		foreach ($this->params['named'] as $tbl => $col){
+			if (
+				$tbl == 'accnum' || 
+				$tbl == 'objtitle' ||
+				$tbl == 'daterange' ||
+				$tbl == 'dimensions' ||
+				$tbl == 'synopsis' ||
+				$tbl == 'creditline' ||
+				$tbl == 'gloss' ||
+				$tbl == 'inscription' ||
+				//$tbl == 'searchall' ||
+				$tbl == 'slug'
+				)
+			{
+				
+				 //** Lovely nested loop that recursively assigns the values
+				 //this allows the same param to be passed multiple times
+				 
+					if (is_array($col)){
+						$temp_array = &$cquery;
+						foreach ($col as $item){
+						
+						$temp_array = &$temp_array['and'];
+						// $temp_array now equals null, 
+						// and it's references to parent array item with key and
+						$temp_array['Treasure.'.$tbl.' LIKE '] ='%'.$item.'%';
+						}
+					}
+					else {
+						//just do it the normal way
+						$bquery['AND']['Treasure.'.$tbl.' LIKE '] ='%'.$col . '%';
+					}						
+					}
+			}
+
+		//Use the Search Plug-in to parse the searchall field
+		$sdata=$this->Prg->parsedParams();
+		if (array_key_exists('searchall',$sdata)){$sdata=array('searchall'=>$sdata['searchall']);}
+		$squery=$this->Treasure->parseCriteria($sdata);		
+			
+		//we are now making one big set of conditions out of everything	we did
+		$mega = array_merge($aquery, $bquery, $cquery, $colquery, $locquery, $squery);
+		$justsearch = $this->Treasure->parseCriteria($this->Prg->parsedParams());
+		//debug($mega);
+
+		$cnt=$this->Treasure->find('count', array('conditions' => $justsearch));
+		debug($cnt);
+		//if the index only brings them to one result, just take them there
+		if ($cnt == 1){
+				$wo=$this->Treasure->find('first',array('conditions'=>$mega));
+				$this->Session->setFlash(__('One match to criteria, here it is', true));
+				$this->redirect(array('action' => 'view', $wo['Treasure']['slug']));
+		}
+		//act like a normal index if there are no params
+		if ($cnt > 1 || empty($this->params['named'])==true){
+		
+		
+			$this->paginate = array('conditions' => $justsearch);
+			$treasures=$this->paginate();
+			
+			//now do some session variables for the proper neighbor values on the view
+			$this->Session->write('scond',$mega);
+			
+			if (array_key_exists('sort',$this->params['named']) && array_key_exists('direction',$this->params['named'])){
+				$sortord = array('Treasure.'.$this->params['named']['sort']=>$this->params['named']['direction']);
+				$this->Session->write('sord',$sortord);
+			}
+
+			}
+		if ($cnt < 1){
+			//if it's ajax don't confuse them with random values
+			$xext=substr($this->request['url']['url'],-4);
+			$jext=substr($this->request['url']['url'],-5);
+			//debug($ext);
+			if ($this->request->is('ajax') || $jext=='.json' || $xext=='.xml') {
+				throw new NotFoundException(__('no matches found'));
+			}
+			else{
+				$this->Session->setFlash(__('Sorry no matches. Here are a few random items', true));
+				$this->paginate = array('order'=>'RAND()','limit'=>3);
+				$treasures=$this->paginate();
+				}
+			}
+		debug($this->Treasure->parseCriteria($this->Prg->parsedParams()));
+		$this->set('treasures', $treasures);
+		$this->set('_serialize', array('treasures'));
+	}
+	public function index() {
+		$this->Prg->commonProcess();
+		$this->Treasure->recursive = 0;
+		//$this->Maker = $this->Treasure->Maker;
+
+		//delete the session variable if it's around
+		$this->Session->delete('scond');
+		
+		//The index is not really an index, it's a bigass search
+		//So we start by building some conditions out of the parameters and URL query values
+		$aquery=array();
+		$bquery=array();
+		$cquery=array();
+		$colquery=array();
+		$locquery=array();
+		$colarray=array();
+
+		//this part is mostly for the API, checking queries (i.e.?creditline=red)
+		foreach ($this->request->query as $tbl => $value){
+			if (
+				$tbl == 'accnum' || 
+				$tbl == 'accnum' || 
+				$tbl == 'objtitle' ||
+				$tbl == 'daterange' ||
+				$tbl == 'dimensions' ||
+				$tbl == 'synopsis' ||
+				$tbl == 'creditline' ||
+				$tbl == 'gloss' ||
+				$tbl == 'inscription' ||
+				//$tbl == 'col' ||
+				//$tbl == 'loc' ||
+				//$tbl == 'searchall' ||
+				$tbl == 'slug'
+				)
+			{	
+			$aquery['Treasure.'.$tbl.' LIKE '] ='%'.$value . '%';
+			}
+		}
+		
+		//deal with checkboxes
+		if (array_key_exists('bbm',$this->params['named'])){
+			if ($this->params['named']['bbm']==1) {array_push($colarray, 'bbm');}
+		}
+
+		if (array_key_exists('cfm',$this->params['named'])){
+			if ($this->params['named']['cfm']==1) {array_push($colarray, 'cfm');}
+		}
+		
+		if (array_key_exists('dmnh',$this->params['named'])){
+			if ($this->params['named']['dmnh']==1) {array_push($colarray, 'dmnh');}
+		}
+		
+		if (array_key_exists('pim',$this->params['named'])){
+			if ($this->params['named']['pim']==1) {array_push($colarray, 'pim');}
+		}
+		
+		if (array_key_exists('wg',$this->params['named'])){
+			if ($this->params['named']['wg']==1) {array_push($colarray, 'wg');}
+		}
+		
+		$temp_array = &$colquery;
+
+		foreach ($colarray as $item){
+			$temp_array = &$temp_array['Or'];
+			$temp_array['Collection.name LIKE '] ='%'.$item.'%';
+		}
+		
+		//debug($colquery);
+		
+		
+		if (array_key_exists('loc',$this->params['named'])){
+		    //no need to worry about fancy loops, there can be only one
+			if (is_array($this->params['named']['loc'])){
+			$this->Session->setFlash(__('A treasure only has one location', true));
+			}
+			else {
+			
+			$locquery['aNd']['Location.name LIKE '] ='%'.$this->params['named']['loc'] . '%';	
+				}
+		}
+
+		
+			 //now make an array from the args
+		foreach ($this->params['named'] as $tbl => $col){
+			if (
+				$tbl == 'accnum' || 
+				$tbl == 'objtitle' ||
+				$tbl == 'daterange' ||
+				$tbl == 'dimensions' ||
+				$tbl == 'synopsis' ||
+				$tbl == 'creditline' ||
+				$tbl == 'gloss' ||
+				$tbl == 'inscription' ||
+				//$tbl == 'searchall' ||
+				$tbl == 'slug'
+				)
+			{
+				
+				 //** Lovely nested loop that recursively assigns the values
+				 //this allows the same param to be passed multiple times
+				 
+					if (is_array($col)){
+						$temp_array = &$cquery;
+						foreach ($col as $item){
+						
+						$temp_array = &$temp_array['and'];
+						// $temp_array now equals null, 
+						// and it's references to parent array item with key and
+						$temp_array['Treasure.'.$tbl.' LIKE '] ='%'.$item.'%';
+						}
+					}
+					else {
+						//just do it the normal way
+						$bquery['AND']['Treasure.'.$tbl.' LIKE '] ='%'.$col . '%';
+					}						
+					}
+			}
+
+		//Use the Search Plug-in to parse the searchall field
+		$sdata=$this->Prg->parsedParams();
+		if (array_key_exists('searchall',$sdata)){$sdata=array('searchall'=>$sdata['searchall']);}
+		$squery=$this->Treasure->parseCriteria($sdata);		
+			
+		//we are now making one big set of conditions out of everything	we did
+		$mega = array_merge($aquery, $bquery, $cquery, $colquery, $locquery, $squery);
+		
+		//debug($mega);
+
+		$cnt=$this->Treasure->find('count', array('conditions' => $mega));
+			
+		//if the index only brings them to one result, just take them there
+		if ($cnt == 1){
+				$wo=$this->Treasure->find('first',array('conditions'=>$mega));
+				$this->Session->setFlash(__('One match to criteria, here it is', true));
+				$this->redirect(array('action' => 'view', $wo['Treasure']['slug']));
+		}
+		//act like a normal index if there are no params
+		if ($cnt > 1 || empty($this->params['named'])==true){
+		
+		
+			$this->paginate = array('conditions' => $mega);
+			$treasures=$this->paginate();
+			
+			//now do some session variables for the proper neighbor values on the view
+			$this->Session->write('scond',$mega);
+			
+			if (array_key_exists('sort',$this->params['named']) && array_key_exists('direction',$this->params['named'])){
+				$sortord = array('Treasure.'.$this->params['named']['sort']=>$this->params['named']['direction']);
+				$this->Session->write('sord',$sortord);
+			}
+
+			}
+		if ($cnt < 1){
+			//if it's ajax don't confuse them with random values
+			$xext=substr($this->request['url']['url'],-4);
+			$jext=substr($this->request['url']['url'],-5);
+			//debug($ext);
+			if ($this->request->is('ajax') || $jext=='.json' || $xext=='.xml') {
+				throw new NotFoundException(__('no matches found'));
+			}
+			else{
+				$this->Session->setFlash(__('Sorry no matches. Here are a few random items', true));
+				$this->paginate = array('order'=>'RAND()','limit'=>3);
+				$treasures=$this->paginate();
+				}
+			}
+		debug($this->Prg->parsedParams());
+		$this->set('treasures', $treasures);
+		$this->set('_serialize', array('treasures'));
+	}
+
+
+	public function view($slug = null) {
+		$this->Prg->commonProcess();
+		//use sessions vars to give logic to prev and next buttons
+		$mega=$this->Session->read('scond');
+		$sortord=$this->Session->read('sord');
+		//debug($sortord);
+		//debug($mega);
+
+		
+		if (is_null($slug)==false){
+			/** This is the logic if the URL was accessed by slug**/
+      
+			$treasure = $this->Treasure->findBySlug($slug);
+			$neighbors = $this->Treasure->find('neighbors', array('field'=>'slug','value'=>$slug,'conditions'=>$mega,'recursive'=>0,'order'=>$sortord));
+			$this->set('neighbors',$neighbors);
+			//debug($neighbors);
+			
+			if (empty($treasure)){
+				
+				$cnt=$this->Treasure->find('count',array('conditions'=>array('Treasure.slug LIKE'=>'%'.$slug.'%')));
+				
+				//even though invalid slug, there is only one item like it, so give it to them
+				if ($cnt == 1){
+					$treasure=$this->Treasure->find('first',array('conditions'=>array('Treasure.slug LIKE'=>'%'.$slug.'%')));
+				}
+				else{
+					if ($cnt > 1){$searchvar='slug:'; $flash='Found more than one item like '.$slug;}
+					if ($cnt < 1){$searchvar='searchall:'; $flash='Invalid item, tried searching for '.$slug;}
+					$this->Session->setFlash(__($flash, true));
+					return $this->redirect(array('action' => 'index',$searchvar.$slug));	
+				}
+			}
+		}
+		else{
+			/** This is the logic if no slug (i.e. named params or empty)*/
+			$this->redirect(array('action' => 'index') + $this->request->params['named']);	
+		}
+		$this->set('treasure', $treasure);
+		$this->set('_serialize', array('treasure'));
+	}
+	
+
+//uses ajax to autocomplete accession IDs into 'gothere' box
+	public function gothere2() {
+
+		if ($this->request->is(array('post', 'put'))) {
+			$this->Session->setFlash(__('Here is the treasure you requested...'));
+
+				return $this->redirect(array('action' => 'view',$this->request->data['Treasure']['gosomewhere']));
+
+		}
+
+	}
+
+//this is the AJAX view for the gothere2 function.
+//**Need to add error handling to redirect if the request is not AJAX
+	public function find() {
+		$this->Treasure->recursive = 0;
+		$this->autoRender = false;
+		
+		if ($this->request->is('ajax')) {
+			$this->autoRender = false;
+			$results = $this->Treasure->find('list', array(
+			'fields' => array('Treasure.accnum'),
+			//remove the leading '%' if you want to restrict the matches more
+			'conditions' => array('Treasure.accnum LIKE ' => $this->request->query['q'] . '%'),
+			'order' => array('Treasure.accnum')
+			));
+		
+			/** Manually build JSON view for autocomplete */
+			echo '[';
+			$lastflag = count($results);
+			$i=0;
+			foreach ($results as $key => $value){
+				$i++;
+				$a =array(
+				'value'=>$key,
+				'text'=>$value);
+				if ($lastflag == $i){
+					echo '{"value" : "'.$key.'","text" : "'.$value.'"}';
+				}
+				else{
+					echo '{"value" : "'.$key.'","text" : "'.$value.'"},';
+				}
+			} 
+			echo ']';
+	
+	
+		}
+ 
+		else {
+		//if not ajax, send back to homepage with query
+		if (array_key_exists('q',$this->request->query)==false){
+			$this->request->query['q']='NA.204.1';
+		}
+		$this->redirect(array('action' => 'index','accnum:'.$this->request->query['q']));
+		}		
+	}
+
+/** This is for ajax call where you want a plain text result sent back **/
+	public function find2() {
+		$this->Treasure->recursive = 0;
+		if ($this->request->is('ajax')) {
+			$this->autoRender = false;
+			$results = $this->Treasure->find('all', array(
+			'fields' => array('Treasure.accnum'),
+			'conditions' => array('Treasure.accnum LIKE ' => '%'.$this->request->query['q'] . '%')
+			));
+			//generates a simple list
+			foreach($results as $result) {
+				echo $result['Treasure']['accnum'] . "\n";
+			}	
+		}
+		else {
+			if (array_key_exists('q',$this->request->query)==false){
+				$this->request->query['q']='NA.204.1';
+			}
+			$this->redirect(array('action' => 'index','accnum:'.$this->request->query['q']));
+		}
+	}
+	}

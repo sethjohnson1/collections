@@ -1,0 +1,39 @@
+.include-custom-font( TheSans_B2_3_, sans );
+.include-custom-font( TheSans_B2_5_, sans );
+.include-custom-font( TheSans_B2_7_, sans );
+
+.include-custom-font( TheSerif_3_, serif );
+.include-custom-font( TheSerif_4_, serif );
+.include-custom-font( TheSerif_6_, serif );
+
+@base-size: 16;
+
+@sans-serif:        "TheSans_B2_3_", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@sans-serif_medium: "TheSans_B2_5_", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@sans-serif_bold:   "TheSans_B2_7_", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+@serif:             "TheSerif_3_", Georgia, "Times New Roman", Times, serif;
+@serif_light:       "TheSerif_4_", Georgia, "Times New Roman", Times, serif;
+@serif_bold:        "TheSerif_6_", Georgia, "Times New Roman", Times, serif;
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: @sans-serif_bold;
+	font-weight: normal;
+	line-height: 1.25;
+}
+
+b,
+.bold,
+strong {
+	font-family: @serif_bold;
+	font-weight: normal;
+}
+
+.italic {
+	font-style: italic;
+}

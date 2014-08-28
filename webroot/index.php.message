@@ -1,0 +1,3 @@
+<?php
+echo '<h3>We are very sorry, but something has gone wrong and this site is broken. Our experienced team is looking very busy right now!</h3>';
+?>

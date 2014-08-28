@@ -1,0 +1,4 @@
+<h2>Privacy Policy</h2>
+<p>Through its privacy policy, the Buffalo Bill Center of the West is committed to protecting the privacy of its Web site visitors, customers, members, donors, e-newsletter subscribers, and friends.
+The Center does not collect personal information about individuals such as names and postal and/or e-mail addresses except when it is knowingly and voluntarily provided by such individuals for purchases, registrations, donations, and e-newsletter subscriptions. In such cases, we will not disclose personal information to any third party.</p>
+<p>This Web site uses “cookies”—files stored on your computer by your Web browser—to optimize your online experience. These files are not linked to personally identifying information and will not be shared with any third party. We also gather anonymous traffic data—including your computer’s IP address, browser information, and reference site domain—for the purpose of evaluating and improving our Web site.</p>

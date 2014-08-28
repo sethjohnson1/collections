@@ -1,0 +1,197 @@
+<?php
+App::uses('AppModel', 'Model');
+
+class Treasure extends AppModel {
+
+public $actsAs = array('Search.Searchable','Containable');
+
+public $filterArgs = array(
+	//the hABTM
+	'makers' => array('type' => 'subquery', 'method' => 'findByMaker', 'field' => 'Treasure.id'),
+	'medvalues' => array('type' => 'subquery', 'method' => 'findByMedvalue', 'field' => 'Treasure.id'),
+
+	//this is a general purpose that simply looks at most of the fields
+	//encode is false by default, but I turned it on for experimenting
+	'searchall'=>array('type' => 'like','encode'=>false,'connectorAnd' => ' ', 'connectorOr' => ',','field'=>array(
+		'Treasure.accnum',
+		'Treasure.objtitle',
+		'Treasure.synopsis',
+		'Treasure.gloss',
+		'Treasure.daterange',
+		'Treasure.creditline',
+		'Treasure.inscription',
+		'Treasure.dimensions',
+		'Treasure.slug'
+		)
+	),
+	
+	//if these are here, the plugin will take care of checking the boxes
+	'bbm'=>array(),
+	'cfm'=>array(),
+	'dmnh'=>array(),
+	'pim'=>array(),
+	'wg'=>array()
+  
+  
+  );
+
+public function findByMaker($data = array()) {
+    $this->MakersTreasure->Behaviors->attach('Containable', array('autoFields' => false));
+    $this->MakersTreasure->Behaviors->attach('Search.Searchable');
+        $query = $this->MakersTreasure->getQuery('all', array(
+            'conditions' => array("Maker.name LIKE '%" . $data['makers'] ."%'"),
+            'fields' => array('treasure_id'),
+            'contain' => array('Maker'),
+        ));
+        return $query;
+    }
+
+	public function findByMedvalue($data = array()) {
+    $this->TreasuresMedvalue->Behaviors->attach('Containable', array('autoFields' => false));
+    $this->TreasuresMedvalue->Behaviors->attach('Search.Searchable');
+        $query = $this->TreasuresMedvalue->getQuery('all', array(
+            'conditions' => array("Medvalue.name LIKE '%" . $data['medvalues'] ."%'"),
+            'fields' => array('treasure_id'),
+            'contain' => array('Medvalue'),
+        ));
+        return $query;
+    }
+
+/*
+
+//the original working FilterArgs
+public $filterArgs = array(
+
+	//this is a general purpose that simply looks at most of the fields
+	//encode is false by default, but I turned it on for experimenting
+	'searchall'=>array('type' => 'like','encode'=>false,'connectorAnd' => ' ', 'connectorOr' => ',','field'=>array(
+	'Treasure.accnum',
+	'Treasure.objtitle',
+	'Treasure.synopsis',
+	'Treasure.gloss',
+	'Treasure.daterange',
+	'Treasure.creditline',
+	'Treasure.inscription',
+	'Treasure.dimensions',
+	'Treasure.slug'
+	)),
+	
+	//if these are here, the plugin will take care of checking the boxes
+	'bbm'=>array('empty'=>true),
+	'cfm'=>array(),
+	'dmnh'=>array(),
+	'pim'=>array(),
+	'wg'=>array()
+
+
+*/
+
+	//The Associations below have been created with all possible keys, those that are not needed can be removed
+
+	public $belongsTo = array(
+		'Collection' => array(
+			'className' => 'Collection',
+			'foreignKey' => 'collection_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'Location' => array(
+			'className' => 'Location',
+			'foreignKey' => 'location_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		)
+	);
+
+/**
+ * hasMany associations
+ *
+ * @var array
+ */
+	public $hasMany = array(
+		'Image' => array(
+			'className' => 'Image',
+			'foreignKey' => 'treasure_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		)
+	);
+
+
+/**
+ * hasAndBelongsToMany associations
+ *
+ * @var array
+ */
+	public $hasAndBelongsToMany = array(
+		'Maker' => array(
+			'className' => 'Maker',
+			'joinTable' => 'makers_treasures',
+			'foreignKey' => 'treasure_id',
+			'associationForeignKey' => 'maker_id',
+			'unique' => 'keepExisting',
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'finderQuery' => '',
+			'with' => 'MakersTreasure'
+		),
+		'Medvalue' => array(
+			'className' => 'Medvalue',
+			'joinTable' => 'treasures_medvalues',
+			'foreignKey' => 'treasure_id',
+			'associationForeignKey' => 'medvalue_id',
+			'unique' => 'keepExisting',
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'finderQuery' => '',
+			'with'=>'TreasuresMedvalue'
+		),
+		
+		/* No usergals for v1
+		'Usergal' => array(
+			'className' => 'Usergal',
+			'joinTable' => 'treasures_usergals',
+			'foreignKey' => 'treasure_id',
+			'associationForeignKey' => 'usergal_id',
+			'unique' => 'keepExisting',
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'finderQuery' => '',
+			
+		),
+		*/
+		'Tag' => array(
+			'className' => 'Tag',
+			'joinTable' => 'tags_treasures',
+			'foreignKey' => 'treasure_id',
+			'associationForeignKey' => 'tag_id',
+			'unique' => 'keepExisting',
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'finderQuery' => '',
+		)
+		
+	);
+
+}

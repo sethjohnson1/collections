@@ -1,0 +1,33 @@
+<?php
+App::uses('AppController', 'Controller');
+
+class LocationsController extends AppController {
+
+	public $components = array('Paginator','Search.Prg');
+	public $paginate = array();
+
+	public function index() {
+		$this->Prg->commonProcess();
+		$this->Location->recursive = 0;
+		$this->paginate = array('conditions' => $this->Location->parseCriteria($this->Prg->parsedParams()));
+		$this->set('locations', $this->paginate());
+	}
+
+	public function view($id = null) {
+		if (!$this->Location->exists($id)) {
+			throw new NotFoundException(__('Invalid location'));
+		}
+		
+		//$options = array('conditions' => array('Location.' . $this->Location->primaryKey => $id),'limit'=>25,'recursive'=>0);
+		//$this->Location->contain(); //need loaded
+		//$location = $this->Location->find('first',$options);
+		
+$this->paginate = array('Treasure' => array( 'recursive' => -1, 'limit' => 1, 'conditions' => array('Treasure.location_id' => $id), 'order' => 'Treasure.accnum asc' ), 'limit'=>5);
+$this->set('treasures', $this->paginate('Treasure'));
+debug($this->paginate('Treasure'));
+		//debug($location['Location']['id']);
+		//$location = $this->Location->Treasure->find('all', $options);
+		//$this->set('location', $location);
+		//debug($location);
+	}
+}

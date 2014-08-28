@@ -1,0 +1,23 @@
+.ir() {
+	border: 0;
+	font: 0/0 a;
+	text-shadow: none;
+	color: transparent;
+	background-color: transparent;
+}
+
+.include-custom-font(@family: arial, @dir, @weight: normal, @style: normal){
+    @font-face{
+        font-family: @family;
+        src:url('../fonts/@{dir}/@{family}.eot');
+        src:url('../fonts/@{dir}/@{family}.eot?#iefix') format('embedded-opentype'),
+            url('../fonts/@{dir}/@{family}.woff') format('woff'),
+            url('../fonts/@{dir}/@{family}.svg#icon') format('svg');
+        font-weight: @weight;
+        font-style: @style;
+    }
+}
+
+.em( @value: @base-size, @context: @base-size ) {
+	font-size: (@value / @context) + 0em;
+}

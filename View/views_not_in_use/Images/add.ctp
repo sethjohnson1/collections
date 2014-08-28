@@ -1,0 +1,22 @@
+<div class="images form">
+<?php echo $this->Form->create('Image'); ?>
+	<fieldset>
+		<legend><?php echo __('Add Image'); ?></legend>
+	<?php
+		echo $this->Form->input('imgpath');
+		echo $this->Form->input('name');
+		echo $this->Form->input('sortorder');
+		echo $this->Form->input('treasure_id');
+	?>
+	</fieldset>
+<?php echo $this->Form->end(__('Submit')); ?>
+</div>
+<div class="actions">
+	<h3><?php echo __('Actions'); ?></h3>
+	<ul>
+
+		<li><?php echo $this->Html->link(__('List Images'), array('action' => 'index')); ?></li>
+		<li><?php echo $this->Html->link(__('List Treasures'), array('controller' => 'treasures', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Treasure'), array('controller' => 'treasures', 'action' => 'add')); ?> </li>
+	</ul>
+</div>

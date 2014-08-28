@@ -1,0 +1,25 @@
+<?php
+App::uses('AppController', 'Controller');
+
+class ImagesController extends AppController {
+
+
+	public $components = array('Paginator','Search.Prg','RequestHandler');
+
+
+	public function index() {
+		$this->Prg->commonProcess();
+		$this->Artist->recursive = 0;
+		$this->paginate = array('conditions' => $this->Artist->parseCriteria($this->Prg->parsedParams()));
+		$this->set('artists', $this->paginate());
+	}
+
+	public function view($id = null) {
+		if (!$this->Image->exists($id)) {
+			throw new NotFoundException(__('Invalid image'));
+		}
+		$options = array('conditions' => array('Image.' . $this->Image->primaryKey => $id));
+		$this->set('image', $this->Image->find('first', $options));
+	}
+	
+}

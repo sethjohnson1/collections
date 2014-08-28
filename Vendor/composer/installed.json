@@ -1,0 +1,257 @@
+[
+    {
+        "name": "composer/installers",
+        "version": "v1.0.7",
+        "version_normalized": "1.0.7.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/composer/installers.git",
+            "reference": "d792632d27e1980d921cbbba12eab7b888338d4c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/composer/installers/zipball/d792632d27e1980d921cbbba12eab7b888338d4c",
+            "reference": "d792632d27e1980d921cbbba12eab7b888338d4c",
+            "shasum": ""
+        },
+        "replace": {
+            "shama/baton": "*"
+        },
+        "require-dev": {
+            "composer/composer": "1.0.*@dev",
+            "phpunit/phpunit": "3.7.*"
+        },
+        "time": "2013-10-24 16:13:49",
+        "type": "composer-installer",
+        "extra": {
+            "class": "Composer\\Installers\\Installer",
+            "branch-alias": {
+                "dev-master": "1.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Composer\\Installers\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Kyle Robinson Young",
+                "email": "kyle@dontkry.com",
+                "homepage": "http://dontkry.com",
+                "role": "Developer"
+            }
+        ],
+        "description": "A multi-framework Composer library installer",
+        "homepage": "http://composer.github.com/installers/",
+        "keywords": [
+            "TYPO3 CMS",
+            "TYPO3 Flow",
+            "TYPO3 Neos",
+            "agl",
+            "cakephp",
+            "codeigniter",
+            "concrete5",
+            "drupal",
+            "fuelphp",
+            "installer",
+            "joomla",
+            "kohana",
+            "laravel",
+            "li3",
+            "lithium",
+            "mako",
+            "modulework",
+            "phpbb",
+            "ppi",
+            "silverstripe",
+            "symfony",
+            "wordpress",
+            "zend"
+        ]
+    },
+    {
+        "name": "cakedc/utils",
+        "version": "1.4.2",
+        "version_normalized": "1.4.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/CakeDC/utils.git",
+            "reference": "d68c2f348bdb12496786ff02841afa1ebd5adb30"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/CakeDC/utils/zipball/d68c2f348bdb12496786ff02841afa1ebd5adb30",
+            "reference": "d68c2f348bdb12496786ff02841afa1ebd5adb30",
+            "shasum": ""
+        },
+        "require": {
+            "composer/installers": "*"
+        },
+        "time": "2013-11-12 10:13:31",
+        "type": "cakephp-plugin",
+        "installation-source": "dist",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Cake Development Corporation",
+                "email": "team@cakedc.com",
+                "homepage": "http://cakedc.com"
+            }
+        ],
+        "description": "Utils Plugin for CakePHP",
+        "homepage": "http://cakedc.com",
+        "keywords": [
+            "cakephp",
+            "utility"
+        ]
+    },
+    {
+        "name": "cakedc/search",
+        "version": "2.2.1",
+        "version_normalized": "2.2.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/CakeDC/search.git",
+            "reference": "9bcaa6fe0453a1c9d911b8f25d38e3f64e6943b6"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/CakeDC/search/zipball/9bcaa6fe0453a1c9d911b8f25d38e3f64e6943b6",
+            "reference": "9bcaa6fe0453a1c9d911b8f25d38e3f64e6943b6",
+            "shasum": ""
+        },
+        "require": {
+            "composer/installers": "*",
+            "php": ">=5.3.0"
+        },
+        "time": "2013-10-21 10:51:10",
+        "type": "cakephp-plugin",
+        "extra": {
+            "installer-name": "Search"
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Cake Development Corporation",
+                "email": "team@cakedc.com",
+                "homepage": "http://cakedc.com"
+            }
+        ],
+        "description": "The Search plugin allows you to make any kind of data searchable, enabling you to implement a robust searching rapidly.",
+        "homepage": "http://github.com/CakeDC/search"
+    },
+    {
+        "name": "paulredmond/chosen-cakephp",
+        "version": "2.1.4",
+        "version_normalized": "2.1.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/paulredmond/chosen-cakephp.git",
+            "reference": "505b5a7a9d68214c9f77a82d00bde5103c715832"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/paulredmond/chosen-cakephp/zipball/505b5a7a9d68214c9f77a82d00bde5103c715832",
+            "reference": "505b5a7a9d68214c9f77a82d00bde5103c715832",
+            "shasum": ""
+        },
+        "require": {
+            "composer/installers": "1.*",
+            "php": ">=5.2.6"
+        },
+        "time": "2013-05-11 22:25:45",
+        "type": "cakephp-plugin",
+        "extra": {
+            "installer-name": "Chosen"
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Paul Redmond",
+                "email": "paulrredmond@gmail.com"
+            },
+            {
+                "name": "Harvest HQ",
+                "homepage": "http://harvesthq.github.com/chosen"
+            },
+            {
+                "name": "Github Contributors",
+                "homepage": "https://github.com/simkimsia/chosen-cakephp/graphs/contributors"
+            }
+        ],
+        "description": "Chosen CakePHP plugin for CakePHP 2",
+        "homepage": "https://github.com/paulredmond/chosen-cakephp",
+        "keywords": [
+            "cakephp",
+            "plugin"
+        ]
+    },
+    {
+        "name": "cakephp/debug_kit",
+        "version": "2.2.2",
+        "version_normalized": "2.2.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/cakephp/debug_kit.git",
+            "reference": "0dd9f6cf6250817052b6a7cf2cc0d2d8d7e26e90"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/cakephp/debug_kit/zipball/0dd9f6cf6250817052b6a7cf2cc0d2d8d7e26e90",
+            "reference": "0dd9f6cf6250817052b6a7cf2cc0d2d8d7e26e90",
+            "shasum": ""
+        },
+        "require": {
+            "composer/installers": "*",
+            "php": ">=5.3.0"
+        },
+        "time": "2013-11-07 18:15:29",
+        "type": "cakephp-plugin",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.2.x-dev"
+            },
+            "installer-name": "DebugKit"
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Mark Story",
+                "homepage": "http://mark-story.com",
+                "role": "Author"
+            },
+            {
+                "name": "CakePHP Community",
+                "homepage": "https://github.com/cakephp/debug_kit/graphs/contributors"
+            }
+        ],
+        "description": "CakePHP Debug Kit",
+        "homepage": "https://github.com/cakephp/debug_kit",
+        "keywords": [
+            "cakephp",
+            "debug",
+            "kit"
+        ]
+    }
+]

@@ -1,0 +1,166 @@
+<?php
+App::uses('AppController', 'Controller');
+/**
+ * Artists Controller
+ *
+ * @property Artist $Artist
+ * @property PaginatorComponent $Paginator
+ */
+class ArtistsController extends AppController {
+
+	public $components = array('Paginator','Search.Prg','RequestHandler');
+
+ 
+	public function index() {
+		$this->Prg->commonProcess();
+		$this->Artist->recursive = 0;
+		$ww=$this->Maker->find('count',array('conditions'=>$this->Maker->parseCriteria($this->Prg->parsedParams())));
+		//if the index only brings them to one result, just take them there
+		if ($ww == 1){
+		$wo=$this->Maker->find('first',array('conditions'=>$this->Maker->parseCriteria($this->Prg->parsedParams())));
+		$this->Session->setFlash(__('One match to criteria, here it is', true));
+		$this->redirect(array('action' => 'view', $wo['Maker']['slug']));
+		}
+		$this->paginate = array('conditions' => $this->Artist->parseCriteria($this->Prg->parsedParams()));
+		$this->set('artists', $this->paginate());
+	}
+
+	public function view($slug=null) {
+		$this->Prg->commonProcess();
+		if (is_null($slug)==false){
+			/** This is the logic if the URL was accessed by slug**/
+      
+			$artist = $this->Artist->findBySlug($slug);
+			if (empty($artist)){
+				$this->Session->setFlash(__('Invalid item, tried searching for', true));
+				return $this->redirect(array('action' => 'index','find:'.$slug));		
+			}
+		}
+		else{
+			/** This is the logic if there is no slug **/
+			/* Count the results and decide what to do */
+			$cnt=$this->Artist->find('count', array('conditions' => $this->Artist->parseCriteria($this->Prg->parsedParams()),));
+			
+			if($cnt == 1){
+			$artist=$this->Artist->find('first', array('conditions' => $this->Artist->parseCriteria($this->Prg->parsedParams())));
+			}
+			
+			if($cnt > 1){
+			$this->Session->setFlash(__('Duplicates found, here is a list', true));
+			$this->redirect(array('action' => 'index') + $this->request->params['named']);
+			}
+			
+			if($cnt < 1){
+			$this->Session->setFlash(__('Item not found. Random artist given!', true));
+			$artist=$this->Artist->find('first', array('order'=>'RAND()'));
+			}
+			
+		}
+		debug($artist); //eventually I will move all these final debugs to the views themselves (but make sure they don't get baked over somehow)
+		$this->set('artist', $artist);
+	}
+//the start of the api thing...
+	public function api($slug=null) {
+		$this->Prg->commonProcess();
+		$this->Artist->recursive = 1;
+		$artists = array();      
+		//we might neve restrict this view for ajax requests only, especially if we never use an API key - why bother?
+		// if ($this->request->is('ajax')) {
+		
+		
+		if (is_null($slug)==false){
+			/** This is the logic if the URL was accessed by slug**/
+			$cnt='random';
+			if($slug=='random'){
+				$artists=$this->Artist->find('first', array('order'=>'RAND()'));
+			}
+			else {
+			$artists = $this->Artist->findBySlug($slug);
+			$cnt=1;
+			}
+			if (empty($artists)){
+				throw new NotFoundException(__('artist id not found'));
+			}
+		}
+		
+		else {
+		
+			/** This is the logic if there is no slug **/
+			/* Count the results and decide what to do */
+			//first make an array from the request->query
+			$aquery=array();
+			$bquery=array();
+			$cquery=array();
+			foreach ($this->request->query as $key => $value){
+				if (
+					$key == 'name' || 
+					$key == 'slug'
+					)
+				{
+					
+				$aquery['Artist.'.$key.' LIKE '] ='%'.$value . '%';
+				}
+			}
+			 //now make an array from the args
+			 
+			
+			//$cur = &$out;
+			foreach ($this->params['named'] as $tbl => $col){
+				if (
+					$tbl == 'name' ||
+					$tbl == 'slug'
+					)
+				{
+				
+				 //** Lovely nested loop that recursively assigns the values
+				 
+					if (is_array($col)){
+						$temp_array = &$cquery;
+						foreach ($col as $item){
+						
+						$temp_array = &$temp_array['and'];
+						// $temp_array now equals null, 
+						// and it's references to parent array item with key and
+						$temp_array['Artist.'.$tbl.' LIKE '] ='%'.$item.'%';
+						}
+
+				
+					}
+					else {
+						//just do it the normal way
+						$bquery['AND']['Artist.'.$tbl.' LIKE '] ='%'.$col . '%';
+					}						
+					}
+			}			
+			
+			//so if you're with me so far, we are now making one big set of conditions		
+			$mega = array_merge($aquery, $bquery, $cquery);
+			$cnt=$this->Artist->find('count', array('conditions' => $mega));
+			
+			//debug($this->params['named']['synopsis']);
+			debug($mega);
+			
+			//this one needs to be fixed after fixing multi-value one
+			if($cnt == 1){
+				$artists=$this->Artist->find('first', array('conditions' => $mega));
+			}
+			
+			if($cnt > 1){
+				$this->Artist->recursive = 0;
+				$artists= $this->Artist->find('all', array('conditions' => $mega,'limit'=>25));
+			}
+			
+			if($cnt < 1){
+				throw new NotFoundException(__('no matches found'));
+			}
+		}
+		
+		//debug($artists);
+		//just searlize any results, although we could make separate views, we'd rather not
+		$this->set('artists', $artists);
+		$this->set('cnt',$cnt);
+		$this->set('_serialize', array('artists'));
+	}
+
+
+}

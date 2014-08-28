@@ -1,0 +1,3 @@
+error_log = /var/log/php_errors2.log
+slowlog = /var/log/php5-fpm.slow.log
+request_slowlog_timeout = 20s

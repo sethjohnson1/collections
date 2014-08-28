@@ -1,0 +1,25 @@
+<?php
+App::uses('AppController', 'Controller');
+
+class CollectionsController extends AppController {
+
+	public $components = array('Paginator','Search.Prg');
+
+	public function index() {
+		$this->Prg->commonProcess();
+		$this->Collection->recursive = 0;
+		$this->paginate = array('conditions' => $this->Collection->parseCriteria($this->Prg->parsedParams()));
+		$this->set('collections', $this->paginate());
+	}
+
+	public function view($id = null) {
+		if (!$this->Collection->exists($id)) {
+			throw new NotFoundException(__('Invalid collection'));
+		}
+		$options = array('conditions' => array('Collection.' . $this->Collection->primaryKey => $id),'limit'=>25,'recursive'=>0);
+		$collection = $this->Collection->Treasure->find('all', $options);
+		$this->set('collection', $collection);
+		debug($collection);
+	}
+	
+}

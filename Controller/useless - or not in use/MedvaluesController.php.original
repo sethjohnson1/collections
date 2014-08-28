@@ -1,0 +1,89 @@
+<?php
+App::uses('AppController', 'Controller');
+
+class MedvaluesController extends AppController {
+	public $components = array('Paginator','Search.Prg','RequestHandler');
+
+		public function index() {
+		$this->Prg->commonProcess();
+		$this->Medvalue->recursive = 0;
+		
+
+			/*Count the results and decide what to do */
+			//first make an array from the request->query
+			$aquery=array();
+			$bquery=array();
+			$cquery=array();
+			foreach ($this->request->query as $key => $value){
+				if (
+					$key == 'name' || 
+					$key == 'slug'
+					)
+				{
+				$aquery['Medvalue.'.$key.' LIKE '] ='%'.$value . '%';
+				}
+			}
+			
+			 //now make an array from the args
+			foreach ($this->params['named'] as $tbl => $col){
+				if (
+					$tbl == 'name' ||
+					$tbl == 'slug'
+					)
+				{
+				
+				 //** Lovely nested loop that recursively assigns the values
+				 
+					if (is_array($col)){
+						$temp_array = &$cquery;
+						foreach ($col as $item){
+						
+						$temp_array = &$temp_array['and'];
+						// $temp_array now equals null, 
+						// and it's references to parent array item with key and
+						$temp_array['Medvalue.'.$tbl.' LIKE '] ='%'.$item.'%';
+						}
+					}
+					else {
+						//just do it the normal way
+						$bquery['AND']['Medvalue.'.$tbl.' LIKE '] ='%'.$col . '%';
+					}						
+					}
+			}			
+			
+			//so if you're with me so far, we are now making one big set of conditions		
+			$mega = array_merge($aquery, $bquery, $cquery);
+			$cnt=$this->Medvalue->find('count', array('conditions' => $mega));
+			
+			//this one needs to be fixed after fixing multi-value one
+			if($cnt == 1){
+				$wo=$this->Medvalue->find('first',array('conditions'=>$mega));
+				$this->Session->setFlash(__('One match to criteria, here it is', true));
+				 //$maker['Medvalue']['name']
+				$this->redirect(array('action' => '../treasures/index/synopsis:'.$wo['Medvalue']['slug']));
+			}
+			
+			if($cnt > 1){
+				$this->paginate = array('conditions' => $mega);
+				$medvalues=$this->paginate();
+			}
+			
+			if($cnt < 1){
+				//if it's ajax don't confuse them with random values
+				$xext=substr($this->request['url']['url'],-4);
+				$jext=substr($this->request['url']['url'],-5);
+				//debug($ext);
+				if ($this->request->is('ajax') || $jext=='.json' || $xext=='.xml') {
+					throw new NotFoundException(__('no matches found'));
+				}
+			else{
+					$this->Session->setFlash(__('Sorry no matches. Here are a few random items', true));
+					$this->paginate = array('order'=>'RAND()','limit'=>3);
+					$medvalues=$this->paginate();
+				}
+			}
+				
+		$this->set('medvalues', $medvalues);
+		$this->set('_serialize', array('medvalues'));
+	}
+}

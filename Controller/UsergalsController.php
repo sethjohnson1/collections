@@ -1,0 +1,337 @@
+<?php
+App::uses('AppController', 'Controller');
+App::uses('CakeEmail','Network/Email');
+
+class UsergalsController extends AppController {
+
+public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Search.Prg'=>array('commonProcess'=>array('keepPassed'=>false)),'RequestHandler','Cookie',
+	'Comments.Comments'=>array(
+	'userModelClass'=>'Users.User'
+		//although the above is not ignored, it seems like other options I pass here are ignored (like viewVariable), so I use beforeFilter)
+)
+);
+	public $paginate = array(
+       // 'Treasure2' => array ()
+    );
+	
+	public function beforeFilter() {
+    parent::beforeFilter();
+	//five years of pure awesome
+	//$this->Cookie->time = 157680000000;
+	$this->Auth->allow();
+	$this->Auth->deny('mine');
+	//this needs to be a single item with ID (I think)
+	//by default it will use the model name (i.e. kid, treasure, artwork)
+	$this->Comments->viewVariable='usergal';
+	//if you look at manual, you will see there are several useful component settings		
+	
+	//isAdmin isn't always set in CommentsPlugin when it should be, this has fixed it so far
+	$isAdmin = (bool)$this->Auth->user('is_admin');
+	$this->set('isAdmin',$isAdmin);
+	
+	/* deal with the strange pagination glitch, without this a Not Found exception this thrown
+	there is little documentation on this, but the basic consensus is the manual JOINS with Pagination
+	invoke demons. For the rest of the code, see the $options set in the view function.
+	*/
+	if (isset($this->params['named']['page'])){
+		$newurl=$this->params['named'];
+		$pg=$newurl['page'];
+		unset($newurl['page']);
+		$newurl['p']=$pg;
+		$this->redirect(array('action' => 'view/'.$this->params['pass'][0])+$newurl);
+	}
+	
+}
+
+//this is straight from Comments plugin docs, could probably be done other ways - but it works
+public function callback_commentsInitType() {
+//Initializes the view type for comments widget
+        return 'tree'; // threaded, tree and flat supported
+    }
+	
+public function callback_commentsAdd($modelId, $commentId, $displayType, $data = array()) {
+    if (!empty($this->request->data)) {
+      // debug('err');
+    }
+    return $this->Comments->callback_add($modelId, $commentId, $displayType, $data);
+}
+
+
+//for logged in users to see all of their vgals and comments
+	public function mine() {
+		/* writes editflag -revalidate User Auth otherwise anyone could edit anything with this..
+		but this seems better than passing the editcode around in plain text.  */
+		if (!empty($this->params['named']['ed'])){
+		$cont=array('Treasure'=>array('fields'=>array('Treasure.id')));
+		$val=$this->Usergal->find('first',array('conditions'=>array('Usergal.id'=>$this->params['named']['ed']),'contain'=>$cont));
+			
+		//validate Auth user - otherwise params could be tampered with
+			if (!empty($val['Usergal']['email'])&&($val['Usergal']['email']==$this->Auth->user('email'))){
+				
+					$forcook=array($val['Usergal']['id']=>$val['Usergal']['editcode']);
+					$trval=array();
+					foreach ($val['Treasure'] as $tr){
+						array_push($trval, $tr['id']);
+					
+					}
+					$trval=implode(" ",$trval);
+					$this->Cookie->write('editflag',$forcook);
+					
+					//no, the write will not work! Need to use JS to write plainText such as on Load function
+						$scr = '<script type="text/javascript">dropCookie("vgal");setCookie("'.$trval.'");
+							<!--
+							window.location = "../treasures/pack/"
+							//-->
+							</script>';
+						$this->Cookie->write('cgal',$scr);
+						//then redirect to Load page, which will call the JS
+					$this->redirect(array('controller'=>'usergals','action'=>'load'));
+			
+			}
+		}
+		
+		$this->Usergal->recursive=-1;
+		$usergals=$this->Usergal->findAllByEmail($this->Auth->user('email'));
+		$this->set('usergals',$usergals);
+		
+		/* this is eventually to be the "see all my conversations" thing, but disabled for now */
+		$this->loadModel('Comment');
+		/* proof of concept code that I like, but not paginated at all
+		$comments=$this->Comment->findAllByUser_id($this->Auth->user('id'),array('contain'=>false));
+		//now loop through and use Tree behavior to find children of each comment
+		foreach ($comments as $comment){
+		//true means direct children only
+			$kids = $this->Comment->children($comment['Comment']['id'],true);
+			foreach ($kids as $kid){
+				//there is not a Tree way to omit results, but we can do it here in the foreach
+				//for example, only debug child (reply) comments that were not to oneself
+				if ($kid['Comment']['user_id']!=$comment['Comment']['user_id']); //debug($kid);
+			}
+		}
+		*/
+		
+		//here is a construction of a Tree manually for Paginator, the order is important 
+		$options['conditions']=array('Comment.user_id'=>$this->Auth->user('id'));
+		$options['order']=array('Comment.lft' => 'asc');
+		$options['limit']=10;
+		$options['contain']=false;
+		
+		$this->Paginator->settings = $options;
+		$pgc=$this->Paginator->paginate('Comment');
+		$childcnt=array();
+		//now count the children - in theory this could be bad for performance someday
+		foreach ($pgc as $key=>$val){
+			$childcnt[$val['Comment']['id']] = $this->Comment->childCount($val['Comment']['id'],true);
+		}
+		$this->set('pgc',$pgc);
+		$this->set('childcnt',$childcnt);
+
+	}
+	
+	public function index() {
+		$this->Prg->commonProcess();
+		$this->Usergal->recursive = -1;
+		$search=$this->Usergal->parseCriteria($this->Prg->parsedParams());
+		$listed['AND']=array('Usergal.listed'=>1);
+		$pwr=array_merge($search,$listed);
+		
+		//sj - added querystring check so we can only return featured
+		if (isset($this->request->query['f'])){
+			$pwr['AND']['Usergal.featured']=1;	
+		}
+		
+		$this->Paginator->settings['conditions'] = $pwr;
+		$this->Paginator->settings['order'] = array('Usergal.created'=>'desc');
+		$this->set('usergals', $this->Paginator->paginate());	
+
+		/* 
+		//calling this on our homepage made it crash a bunch, not sure why but we don't need it anyway
+		$usergalclean = $this->Paginator->paginate();
+		//debug($usergalclean[0]);
+		$x=0;
+		foreach ($usergalclean as $val=>$key){
+		//debug($val);
+			unset($usergalclean[$x]['Usergal']['email']);
+			unset($usergalclean[$x]['Usergal']['editcode']);
+			$x++;
+		}
+
+		$this->set('usergalclean',$usergalclean);
+		$this->set('_serialize',array('usergalclean'));
+		*/
+	}
+	
+		//loads a usergal into cookie for them, even if not on the web
+	public function load() 
+	{
+		//The sole purpose is to write the CakeCookie w/ JS so its in plain text, you could set this cookie anywhere (see 'mine' function, for example) and then redirect here
+		$this->set('scr',$this->Cookie->read('cgal'));
+		$this->Cookie->delete('cgal');
+
+		$this->Components->load('Security');
+		//AYAH stuff
+		require_once("ayah.php");
+		$ayah = new AYAH();
+		$this->set('ayah',$ayah->getPublisherHTML());
+		$txt=null;
+		if ($this->request->is('post')) 
+		{
+			if(!empty($this->data['Load']['email']))
+			{
+				$this->Usergal->recursive = -1;
+				$cond = array('Usergal.email'=>$this->data['Load']['email']);
+				$gals=$this->Usergal->find('all',array('conditions'=>$cond,'fields'=>array('Usergal.id','Usergal.editcode','Usergal.name')));
+				
+				if(!empty($gals))
+				{
+					
+					foreach ($gals as $gal)
+					{
+						$txt=$txt."\n".'Name: '.$gal['Usergal']['name']."\n".'Code: '.$gal['Usergal']['id'].'-'.$gal['Usergal']['editcode']."\n";
+					}
+					$Email = new CakeEmail();
+					$Email->from(array('forms@centerofthewest.org' => 'Center of the West'));
+					$Email->to($this->data['Load']['email']);
+					$Email->subject('Here are your Edit Codes');
+					$Email->send('We found the following Virtual Exhibits associated with this e-mail:'."\n\n\n".$txt."\n\n\n".
+					'You can edit your Virtual Exhibits at http://collections.centerofthewest.org/usergals/view/'
+					);
+					$this->Session->setFlash(__('Your edit codes have been e-mailed.'));
+					return $this->redirect(array('action' => 'load'));
+				}
+				else 
+				{
+					$this->Session->setFlash(__("No virtual galleries seem to be associated with that e-mail."));
+					return $this->redirect(array('action' => 'load'));
+				}
+			}
+			$editcode=substr(strstr($this->request->data['Load']['editcode'],'-'),1);
+			$id=strstr($this->request->data['Load']['editcode'],'-',true);
+			$cond = array('Usergal.editcode'=>$editcode,'Usergal.id'=>$id);
+			$data=$this->Usergal->find('first',array('conditions'=>$cond));
+		
+			if(!empty($data))
+			{
+				$forcook[$id]=$editcode;
+				$this->Cookie->write('editflag',$forcook);
+				$jscook='';
+				foreach($data['Treasure'] as $val) $jscook=$jscook.' '.$val['id'];
+					$jscook=trim($jscook);
+
+				//write a little JS to make the cookie with JS and redirect them
+				$scr = '<script type="text/javascript">dropCookie("vgal");setCookie("'.$jscook.'");
+				<!--
+				window.location = "../treasures/pack/"
+				//-->
+				</script>';
+				$this->set('scr',$scr);
+			}
+			//nothing found
+			else
+			{
+				$this->Session->setFlash(__('No matches found.'));
+				return $this->redirect(array('action' => 'load'));
+			}
+		}
+	}
+	
+	public function view($id = null) {
+		$this->set('TWshorturl',substr($this->UrlShortener->get_bitly_short_url('http://collections.centerofthewest.org'.$this->here.'?utm_source=twitterk&utm_campaign=onlinecollections'),0,-1));					
+		$this->loadModel('Treasure');
+		$this->Session->delete('scond');
+		$this->Treasure->recursive = -1;
+		$this->Usergal->recursive = -1;
+		$cquery=array();
+		$limit=100;
+		
+		if (!$this->Usergal->exists($id)) {
+			throw new NotFoundException(__('Invalid usergal'));
+		}
+
+		$options = array('conditions' => array('Usergal.' . $this->Usergal->primaryKey => $id));
+
+		$usergal=$this->Usergal->find('first', $options);
+		$this->set('usergal', $usergal);
+		//api stuff, clean out email and editcode
+		$cln=$usergal;
+		unset($cln['Usergal']['editcode']);
+		unset($cln['Usergal']['email']);
+		//we will serialize further down after merging Treasures
+		//$this->set('usergal_cln', $cln);
+		//$this->set('_serialize',array('usergal_cln'));
+		//make flag if 
+		$edt=$this->Cookie->read('Treasure.edit');
+		//debug($edt);
+		$editcode=substr(strstr($edt,'-'),1);
+		$gid=strstr($edt,'-',true);
+
+		if($gid==$usergal['Usergal']['id']&&$editcode==$usergal['Usergal']['editcode']){
+		$this->set('edit',1);
+		}
+		$this->Session->write('scond',$cquery);
+		
+		$this->loadModel('TreasuresUsergal');
+		//now that there is an order, we need a old-fashioned left JOIN
+		$options['joins'] = array(
+		array('table' => 'treasures',
+        'alias' => 'Treasure2',
+        'type' => 'LEFT',
+        'conditions' => array(
+            'Treasure2.id = TreasuresUsergal.treasure_id',
+			)
+			)
+		);
+		
+		$options['conditions']=array('TreasuresUsergal.usergal_id'=>$id);
+		$options['fields']=array('Treasure2.*','TreasuresUsergal.ord','TreasuresUsergal.comments');
+		$options['order']=array('TreasuresUsergal.ord'=>'asc');
+		$options['limit']=$limit;
+		
+		//this is the other part of the pagination fix that was described more in beforeFilter.
+		if (isset($this->params['named']['p'])) $options['page']=$this->params['named']['p'];
+		
+		$this->Paginator->settings = $options;
+		$treasures=$this->Paginator->paginate('TreasuresUsergal');
+		$this->set('treasures',$treasures);
+		//now take care of the API
+		$apivar['Usergal']=$cln['Usergal'];
+		foreach ($treasures as $key=>$val){
+			$apivar['Treasure'][$key]=$val['Treasure2'];
+		}
+		//debug($apivar);
+		//serialize data for API
+		$this->set('apivar', $apivar);
+		$this->set('_serialize',array('apivar'));
+		
+		//lloyd SEO stuff
+		$this->set('TheTitle',$usergal['Usergal']['name'].'- Buffalo Bill Online Collections Virtual Exhibits');
+		if(!empty($usergal['Usergal']['gloss']))
+			$this->set('TheDescription',$usergal['Usergal']['gloss']);
+		if(!empty($usergal['Usergal']['img']))
+			$this->set('FeaturedImage','http://collections.centerofthewest.org/zoomify/1/'.$usergal['Usergal']['img'].'/TileGroup0/0-0-0.jpg');
+
+	//flag as inappropriate starts
+	if ($this->request->is(array('post', 'put'))) {
+		if($usergal['Usergal']['flagged']!=1){
+			$this->Usergal->id=$usergal['Usergal']['id'];
+			$data = array('flagged'=> 1);
+			if ($this->Usergal->save($data,array('validate'=>false,'callbacks'=>false))) {
+				$Email = new CakeEmail();
+				$Email->from(array('forms@centerofthewest.org' => 'Center of the West'));
+				$Email->to('web@centerofthewest.org');
+				$Email->subject('Virtual gallery has been flagged');
+				$Email->send('This has been flagged inappropriate http://collections.centerofthewest.org/usergals/view/'.
+				$usergal['Usergal']['id']);
+				$this->Session->setFlash(__('Thank you for letting us know, we will review ASAP.'));
+			}
+			else{
+			//debug($this->Usergal->validationErrors);
+			}
+		}
+		else {
+			$this->Session->setFlash(__('This item has already been flagged and is awaiting review. Thank you.'));
+		}
+	}
+	}
+
+}
