@@ -3,8 +3,8 @@ App::uses('AppController', 'Controller');
 
 class MakersController extends AppController {
 	public $components = array('Paginator','Search.Prg','RequestHandler');
-
-		public function index() {
+	
+	public function index() {
 		$this->Prg->commonProcess();
 		$this->Maker->recursive = -1;
 		$aquery=array();
@@ -17,8 +17,8 @@ class MakersController extends AppController {
 					$key == 'slug'
 					)
 				{
-				$aquery['Maker.'.$key.' LIKE '] ='%'.$value . '%';
-				} 
+					$aquery['Maker.'.$key.' LIKE '] ='%'.$value . '%';
+				}
 			}
 			$makers=$this->paginate = array('conditions' => $aquery,'order'=>$sortord,'limit'=>$limit);
 			
@@ -26,21 +26,18 @@ class MakersController extends AppController {
 			//$this->set('_serialize', array('makers'));
 			//$this->set('makers',$makers);
 			return true;
-			}
+		}
 		else {
-		
 			if (isset($this->params['named']['n'])&&$this->params['named']['n']<=100){
 				$limit = $this->params['named']['n'];
-			}	
-		
-		     $this->paginate = array('conditions' => $this->Maker->parseCriteria($this->Prg->parsedParams()),'order'=>$sortord,
-			 'limit'=>$limit);
+			}
+		    $this->paginate = array('conditions' => $this->Maker->parseCriteria($this->Prg->parsedParams()),'order'=>$sortord,'limit'=>$limit);
 			$makers=$this->paginate();		
-		}	
+		}
 		if (!empty($this->params['named']['pXv_9g'])&&$this->params['named']['pXv_9g']<=$this->params['paging']['Maker']['pageCount']) {  
-				$nurl = str_replace("/pXv_9g:","/page:",$this->params['url']);
-				$this->redirect($nurl);
-			}		
+			$nurl = str_replace("/pXv_9g:","/page:",$this->params['url']);
+			$this->redirect($nurl);
+		}		
 		$this->set('makers', $makers);
 		$this->set('limit', $limit);
 		$this->set('_serialize', array('makers'));

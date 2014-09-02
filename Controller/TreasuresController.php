@@ -2,18 +2,17 @@
 App::uses('AppController', 'Controller');
 
 class TreasuresController extends AppController {
-
 	public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Search.Prg'=>array('commonProcess'=>array('keepPassed'=>false)),'RequestHandler','Cookie',
 		'Comments.Comments'=>array(
-		'userModelClass'=>'Users.User'
+			'userModelClass'=>'Users.User'
 			//although the above is not ignored, it seems like other options I pass here are ignored (like viewVariable), so I use beforeFilter)
-	)
+		)
 	);
 	//Regular ol' $this->paginate() ceases to function when this is declared, but you can paginate any Model here (or other ways)
 	public $paginate = array(
 		'Maker' => array (),
 		'Treasure'=>array()
-	   );
+	);
 
 	public function beforeFilter() {
 		parent::beforeFilter();
@@ -27,12 +26,12 @@ class TreasuresController extends AppController {
 		$this->set('isAdmin',$isAdmin);
 		$this->set('TWshorturl',substr($this->UrlShortener->get_bitly_short_url('http://collections.centerofthewest.org'.$this->here.'?utm_source=twitterk&utm_campaign=onlinecollections'),0,-1));					
 	}
-
+	
 	//this is straight from Comments plugin docs, could probably be done other ways - but it works
 	public function callback_commentsInitType() {
 		//Initializes the view type for comments widget
 		return 'tree'; // threaded, tree and flat supported
-		}
+	}
 	
 	public function callback_commentsAdd($modelId, $commentId, $displayType, $data = array()) {
 		if (!empty($this->request->data)) {
@@ -77,29 +76,28 @@ class TreasuresController extends AppController {
 		
 		//the autocomplete uses this!
 		if (isset($this->request->query['q'])){
-			//disable this for testing
+			//disable this for testing, could be AND statement now I suppose
 			if ($this->request->is('ajax')) {
 				$results = $this->Treasure->find('all', array(
-				//include any fields you need in the JSON call
-				'fields' => array('Treasure.slug','Treasure.accnum','Treasure.img'),
-				//remove the leading '%' if you want to restrict the matches more
-				'conditions' => array('Treasure.accnum LIKE ' => '%'.$this->request->query['q'] . '%'),
-				'order' => array('Treasure.accnum'),
-				'limit'=>20
+					//include any fields you need in the JSON call, i.e. the img is for an experiment with select2
+					'fields' => array('Treasure.slug','Treasure.accnum','Treasure.img'),
+					//remove the leading '%' if you want to restrict the matches more
+					'conditions' => array('Treasure.accnum LIKE ' => '%'.$this->request->query['q'] . '%'),
+					'order' => array('Treasure.accnum'),
+					'limit'=>20
 				));
 				$this->set('results', $results);
 				$this->set('_serialize', array('results'));
 				return true;
-		}
-		else
-		{
-			return $this->redirect(array('action' => 'index'));
-		}
+			}
+			else {
+				return $this->redirect(array('action' => 'index'));
+			}
 		}
 		$aquery=array();
 		$locquery=array();
 		//checking queries (i.e.?synopsis=red&creditline=gift) - mostly for API
-		//this entire line of thinking is replaced
+		//this entire line of thinking is replaced, and this should be removed soon
 		foreach ($this->request->query as $tbl => $value){
 			if (
 				$tbl == 'accnum' || 
@@ -121,7 +119,6 @@ class TreasuresController extends AppController {
 
 		//now merge the results of the search with the query terms
 		//then, URLs like this will work index/searchall:beaded?creditline=gift&synopsis=green
-		
 		$mega = array_merge($search,$aquery);
 		
 		//special conditions for querystring limits
@@ -129,36 +126,36 @@ class TreasuresController extends AppController {
 		else $limit=25;
 		$sortord=array('Treasure.homeflag'=>'desc','Treasure.img'=>'desc','Treasure.id'=>'asc');
 		$contain=array('Maker','Location');
+		
+		//this is useful for finding missing images after a new records are added
 		//$sortord=array('Treasure.img'=>'asc');
 			
 		//set the limit
 		if (isset($this->params['named']['n'])&&$this->params['named']['n']<=100){
 			$limit = $this->params['named']['n'];
 		}	
-
 		$this->Paginator->settings = array('conditions' => $mega,'order'=>$sortord,'limit'=>$limit,'contain'=>$contain);
-		//$this->paginate = array('conditions' => array('Maker.name LIKE'=>'%moran%'),'order'=>$sortord,'limit'=>$limit,'contain'=>$contain);
 		$treasures=$this->paginate('Treasure');
-			
+		
 		//now do session variable for the proper neighbor values on the view
 		//don't bother with sort, ir gets ignored by neighbors
 		$this->Session->write('scond',$mega);	
 		
-		//for the page number field on the view. Once 'page:' is passed, Pagination takes care of it
-		//****THIS won't WORK ON NEW VERSION OF CAKE because of named param
+		//for the page number field on the view. Once 'page:' is passed, Pagination takes care of it, 
+		//the random value ensures no one uses it by accident (and is rather pointless)
 		if (!empty($this->params['named']['pXv_9g'])&&$this->params['named']['pXv_9g']<=$this->params['paging']['Treasure']['pageCount']) {
-				$parms=$this->params['named'];
-				unset($parms['url']);
-				$parms['page']=$parms['pXv_9g'];
-				unset($parms['pXv_9g']);
-				$parms['action']='index';
-				$this->redirect($parms);
-			}
+			$parms=$this->params['named'];
+			unset($parms['url']);
+			$parms['page']=$parms['pXv_9g'];
+			unset($parms['pXv_9g']);
+			$parms['action']='index';
+			$this->redirect($parms);
+		}
 		//for the featured galleries	
 		$usergals=$this->Treasure->Usergal->find('all',array('limit'=>25,'conditions'=>array('Usergal.featured'=>true),'contain'=>false));
 		$x=0;
+		//remove personal information from the Usergal data
 		foreach ($usergals as $val=>$key){
-		//debug($val);
 			unset($usergals[$x]['Usergal']['email']);
 			unset($usergals[$x]['Usergal']['editcode']);
 			$x++;
@@ -201,16 +198,14 @@ class TreasuresController extends AppController {
 		//end breadcrumbs
 	}
 	
-
 	public function view($slug = null) {
 		//use sessions vars to give conditions to prev and next buttons, and also Return to Search results
-		
 		$this->set('backto',$this->Session->read('backto'));
-		
 		$mega=$this->Session->read('scond');
+		
 		//this handy line will set a redirect back here if the user logins in (so include this any page someone might login)
 		$this->Session->write('Auth.redirect', $this->here);
-		
+	
 		//items can be viewed by slug or by id or argusid (a) (for mobile web share QR code thing) with a passed query
 		if (is_null($slug)==false || !empty($this->request->query['id']) || !empty($this->request->query['a'])){
 			//check if using id query
@@ -223,14 +218,14 @@ class TreasuresController extends AppController {
 				}
 				else{
 					$treasure = $this->Treasure->findBySlug($slug);
-					}
+				}
 			}
 			$neighbors = $this->Treasure->find('neighbors', array('field'=>'slug','value'=>$slug,'conditions'=>$mega,'recursive'=>0));
 			$this->set('neighbors',$neighbors);
 			if (empty($treasure)){	
 				$cnt=$this->Treasure->find('count',array('conditions'=>array('Treasure.slug LIKE'=>'%'.$slug.'%')));
 				//even though invalid slug, there is only one item like it, so give it to them
-				//might be a faster way to do this...
+				//maybe this is a bad idea for performance - sort of a pointless feature anyway
 				if ($cnt == 1){
 					$treasure=$this->Treasure->find('first',array('conditions'=>array('Treasure.slug LIKE'=>'%'.$slug.'%')));
 					$this->redirect(array('action' => 'view', $treasure['Treasure']['slug']));
@@ -270,6 +265,7 @@ class TreasuresController extends AppController {
 			$this->set('FeaturedImage','http://collections.centerofthewest.org/zoomify/1/'.str_replace(' ','_',$treasure['Treasure']['img']).'/TileGroup0/0-0-0.jpg');
 	}
 	
+	//these functions are for the CFM study gallery kiosks (that get used TONS!!)
 	public function cfmsg() {
 		$this->layout='kiosk';		
 		$this->Prg->commonProcess();
@@ -296,10 +292,8 @@ class TreasuresController extends AppController {
 		//use sessions vars to give conditions to prev and next buttons, and also Return to Search results
 		$this->set('backto',$this->Session->read('backto'));
 		$mega=$this->Session->read('scond');
-		
 		//this handy line will set a redirect back here if the user logins in (so include this any page someone might login)
 		$this->Session->write('Auth.redirect', $this->here);
-		
 		if (is_null($slug)==false){
 			$treasure = $this->Treasure->findBySlug($slug);
 			$neighbors = $this->Treasure->find('neighbors', array('field'=>'slug','value'=>$slug,'conditions'=>$mega,'recursive'=>0));
@@ -346,7 +340,9 @@ class TreasuresController extends AppController {
 			$this->set('TheDescription',substr($treasure['Treasure']['synopsis'],0,118).' - Buffalo Bill Online Collections');
 			
 		$this->set('FeaturedImage','http://collections.centerofthewest.org/zoomify/1/'.str_replace(' ','_',$treasure['Treasure']['img']).'/TileGroup0/0-0-0.jpg');			
-	}	
+	}
+
+	//"My Exhibit" - possibly not the right MVC conventions or proper Controller, but it was made rapidly
 	public function pack() {
 		//if the pack is empty redirect them, this only triggers when
 		$variable=$this->Cookie->read('vgal');
@@ -439,18 +435,18 @@ class TreasuresController extends AppController {
 		
 		//now the post stuff
 		if ($this->request->is('post','put','ajax')) {
-		$jids=explode(" ",$this->Cookie->read('vgal'));
-		$njids=array();
-		foreach ($jids as $k=>$v){
-		$njids[$v]=$v;
-		}
-		$trcook=$njids;
-		
+			$jids=explode(" ",$this->Cookie->read('vgal'));
+			$njids=array();
+			foreach ($jids as $k=>$v){
+			$njids[$v]=$v;
+			}
+			$trcook=$njids;
+			
 			if(!empty($editcook)){
 				$this->Usergal->save($this->request->data);
 				$lastid=$id;
 			}
-			else{
+			else {
 				$this->Usergal->create();
 				$usergal['Usergal']=$this->request->data['Usergal'];
 				if ($this->Usergal->save($usergal)) {
@@ -458,41 +454,38 @@ class TreasuresController extends AppController {
 				}
 				else {
 					$this->Session->setFlash(__('The gallery could not be saved. Please try again.'));
-					}
+				}
 			}
 			$this->TreasuresUsergal->deleteAll(array('usergal_id'=>$lastid), $cascade=false);
 			foreach ($treasures as $key => $value) {
-			//make sure cookie contains the id - otherwise it was removed
+				//make sure cookie contains the id - otherwise it was removed
 				if (array_key_exists($value['Treasure']['id'],$trcook)){
 					$sortord=$this->request->data['Usergal']['sortord'][$value['Treasure']['id']];
 					$comments=$this->request->data['Usergal']['comments'][$value['Treasure']['id']];
-
 					$treasuredata = array(
-					 'TreasuresUsergal' => array(
-					 'usergal_id'=> $lastid,'treasure_id'=>$value['Treasure']['id'],'argusid'=>$value['Treasure']['oldid'],
-					 'comments'=>$comments,'ord'=>$sortord)
-					 );
-					
-					 $this->TreasuresUsergal->create();
-					 $this->TreasuresUsergal->save($treasuredata);
-				 }
+						'TreasuresUsergal' => array(
+						'usergal_id'=> $lastid,'treasure_id'=>$value['Treasure']['id'],'argusid'=>$value['Treasure']['oldid'],
+						'comments'=>$comments,'ord'=>$sortord)
+					);
+					$this->TreasuresUsergal->create();
+					$this->TreasuresUsergal->save($treasuredata);
+				}
 			}	
 			if (!empty($editcook)) $note='updated';
-			else{
-			//write the edit cookie for them
+			else {
+				//write the edit cookie for them
 				$note='created';
 				$this->Usergal->recursive=0;
 				$forcook=$this->Usergal->find('list',array('conditions'=>array('Usergal.id'=>$lastid),'fields'=>array('Usergal.editcode')));
 				$newcook[key($forcook)]=$forcook[key($forcook)];
 				$this->Cookie->write('editflag',$newcook);
-				}
-			$this->Session->setFlash(__('Your Virtual Exhibit has been '.$note));
-			$this->redirect(array('controller'=>'usergals','action' => 'view',$lastid));
+			}
+				$this->Session->setFlash(__('Your Virtual Exhibit has been '.$note));
+				$this->redirect(array('controller'=>'usergals','action' => 'view',$lastid));
 		}
-		
-			else{
+		else {
 			if (!empty($editcook)){
-			//this part fills in fields for edits
+				//this part fills in fields for edits
 				$this->Usergal->recursive=0;
 				$this->TreasuresUsergal->recursive=-1;
 				$ugal=$this->Usergal->findById($id);
@@ -504,31 +497,30 @@ class TreasuresController extends AppController {
 				}
 			}
 		}
-		}
+	}
 	
 	//just deletes now, could be merged with other controller but why bother right now
 	public function dopack() {
 		$this->autoRender=false;
 		$yum=$this->Cookie->read('Treasure');
 		$this->Treasure->recursive = 0;
-		
 		if (!empty($this->params['named']['d'])&&$this->Cookie->read('editflag')){
-				$edit=$this->Cookie->read('editflag');
-				$this->loadModel('Usergal');
-				$id=key($edit);
-				//check the code contents, otherwise anyone can delete anything if they edit their cookie
-				$cond=array('Usergal.id'=>$id,'Usergal.editcode'=>$edit[$id]);
-				$fld=array('Usergal.id','Usergal.editcode');
-				$gotone=$this->Usergal->find('first',array('conditions'=>$cond,'fields'=>$fld,'contain'=>false));
-				$this->loadModel('TreasuresUsergal');
-				$this->TreasuresUsergal->deleteAll(array('usergal_id'=>$id), $cascade=false);
-				$this->Usergal->id=$id;
-				$this->Usergal->delete();
-				$this->Cookie->delete('editflag');
-				$this->Cookie->delete('vgal');
-				$this->Session->setFlash(__('Exhibit deleted', true));
-				//send back from whence they came
-			}
+			$edit=$this->Cookie->read('editflag');
+			$this->loadModel('Usergal');
+			$id=key($edit);
+			//check the code contents, otherwise anyone can delete anything if they edit their cookie
+			$cond=array('Usergal.id'=>$id,'Usergal.editcode'=>$edit[$id]);
+			$fld=array('Usergal.id','Usergal.editcode');
+			$gotone=$this->Usergal->find('first',array('conditions'=>$cond,'fields'=>$fld,'contain'=>false));
+			$this->loadModel('TreasuresUsergal');
+			$this->TreasuresUsergal->deleteAll(array('usergal_id'=>$id), $cascade=false);
+			$this->Usergal->id=$id;
+			$this->Usergal->delete();
+			$this->Cookie->delete('editflag');
+			$this->Cookie->delete('vgal');
+			$this->Session->setFlash(__('Exhibit deleted', true));
+		}
+		//send back from whence they came
 		return $this->redirect($this->referer());
 	}
 }

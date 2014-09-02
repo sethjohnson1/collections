@@ -22,9 +22,6 @@ class AppController extends Controller {
 		//$this->set('shorturl',substr($this->UrlShortener->get_bitly_short_url('http://collections.centerofthewest.org'.$this->here.''),0,-1));	
 		$this->set('FeaturedImage','http://collections.centerofthewest.org/img/featured.jpg');
 
-		
-
-
 		//$this->set('BTshorturl',substr($this->UrlShortener->get_bitly_short_url('http://collections.centerofthewest.org'.$this->here.'?utm_source=bitly&utm_campaign=onlinecollections'),0,-1));							
 		
 		//$this->RememberMe->restoreLoginFromCookie();
