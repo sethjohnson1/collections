@@ -24,6 +24,7 @@ $config = array(
 
 Configure::write('debug', 2);
 Configure::write('Security.salt', 'qwewrtyuiop123');
-Configure::write('Security.cipherSeed', '987654321')
+Configure::write('Security.cipherSeed', '987654321');
+Configure::write('bitlyAPIkey','R_96a646d39d544d10a44ac55801d25c30');
 
 ?>

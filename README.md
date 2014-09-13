@@ -34,6 +34,9 @@ See [CakePHP Advanced Installation](http://book.cakephp.org/2.0/en/installation/
 
 1. Create a file app/Config/private.php based on the private_sample.php file with proper DB settings
 
+1. Add a bit.ly API key if you with to use the shortener. Still working on gracefully degrading if you don't have one... But the social media links are
+all hard-coded anyway.
+
 1. Add your own app/webroot/ayah_config.php file based on the ayah_config_sample.php - you'll need your own API keys (as of this writing was free)
 
 1. Alternatively, just disable the few references to AYAH in the Controller and View. [AYAH](http://areyouahuman.com/) is a gamified captcha alternative.
@@ -46,5 +49,4 @@ HELP US OUT!
 I welcome feedback or contributions of any sort. I am a mediocre programmer at best, and completely new to git and github. If you see any glaring
 mistakes or security issues please let me know.
 
-Copyright (C) 2012--2014 Buffalo Bill Center of the West
-This repository contains some scripts and libraries that we did not write. Please be sure to review their licenses before reusing them in production.
+Copyright (C) 2012--2014 Buffalo Bill Center of the West. This repository contains some scripts and libraries that we did not write. Please be sure to review their licenses before reusing them in production.

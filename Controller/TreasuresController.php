@@ -58,6 +58,7 @@ class TreasuresController extends AppController {
 	}
 
 	public function index() {	
+		//debug(Configure::read('bitlyAPIkey'));
 		$this->Prg->commonProcess();
 		$this->Treasure->recursive = 0;
 		//delete the session variable if it's around
