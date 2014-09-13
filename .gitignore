@@ -1,7 +1,6 @@
 # User specific & automatically generated files #
 #################################################
-/Config/database.php
-/Config/core.php
+/Config/private.php
 /tmp
 /webroot/zoomify
 

@@ -44,21 +44,7 @@ class EmailConfig {
 
 	public $default = array(
 		'transport' => 'Mail',
-		'from' => 'lloydj@bbhc.org',
-		//'charset' => 'utf-8',
-		//'headerCharset' => 'utf-8',
-	);
-
-	public $smtp = array(
-		'transport' => 'Smtp',
-		'from' => array('lloydj@bbhc.org' => 'BBHC'),
-		'host' => 'mail.bbhc.org',
-		'port' => 25,
-		'timeout' => 30,
-		'username' => 'lloydjbbhc@gmail.com',
-		'password' => 'Password123*',
-		'client' => null,
-		'log' => false,
+		'from' => 'forms@centerofthewest.org',
 		//'charset' => 'utf-8',
 		//'headerCharset' => 'utf-8',
 	);

@@ -118,3 +118,19 @@ CakeLog::config('error', array(
 	'types' => array('warning', 'error', 'critical', 'alert', 'emergency'),
 	'file' => 'error',
 ));
+
+/**
+ * Private unified config 
+ */
+
+
+App::uses('PhpReader', 'Configure');
+if (file_exists(ROOT . DS . APP_DIR . DS . 'Config' . DS . 'private.php')) {
+  Configure::config('default', new PhpReader());
+  Configure::load('private');
+}
+else {
+  echo 'ROOT: '.ROOT.'<br>';
+  echo 'APP_DIR: '.APP_DIR.'<br>';
+  throw new CakeException('ROOT/APP_DIR/Config/private.php not found.  You must create this file from the template APP_DIR/Config/private_sample.php');
+}
