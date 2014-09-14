@@ -3,7 +3,9 @@ App::uses('Controller', 'Controller');
 class AppController extends Controller {
 
 	public $components = array('Users.RememberMe','DebugKit.Toolbar','Session','Cookie','UrlShortener','Auth');
-	public $helpers = array('Chosen.Chosen','Js');
+	public $helpers = array(
+	//'Chosen.Chosen',
+	'Js');
 
 	public function beforeFilter() {
 		parent::beforeFilter();

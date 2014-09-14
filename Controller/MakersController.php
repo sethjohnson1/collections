@@ -2,7 +2,13 @@
 App::uses('AppController', 'Controller');
 
 class MakersController extends AppController {
-	public $components = array('Paginator','Search.Prg','RequestHandler');
+	public $components = array('Paginator','RequestHandler',
+		'Search.Prg'=>array(
+				//newer version of search plugin defaults to querystring, we have lots of work to do before we're ready for that...
+				'commonProcess'=>array('keepPassed'=>false,'paramType'=>'named'),
+				'presentForm'=>array('paramType'=>'named')
+			)
+	);
 	
 	public function index() {
 		$this->Prg->commonProcess();

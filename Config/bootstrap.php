@@ -74,7 +74,7 @@ Cache::config('default', array('engine' => 'File'));
  
  CakePlugin::load(array(
  'DebugKit',
- 'Chosen',
+ //'Chosen',
  'Search',
  'Utils',
  'Users',

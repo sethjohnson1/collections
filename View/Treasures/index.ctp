@@ -76,8 +76,11 @@ echo $this->Html->link('Advanced Search',$adv).'<br />';
 	<?php
 
 		echo $this->Form->create('Treasure');
-		echo '<div id="oid-search">'.$this->Chosen->select('Treasure.o',array(),array('data-placeholder' => 'Search by Object ID','onchange'=>'this.form.submit()')).'</div>';
-
+		//echo '<div id="oid-search">'.$this->Chosen->select('Treasure.o',array(),array('data-placeholder' => 'Search by Object ID','onchange'=>'this.form.submit()')).'</div>';
+		echo '<div id="oid-search">';
+		echo $this->Form->input('Treasure.o',array('type'=>'hidden','onchange'=>'this.form.submit()'));
+		echo '</div>';
+		
 
 	    echo $this->Form->input('searchall', array('div' => FALSE,'empty'=>true,'label'=>'','placeholder'=>'Search all Fields'));	 		
 	    echo $this->Form->submit('/img/glass.png', array('div' => true));	

@@ -69,6 +69,11 @@ echo '<div style="clear:both;margin:10 10px;"><br></div>';
 ?>		<div class="clear"></div>		<?
 		echo '<div class="left">';
 		//echo $this->Chosen->select('Usergal.img',$opts,	array('data-placeholder' => 'Pick featured object'));
+		echo '<style media="screen" type="text/css">';
+		echo '.select2-results {
+					max-height: 350px;
+				}';
+		echo '</style>';
 		echo $this->Form->input('Usergal.img',array('options'=>$opts,'label'=>'Pick a featured object'));
 		echo '</div>';
 		echo '<div class="right">';
