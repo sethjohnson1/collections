@@ -23,11 +23,12 @@ $(function() {
 echo $this->Form->create('Treasure',array('div'=>true));
 //add 'default'=>false for AJAX submit
 
-//next two lines add AYAH and make it work with SecutiyComponent
+//add AYAH and make it work with SecutiyComponent, comment out to disable
 
 if(!$this->Session->read('Auth.User')){
 	if(!isset($edit)){
-		echo $ayah;
+		//AYAH is disabled because it stopped working for some reason. Furthermore, I'd like to move to a simple MathCaptcha
+		//echo $ayah;
 	}
 }
 $this->Form->unlockField('session_secret');
@@ -67,7 +68,8 @@ echo '<div style="clear:both;margin:10 10px;"><br></div>';
 		echo $this->Form->input('Usergal.listed',array('type'=>'hidden','value'=>1));
 ?>		<div class="clear"></div>		<?
 		echo '<div class="left">';
-		echo $this->Chosen->select('Usergal.img',$opts,	array('data-placeholder' => 'Pick featured object'));
+		//echo $this->Chosen->select('Usergal.img',$opts,	array('data-placeholder' => 'Pick featured object'));
+		echo $this->Form->input('Usergal.img',array('options'=>$opts,'label'=>'Pick a featured object'));
 		echo '</div>';
 		echo '<div class="right">';
 		$tosLink = $this->Html->link('Terms of Service', array('controller' => 'pages', 'action' => 'tos'));
@@ -89,10 +91,10 @@ echo $this->Html->link('Start Over', array('controller'=>'treasures','action' =>
 echo '<div class="right">'.$this->Html->link('Add More Objects', array('controller'=>'treasures','action' => 'index')).'</div>';?>
 </div>
 <div>
-
 </div>
 
 <div class="search-results" style="clear:both">
+<p>Drag and drop items to sort</p>
 	<?php 
 	   //  pr($treasures);
 

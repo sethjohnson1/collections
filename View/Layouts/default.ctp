@@ -34,6 +34,10 @@
     echo $this->Html->script('jquery.autocomplete.min');
     echo $this->Html->script('jquery.uix.multiselect.min');
 	echo $this->Html->css('jquery.autocomplete');
+	
+	echo $this->Html->css('http://cdn.jsdelivr.net/select2/3.4.8/select2.css');
+	echo $this->Html->script('http://cdn.jsdelivr.net/select2/3.4.8/select2.min.js');
+	echo $this->Html->script('select2_fields');
 
 
 
