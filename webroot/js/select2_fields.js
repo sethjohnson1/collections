@@ -4,7 +4,7 @@
  //
  function formatVgal(img){
 	//return "<b>"+img.id+"</b>";
-	return '<img height="75px" src="http://collections.centerofthewest.org/zoomify/1/' + img.id + '/TileGroup0/0-0-0.jpg">';
+	return '<img width="100px" src="http://collections.centerofthewest.org/zoomify/1/' + img.id + '/TileGroup0/0-0-0.jpg">';
  }
  
  $("#UsergalImg").select2({
