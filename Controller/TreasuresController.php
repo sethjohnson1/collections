@@ -2,7 +2,12 @@
 App::uses('AppController', 'Controller');
 
 class TreasuresController extends AppController {
-	public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Search.Prg'=>array('commonProcess'=>array('keepPassed'=>false)),'RequestHandler','Cookie',
+	public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Search.Prg'=>array(
+			//newer version of search plugin defaults to querystring, we have lots of work to do before we're ready for that...
+			'commonProcess'=>array('keepPassed'=>false,'paramType'=>'named'),
+			'presentForm'=>array('paramType'=>'named')
+		),
+		'RequestHandler','Cookie',
 		'Comments.Comments'=>array(
 			'userModelClass'=>'Users.User'
 			//although the above is not ignored, it seems like other options I pass here are ignored (like viewVariable), so I use beforeFilter)
@@ -67,6 +72,17 @@ class TreasuresController extends AppController {
 		$var=$this->params['named'];
 		$var['action']='index';
 		$this->Session->write('backto',$var);	
+		
+		//first see if we need to redirect to another page. This was being done after the find before, which was causing two finds per page change
+		//the tradeoff is that we cannot count the page and therefore they can go to a page that doesn't exist. Perhaps HTML5 validation can fix this?
+		if (!empty($this->params['named']['pXv_9g'])) {
+			$parms=$this->params['named'];
+			unset($parms['url']);
+			$parms['page']=$parms['pXv_9g'];
+			unset($parms['pXv_9g']);
+			$parms['action']='index';
+			$this->redirect($parms);
+		}
 		
 		//for "Find by Accnum" - could be done other ways but this works
 		if (!empty($this->params['named']['o'])) {  
@@ -141,17 +157,6 @@ class TreasuresController extends AppController {
 		//now do session variable for the proper neighbor values on the view
 		//don't bother with sort, ir gets ignored by neighbors
 		$this->Session->write('scond',$mega);	
-		
-		//for the page number field on the view. Once 'page:' is passed, Pagination takes care of it, 
-		//the random value ensures no one uses it by accident (and is rather pointless)
-		if (!empty($this->params['named']['pXv_9g'])&&$this->params['named']['pXv_9g']<=$this->params['paging']['Treasure']['pageCount']) {
-			$parms=$this->params['named'];
-			unset($parms['url']);
-			$parms['page']=$parms['pXv_9g'];
-			unset($parms['pXv_9g']);
-			$parms['action']='index';
-			$this->redirect($parms);
-		}
 		//for the featured galleries	
 		$usergals=$this->Treasure->Usergal->find('all',array('limit'=>25,'conditions'=>array('Usergal.featured'=>true),'contain'=>false));
 		$x=0;

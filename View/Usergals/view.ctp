@@ -30,9 +30,7 @@
 </div>
 <div class="pagging">	
 <?php 
-
-		echo 'Page navigation: '.$this->Paginator->numbers(array('modulus'=>15));
-		echo '<br />';
+		if (count($treasures)>99) echo 'Page navigation: '.$this->Paginator->numbers(array('modulus'=>15)).'<br />';
 		echo $this->Paginator->counter(array('format' => __('{:count} treasures total')));
 
 ?>	

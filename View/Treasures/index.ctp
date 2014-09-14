@@ -126,7 +126,7 @@ echo $this->Html->link('Advanced Search',$adv).'<br />';
 </div>
 
 <div>
-<?php echo $this->Paginator->counter(array('format' => __('Showing {:current} records out of {:count}')));?>	
+<?php echo $this->Paginator->counter(array('format' => __('Showing objects {:start} to {:end} out of {:count}')));?>	
 </div>
 <div class="share-links-index">
     <div id="fb-root"></div>
