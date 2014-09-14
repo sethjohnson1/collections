@@ -4,7 +4,9 @@
  //
  function formatVgal(img){
 	//return "<b>"+img.id+"</b>";
-	return '<img width="100px" src="http://collections.centerofthewest.org/zoomify/1/' + img.id + '/TileGroup0/0-0-0.jpg">';
+	return '<img width="60%" height="60%" src="http://collections.centerofthewest.org/zoomify/1/' + img.id + '/TileGroup0/0-0-0.jpg">'
+	+"<br />"+img.text
+	;
  }
  
  $("#UsergalImg").select2({
@@ -20,7 +22,7 @@ $("#TreasureO").select2({
         minimumInputLength: 3,
 		width: "500px",
         ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
-            url: "http://ngin/collections/treasures/index.json",
+            url: "http://collections.centerofthewest.org/treasures/index.json",
            // dataType: 'jsonp',
             data: function (term) {
                 return {
