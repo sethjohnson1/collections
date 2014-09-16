@@ -142,6 +142,7 @@ public function callback_commentsAdd($modelId, $commentId, $displayType, $data =
 		
 		$this->Paginator->settings['conditions'] = $pwr;
 		$this->Paginator->settings['order'] = array('Usergal.created'=>'desc');
+		$this->Paginator->settings['limit'] = 50;
 		$this->set('usergals', $this->Paginator->paginate());	
 
 		/* 
