@@ -394,7 +394,7 @@ class TreasuresController extends AppController {
 		}
 		//find the treasures in the cookie but not already saved so we can add to bottom
 		$this->Treasure->recursive = 0;
-		$limit = 25;
+		$limit = 100;
 		$sortord=array('Treasure.slug'=>'asc');
 		if (isset($this->params['named']['n'])&&$this->params['named']['n']<=100) $limit = $this->params['named']['n'];
 		//begin the cquery
