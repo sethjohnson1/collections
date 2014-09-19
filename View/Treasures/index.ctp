@@ -139,7 +139,11 @@ echo $this->Html->link('Advanced Search',$adv).'<br />';
 
     <div class="g-plusone" data-href="<? echo 'http://collections.centerofthewest.org'.$this->here.'?utm_source=googleplus&utm_campaign=onlinecollections'?>"></div>
 
-    <div style="display: inline-block;"><a href="https://twitter.com/share" class="twitter-share-button" data-via="centerofthewest" data-hashtags="OnlineCollections" data-url="<? echo $TWshorturl;?>">Tweet</a></div>
+    <div style="display: inline-block;">
+	<a href="https://twitter.com/share" class="twitter-share-button" data-via="centerofthewest" data-hashtags="OnlineCollections" data-url="<? echo $TWshorturl;?>">Tweet</a>
+	<script type="text/javascript" src="//www.reddit.com/static/button/button1.js"></script>
+	</div>
+	
 
 	</div><?
 

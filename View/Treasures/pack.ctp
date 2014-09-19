@@ -60,15 +60,12 @@ echo '<div style="clear:both;margin:10 10px;"><br></div>';
 		echo'</div>';
 
 		echo '<div class="right">';
-		echo $this->Form->input('Usergal.gloss',array('placeholder'=>'Exhibit Label (Gloss)','label'=>''));
-		echo '</div>';		
-		//no, don't enable this or updates never seem to work
+		echo $this->Form->input('Usergal.gloss',array('placeholder'=>'Describe your Virtual Exhibit (Gloss)','label'=>'','type'=>'textarea'));
+		echo '</div>';
 		echo $this->Form->input('Usergal.id');
 		echo $this->Form->input('Usergal.editcode',array('type'=>'hidden'));
-		echo $this->Form->input('Usergal.listed',array('type'=>'hidden','value'=>1));
 ?>		<div class="clear"></div>		<?
 		echo '<div class="left">';
-		//echo $this->Chosen->select('Usergal.img',$opts,	array('data-placeholder' => 'Pick featured object'));
 		echo '<style media="screen" type="text/css">';
 		echo '.select2-results {
 					max-height: 350px;
@@ -78,10 +75,17 @@ echo '<div style="clear:both;margin:10 10px;"><br></div>';
 		echo '</div>';
 		echo '<div class="right">';
 		$tosLink = $this->Html->link('Terms of Service', array('controller' => 'pages', 'action' => 'tos'));
-		echo $this->Form->input(' ',array('label'=>'I agree to ' .$tosLink.'<br>','type'=>'checkbox','required'=>true));
-		if(isset($edit))echo $this->Form->submit(__('Submit Changes'), array('div' => false,'class'=>'ignore'));			
-		else echo $this->Form->submit('Submit', array('div' => false,'class'=>'mag','class'=>'ignore'));	
-
+		if(isset($edit)) {
+			//they already agreed so check the box for them
+			echo $this->Form->input(' ',array('label'=>'I agree to ' .$tosLink.'<br>','type'=>'checkbox','required'=>true,'checked'=>'checked'));
+			echo $this->Form->submit(__('Submit Changes'), array('div' => false,'class'=>'ignore'));
+		}
+		else {
+			//benefit of the doubt on new exhibits, if it becomes a problem we'll have to make this zero (or do something on the Model)
+			echo $this->Form->input('Usergal.listed',array('type'=>'hidden','value'=>1));
+			echo $this->Form->input(' ',array('label'=>'I agree to ' .$tosLink.'<br>','type'=>'checkbox','required'=>true));
+			echo $this->Form->submit('Submit', array('div' => false,'class'=>'mag','class'=>'ignore'));	
+		}
 		echo'</div>';		
 		$this->Js->get('.search-results');
 		$this->Js->sortable(array('placeholder'=>'ui-state-highlight','cursor'=>'move','tolerance'=>'pointer','update'=>'$("input.currentposition").each(function(idx){$(this).val(idx);});'));?>

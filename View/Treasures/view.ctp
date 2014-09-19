@@ -96,7 +96,7 @@ if(!empty($treasure['Treasure']['opencartid']))
 
     <div class="g-plusone" data-href="<? echo $GPshorturl;?>"></div>
     <div style="display: inline-block;"><a href="https://twitter.com/share" class="twitter-share-button" data-via="centerofthewest" data-hashtags="OnlineCollections" data-url="<? echo $TWshorturl;?>">Tweet</a></div>
-    
+    <script type="text/javascript" src="//www.reddit.com/static/button/button1.js"></script>
 </div>
 <div class="clear"></div>
 <div class="data">
@@ -247,16 +247,28 @@ echo '<p><span class="field-name">Visitor Comments: </span><br>';
 	echo '</p>';
 }
 
-//pr($treasure['Usergal']);
+//this was for the beginning of an AJAX login. It worked sort of but kept redirecting so I commented out
+//echo ' <button id="login-button">Login</button>';
  ?>
+
+
 <div id="post-comments">
     <?php $this->CommentWidget->options(array('allowAnonymousComment' => false));?>
     <?php echo $this->CommentWidget->display();?>
 </div>
 </div>
+<?    $this->Js->get('#login-button')->event(
+            'click', $this->Js->request(
+                    array('plugin'=>'users','controller' => 'users', 'action' => 'login'), array(
+                'update' => '#post-comments',
+                'async' => true,
+                    )
+            )
+    );
+    
+	echo $this->Js->writeBuffer();
 
-
-
+?>
 
 
 <?php 

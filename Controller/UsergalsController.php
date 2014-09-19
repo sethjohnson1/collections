@@ -15,33 +15,33 @@ public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Searc
     );
 	
 	public function beforeFilter() {
-    parent::beforeFilter();
-	//five years of pure awesome
-	//$this->Cookie->time = 157680000000;
-	$this->Auth->allow();
-	$this->Auth->deny('mine');
-	//this needs to be a single item with ID (I think)
-	//by default it will use the model name (i.e. kid, treasure, artwork)
-	$this->Comments->viewVariable='usergal';
-	//if you look at manual, you will see there are several useful component settings		
-	
-	//isAdmin isn't always set in CommentsPlugin when it should be, this has fixed it so far
-	$isAdmin = (bool)$this->Auth->user('is_admin');
-	$this->set('isAdmin',$isAdmin);
-	
-	/* deal with the strange pagination glitch, without this a Not Found exception this thrown
-	there is little documentation on this, but the basic consensus is the manual JOINS with Pagination
-	invoke demons. For the rest of the code, see the $options set in the view function.
-	*/
-	if (isset($this->params['named']['page'])){
-		$newurl=$this->params['named'];
-		$pg=$newurl['page'];
-		unset($newurl['page']);
-		$newurl['p']=$pg;
-		$this->redirect(array('action' => 'view/'.$this->params['pass'][0])+$newurl);
+		parent::beforeFilter();
+		//five years of pure awesome
+		//$this->Cookie->time = 157680000000;
+		$this->Auth->allow();
+		$this->Auth->deny('mine');
+		//this needs to be a single item with ID (I think)
+		//by default it will use the model name (i.e. kid, treasure, artwork)
+		$this->Comments->viewVariable='usergal';
+		//if you look at manual, you will see there are several useful component settings		
+		
+		//isAdmin isn't always set in CommentsPlugin when it should be, this has fixed it so far
+		$isAdmin = (bool)$this->Auth->user('is_admin');
+		$this->set('isAdmin',$isAdmin);
+		
+		/* deal with the strange pagination glitch, without this a Not Found exception this thrown
+		there is little documentation on this, but the basic consensus is the manual JOINS with Pagination
+		invoke demons. For the rest of the code, see the $options set in the view function.
+		*/
+		if (isset($this->params['named']['page'])){
+			$newurl=$this->params['named'];
+			$pg=$newurl['page'];
+			unset($newurl['page']);
+			$newurl['p']=$pg;
+			$this->redirect(array('action' => 'view/'.$this->params['pass'][0])+$newurl);
+		}
+		
 	}
-	
-}
 
 //this is straight from Comments plugin docs, could probably be done other ways - but it works
 public function callback_commentsInitType() {
@@ -195,8 +195,9 @@ public function callback_commentsAdd($modelId, $commentId, $displayType, $data =
 					$Email->to($this->data['Load']['email']);
 					$Email->subject('Here are your Edit Codes');
 					$Email->send('We found the following Virtual Exhibits associated with this e-mail:'."\n\n\n".$txt."\n\n\n".
-					'You can edit your Virtual Exhibits at http://collections.centerofthewest.org/usergals/view/'
-					);
+						 'You can edit your Virtual Exhibits at http://collections.centerofthewest.org/usergals/load'."\n".
+						 'or create an account to easily access all your Virtual Galleries and comments. Registration is fast and free.'
+						);
 					$this->Session->setFlash(__('Your edit codes have been e-mailed.'));
 					return $this->redirect(array('action' => 'load'));
 				}

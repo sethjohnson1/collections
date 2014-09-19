@@ -440,7 +440,8 @@ class UsersController extends UsersAppController {
 			return;
 		}
 
-		if ($this->request->is('post')) {
+		if ($this->request->is('post') || $this->request->is('put')) {
+			//$this->autoRender = false;
 			if ($this->Auth->login()) {
 				$Event = new CakeEvent(
 					'Users.Controller.Users.afterLogin',
@@ -490,6 +491,10 @@ class UsersController extends UsersAppController {
 		}
 		$allowRegistration = Configure::read('Users.allowRegistration');
 		$this->set('allowRegistration', (is_null($allowRegistration) ? true : $allowRegistration));
+		//sj added to test, which works, but I could not get the form NOT to redirect
+		if ($this->request->is('ajax')) {
+			$this->layout = false;
+		}
 	}
 
 /**

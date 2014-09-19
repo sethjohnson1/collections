@@ -18,7 +18,12 @@
 		<?php
 			echo $this->Form->create($model, array(
 				'action' => 'login',
-				'id' => 'LoginForm'));
+				'id' => 'LoginForm',
+				//sj added next two lines, eventually this needs to have an IF statement to only do this when AJAX rendered
+				//but it didn't work still so I commented out
+				//'ajax'=>true,
+				//'_redirect'=>false
+				));
 			echo $this->Form->input('email', array(
 				'label' => __d('users', 'Email')));
 			echo $this->Form->input('password',  array(

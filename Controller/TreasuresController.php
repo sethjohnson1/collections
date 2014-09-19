@@ -350,6 +350,7 @@ class TreasuresController extends AppController {
 
 	//"My Exhibit" - possibly not the right MVC conventions or proper Controller, but it was made rapidly
 	public function pack() {
+		$this->Components->load('Security');
 		//if the pack is empty redirect them, this only triggers when
 		$variable=$this->Cookie->read('vgal');
 		if (empty($variable)){
