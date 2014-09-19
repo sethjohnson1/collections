@@ -240,7 +240,7 @@ public function callback_commentsAdd($modelId, $commentId, $displayType, $data =
 		$this->set('TWshorturl',substr($this->UrlShortener->get_bitly_short_url('http://collections.centerofthewest.org'.$this->here.'?utm_source=twitterk&utm_campaign=onlinecollections'),0,-1));					
 		$this->loadModel('Treasure');
 		$this->Session->delete('scond');
-		$this->Treasure->recursive = -1;
+		$this->Treasure->recursive = 2;
 		$this->Usergal->recursive = -1;
 		$cquery=array();
 		$limit=100;
@@ -248,18 +248,9 @@ public function callback_commentsAdd($modelId, $commentId, $displayType, $data =
 		if (!$this->Usergal->exists($id)) {
 			throw new NotFoundException(__('Invalid usergal'));
 		}
-
+		
 		$options = array('conditions' => array('Usergal.' . $this->Usergal->primaryKey => $id));
-
 		$usergal=$this->Usergal->find('first', $options);
-		$this->set('usergal', $usergal);
-		//api stuff, clean out email and editcode
-		$cln=$usergal;
-		unset($cln['Usergal']['editcode']);
-		unset($cln['Usergal']['email']);
-		//we will serialize further down after merging Treasures
-		//$this->set('usergal_cln', $cln);
-		//$this->set('_serialize',array('usergal_cln'));
 		//make flag if 
 		$edt=$this->Cookie->read('Treasure.edit');
 		//debug($edt);
@@ -270,38 +261,42 @@ public function callback_commentsAdd($modelId, $commentId, $displayType, $data =
 		$this->set('edit',1);
 		}
 		$this->Session->write('scond',$cquery);
+		//this causes problems, gateway timeout!
 		
 		$this->loadModel('TreasuresUsergal');
-		//now that there is an order, we need a old-fashioned left JOIN
-		$options['joins'] = array(
+		$this->TreasuresUsergal->recursive = 1;
+		//disabled, this can be accomplished with contain and recursion
+		/*$options['joins'] = array(
 		array('table' => 'treasures',
         'alias' => 'Treasure2',
         'type' => 'LEFT',
         'conditions' => array(
-            'Treasure2.id = TreasuresUsergal.treasure_id',
-			)
+				'Treasure2.id = TreasuresUsergal.treasure_id',
+				)
 			)
 		);
+		*/
 		
 		$options['conditions']=array('TreasuresUsergal.usergal_id'=>$id);
-		$options['fields']=array('Treasure2.*','TreasuresUsergal.ord','TreasuresUsergal.comments');
+		//$options['fields']=array('Treasure.*','TreasuresUsergal.ord','TreasuresUsergal.comments');
+		$options['contain']=array('Treasure');
 		$options['order']=array('TreasuresUsergal.ord'=>'asc');
 		$options['limit']=$limit;
 		
 		//this is the other part of the pagination fix that was described more in beforeFilter.
 		if (isset($this->params['named']['p'])) $options['page']=$this->params['named']['p'];
-		
 		$this->Paginator->settings = $options;
 		$treasures=$this->Paginator->paginate('TreasuresUsergal');
 		$this->set('treasures',$treasures);
-		//now take care of the API
-		$apivar['Usergal']=$cln['Usergal'];
-		foreach ($treasures as $key=>$val){
-			$apivar['Treasure'][$key]=$val['Treasure2'];
-		}
-		//debug($apivar);
-		//serialize data for API
-		$this->set('apivar', $apivar);
+		
+		//now make API variable without sensitive info
+		unset($usergal['Usergal']['editcode']);
+		unset($usergal['Usergal']['email']);
+		unset($usergal['Usergal']['ip']);
+		$this->set('usergal', $usergal);
+		$apivar['Usergal']=$usergal;
+		$apivar['Items']=$treasures;
+		$this->set('apivar',$apivar);
 		$this->set('_serialize',array('apivar'));
 		
 		//lloyd SEO stuff

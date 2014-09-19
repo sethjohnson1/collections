@@ -38,7 +38,8 @@ class Comment extends CommentsAppModel {
 		//this could also be done with a hidden field, but this method is more difficult to tamper with
 	//	debug($this->here);
 	//need to add IF condition and only do this for Treasure, not Usergal
-	
+	//and all of this is no longer necessary, but left for reference
+	/*
 	$where=explode('/',$_SERVER['REQUEST_URI']);
 	if ($where[1]=='treasures'){
 		$this->bindModel(
@@ -47,6 +48,7 @@ class Comment extends CommentsAppModel {
 		$oldid=$this->Treasure->find('first',array('conditions'=>$cond,'fields'=>'Treasure.oldid','contain'=>false));	
 		$this->data['Comment']['argusid'] = $oldid['Treasure']['oldid'];
 		}
+		*/
 		
 		$this->data['Comment']['ip'] = $_SERVER["REMOTE_ADDR"]; 
 		

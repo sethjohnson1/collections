@@ -39,41 +39,39 @@
 </div>
 
 
-
-
 <div class="search-results" style="clear:both">
 
 <?php foreach ($treasures as $treasure): ?>
 <div class="the-objects">
 	<?php				
-if(!empty($treasure['Treasure2']['img']))
-	echo'<div class="img-block" style="background-image: url(\'//collections.centerofthewest.org/zoomify/1/'.str_replace(' ','_',$treasure['Treasure2']['img']).'/TileGroup0/0-0-0.jpg\');">';
+if(!empty($treasure['Treasure']['img']))
+	echo'<div class="img-block" style="background-image: url(\'//collections.centerofthewest.org/zoomify/1/'.str_replace(' ','_',$treasure['Treasure']['img']).'/TileGroup0/0-0-0.jpg\');">';
 else
 	echo '<div class="img-block" style="background-image: url(\'//collections.centerofthewest.org/img/non.jpg\');">';
 			echo '<div class="link">';			
-				echo $this->Html->image('transparent.png',array('url'=>array('controller'=>'treasures','action' =>'view', $treasure['Treasure2']['slug'])));
+				echo $this->Html->image('transparent.png',array('url'=>array('controller'=>'treasures','action' =>'view', $treasure['Treasure']['slug'])));
 			echo'</div>';
 			
 			echo '<div class="caption">';
 				echo '<div class="txt">';
-				if(!empty($treasure['Treasure2']['objtitle']))echo $this->Html->link(substr($treasure['Treasure2']['objtitle'],0,20).'...', array('controller'=>'treasures','action' => 'view', $treasure['Treasure2']['slug']));
-				else echo $this->Html->link($treasure['Treasure2']['accnum'], array('controller'=>'treasures','action' => 'view', $treasure['Treasure2']['slug']));
+				if(!empty($treasure['Treasure']['objtitle']))echo $this->Html->link(substr($treasure['Treasure']['objtitle'],0,20).'...', array('controller'=>'treasures','action' => 'view', $treasure['Treasure']['slug']));
+				else echo $this->Html->link($treasure['Treasure']['accnum'], array('controller'=>'treasures','action' => 'view', $treasure['Treasure']['slug']));
 				
 				echo'</div>';
 				echo '<div class="gal">';				
-						if(in_array($treasure['Treasure2']['id'],$Vgals))
+						if(in_array($treasure['Treasure']['id'],$Vgals))
 						{
 							
 								//already in pack
-								echo '<a id="add" class="invisible" onclick="setCookie(\''.$treasure['Treasure2']['id'].'\');">'.$this->Html->image('add.png',array('id'=>'add')).'</a>';
-								echo '<a class="xs" id="remove" onclick="deleteCookie(\''.$treasure['Treasure2']['id'].'\');">'.$this->Html->image('remove.png',array('id'=>'remove')).'</a>';
+								echo '<a id="add" class="invisible" onclick="setCookie(\''.$treasure['Treasure']['id'].'\');">'.$this->Html->image('add.png',array('id'=>'add')).'</a>';
+								echo '<a class="xs" id="remove" onclick="deleteCookie(\''.$treasure['Treasure']['id'].'\');">'.$this->Html->image('remove.png',array('id'=>'remove')).'</a>';
 
 						}
 						else
 						{
 							//not in pack yet
-							echo '<a id="add" class="xs" onclick="setCookie(\''.$treasure['Treasure2']['id'].'\');">'.$this->Html->image('add.png',array('id'=>'add')).'</a>';
-							echo '<a class="invisible" id="remove" onclick="deleteCookie(\''.$treasure['Treasure2']['id'].'\');">'.$this->Html->image('remove.png',array('id'=>'remove')).'</a>';				
+							echo '<a id="add" class="xs" onclick="setCookie(\''.$treasure['Treasure']['id'].'\');">'.$this->Html->image('add.png',array('id'=>'add')).'</a>';
+							echo '<a class="invisible" id="remove" onclick="deleteCookie(\''.$treasure['Treasure']['id'].'\');">'.$this->Html->image('remove.png',array('id'=>'remove')).'</a>';				
 						}
 				echo '</div>';				
 			echo '</div>';

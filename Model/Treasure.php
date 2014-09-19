@@ -122,7 +122,9 @@ public $filterArgs = array(
 	'dmnh'=>array('type'=>'query','method'=>'fDMNH'),
 	'pim'=>array('type'=>'query','method'=>'fPIM'),
 	'wg'=>array('type'=>'query','method'=>'fWG'),
-	'loc'=>array('type'=>'query','method'=>'fLocation'),
+	//Location no longer has its own table, so LIKE is fine
+	//'loc'=>array('type'=>'query','method'=>'fLocation'),
+	'loc'=>array('type'=>'like','field'=>'Treasure.location'),
 	'd'=>array('type'=>'query','method'=>'fDisplay'),
   );
 
@@ -171,16 +173,17 @@ public function fGenus($data = array()){
 	return $this->sjPrepare($data['genus'],'Treasure.genus');
 }
 
-  
+/*  
 public function fLocation($data = array()){
 	$cond = array('AND' => array('AND'=>( array("Location.name LIKE '".$data['loc']."%'"))));
 	return $cond;
 }
+*/
 
 
 public function fDisplay($data = array()){
 	if ($data['d'] == 1){
-		$cond = array('AND' => array('AND'=>( array("Location.name is not null"))));
+		$cond = array('AND' => array('AND'=>( array("Treasure.location is not null"))));
     return $cond;
 	}
 }
@@ -227,7 +230,7 @@ public function findByMaker($data = array()) {
         $query = $this->MakersTreasure->getQuery('all', array(
 			//there are bads special characters, so do not use name (not to mention this specific purpose is not a real Search, but locator)
 		    //'conditions' => array("Maker.name LIKE '%" . $data['makers'] ."%'"),
-            'conditions' => array('Maker.id'=> $data['makers']),
+            'conditions' => array('Maker.slug'=> $data['makers']),
             'fields' => array('treasure_id'),
             'contain' => array('Maker'),
         ));
@@ -239,7 +242,7 @@ public function findByMaker($data = array()) {
     $this->TreasuresMedvalue->Behaviors->attach('Search.Searchable');
         $query = $this->TreasuresMedvalue->getQuery('all', array(
             //'conditions' => array("Medvalue.name LIKE '%" . $data['medvalues'] ."%'"),
-            'conditions' => array('Medvalue.id'=>$data['medvalues']),
+            'conditions' => array('Medvalue.slug'=>$data['medvalues']),
             'fields' => array('treasure_id'),
             'contain' => array('Medvalue'),
         ));
@@ -291,16 +294,16 @@ public $filterArgs = array(
 */
 
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
-
+/* both Collection and Location moved to Treasures table. Not worth the overhead
 	public $belongsTo = array(
-		/*'Collection' => array(
+		'Collection' => array(
 			'className' => 'Collection',
 			'foreignKey' => 'collection_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
 		),
-		*/
+		
 		'Location' => array(
 			'className' => 'Location',
 			'foreignKey' => 'location_id',
@@ -309,6 +312,7 @@ public $filterArgs = array(
 			'order' => ''
 		)
 	);
+	*/
 
 /**
  * hasMany associations

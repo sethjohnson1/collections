@@ -492,7 +492,7 @@ class CommentsComponent extends Component {
  * @param string  $displayType
  * @param array   $data
  */
- //sj - you need to add the argusid in here for DB updates!!
+
 	public function callback_add($modelId, $commentId, $displayType, $data = array()) {
 		if (!empty($this->Controller->data)) {
 			if (!empty($this->Controller->data['Comment']['title'])) {

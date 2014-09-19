@@ -112,7 +112,7 @@ if (!empty($treasure['Maker']))
 	foreach ($treasure['Maker'] as $artist) 
 	{
 
-		echo $this->Html->link($artist['name'], array('controller' => 'treasures', 'action' => 'index', 'makers'=>$artist['id']));
+		echo $this->Html->link($artist['name'], array('controller' => 'treasures', 'action' => 'index', 'makers'=>$artist['slug']));
 		if(++$i != $numItems)
 			echo ' | ';
 	}
@@ -127,7 +127,7 @@ if (!empty($treasure['Medvalue']))
 
 	foreach ($treasure['Medvalue'] as $tag)
 	{
-		echo $this->Html->link($tag['name'], array('controller' => 'treasures', 'action' => 'index', 'medvalues'=>$tag['id'])); 
+		echo $this->Html->link($tag['name'], array('controller' => 'treasures', 'action' => 'index', 'medvalues'=>$tag['slug'])); 
 		if(++$i != $numItems)
 			echo' | ';
 	}
@@ -170,9 +170,9 @@ if(!empty($treasure['Treasure']['collection']))
 		echo $this->Html->link('Draper Natural History Museum', array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:0/dmnh:1/')).'</p>'; 								
 }
 
-if(!empty($treasure['Location']['name']))
+if(!empty($treasure['Treasure']['location']))
 {
-	$arr = explode(".", $treasure['Location']['name'], 2);
+	$arr = explode(".", $treasure['Treasure']['location'], 2);
 	if($arr[0]=='PIM')
 		echo '<p><span class="field-name">Location: </span>'.$this->Html->link('Plains Indian Museum', array('action' => 'index', 'loc:'.$arr[0])).'</p>';
 	if($arr[0]=='DMNH')

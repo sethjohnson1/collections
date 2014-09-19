@@ -34,7 +34,7 @@ echo'<div class="img-block" style="background-image: url(\'http://collections.ce
 //have to use a cookie for maker name, better for performance anyway
 $mk = preg_replace("/[^ \w]+/", "", $maker['Maker']['name']);
 			echo '<div class="link">';			
-				echo $this->Html->image('transparent.png',array('onclick'=>'makerCook(\''.$mk.'\')','url'=>array('controller'=>'treasures','action' => 'index','makers'=>$maker['Maker']['id'])));
+				echo $this->Html->image('transparent.png',array('onclick'=>'makerCook(\''.$mk.'\')','url'=>array('controller'=>'treasures','action' => 'index','makers'=>$maker['Maker']['slug'])));
 			echo'</div>';
 			
 			echo '<div class="caption">';

@@ -142,7 +142,7 @@ class TreasuresController extends AppController {
 		if (!empty($this->request->query['n'])) $limit = $this->request->query['n'];
 		else $limit=25;
 		$sortord=array('Treasure.homeflag'=>'desc','Treasure.img'=>'desc','Treasure.id'=>'asc');
-		$contain=array('Maker','Location');
+		$contain=array('Maker');
 		
 		//this is useful for finding missing images after a new records are added
 		//$sortord=array('Treasure.img'=>'asc');
@@ -283,7 +283,7 @@ class TreasuresController extends AppController {
 		$var['action']='cfmsg';
 		$this->Session->write('backto',$var);	
 		
-		$bquery['Location.name LIKE']='cfm.sg%';
+		$bquery['Treasure.location LIKE']='cfm.sg%';
 		$search = $this->Treasure->parseCriteria($this->Prg->parsedParams());	
 		$mega = array_merge($search,$bquery);	
 		$sortord=array('Treasure.homeflag'=>'desc','Treasure.img'=>'desc');
@@ -377,34 +377,20 @@ class TreasuresController extends AppController {
 		if (!empty($editcook)){
 			$id=key($editcook);
 			$id=intval($id);
-			
 			$this->loadModel('TreasuresUsergal');
-			$options['joins'] = array(
-				array('table' => 'treasures',
-				'alias' => 'Treasure2',
-				'type' => 'LEFT',
-				'conditions' => array(
-					'Treasure2.id = TreasuresUsergal.treasure_id',
-					)
-					)
-			);
+			$this->TreasuresUsergal->recursive = 1;
 			
 			$options['conditions']=array('TreasuresUsergal.usergal_id'=>$id);
-			$options['fields']=array('Treasure2.*','TreasuresUsergal.ord','TreasuresUsergal.comments');
+			$options['contain']=array('Treasure');
 			$options['order']=array('TreasuresUsergal.ord'=>'asc');
-			$options['limit']=50;
+			$options['limit']=100;
 			$this->Paginator->settings = $options;
 			$savedtreasures=$this->Paginator->paginate('TreasuresUsergal');
 			
-			//now loop through find values and remove $savedtreasures
-			//also fix up the Treasure2 to Treasure
-			foreach ($savedtreasures as $k=>$v){
-				unset($trcook[$v['Treasure2']['id']]);
-				$savedtreasures[$k]['Treasure']=$v['Treasure2'];
-				unset($savedtreasures[$k]['Treasure2']);
-			}
+			
+			//remove saved treasures from the cookie, otherwise they display twice (as they are both in Cookie and DB)
+			foreach ($savedtreasures as $k=>$v) unset($trcook[$v['Treasure']['id']]);
 		}
-
 		//find the treasures in the cookie but not already saved so we can add to bottom
 		$this->Treasure->recursive = 0;
 		$limit = 25;
@@ -470,7 +456,8 @@ class TreasuresController extends AppController {
 					$comments=$this->request->data['Usergal']['comments'][$value['Treasure']['id']];
 					$treasuredata = array(
 						'TreasuresUsergal' => array(
-						'usergal_id'=> $lastid,'treasure_id'=>$value['Treasure']['id'],'argusid'=>$value['Treasure']['oldid'],
+						'usergal_id'=> $lastid,'treasure_id'=>$value['Treasure']['id'],
+						//no longer needed as we use argusid as id 'argusid'=>$value['Treasure']['oldid'],
 						'comments'=>$comments,'ord'=>$sortord)
 					);
 					$this->TreasuresUsergal->create();

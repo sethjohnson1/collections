@@ -33,7 +33,7 @@ $md = preg_replace("/[^ \w]+/", "", $medvalue['Medvalue']['name']);
 echo'<div class="img-block" style="background-image: url(\'http://collections.centerofthewest.org/zoomify/1/'.str_replace(' ','_',$medvalue['Medvalue']['img']).'/TileGroup0/0-0-0.jpg\');">';
 
 			echo '<div class="link">';			
-				echo $this->Html->image('transparent.png',array('onclick'=>'medvalCook(\''.$md.'\')','url' => array('controller' => 'treasures', 'action' => 'index', 'medvalues'=>$medvalue['Medvalue']['id'])));
+				echo $this->Html->image('transparent.png',array('onclick'=>'medvalCook(\''.$md.'\')','url' => array('controller' => 'treasures', 'action' => 'index', 'medvalues'=>$medvalue['Medvalue']['slug'])));
 			echo'</div>';
 			
 			echo '<div class="caption">';

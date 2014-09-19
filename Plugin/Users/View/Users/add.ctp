@@ -15,7 +15,7 @@
 		<?php
 			echo $this->Form->create($model);
 			echo $this->Form->input('username', array(
-				'label' => __d('users', 'Username')));
+				'label' => __d('users', 'Display name')));
 			echo $this->Form->input('email', array(
 				'label' => __d('users', 'E-mail (used as login)'),
 				'error' => array('isValid' => __d('users', 'Must be a valid email address'),
