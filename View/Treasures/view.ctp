@@ -249,13 +249,13 @@ echo '<h3 style="margin:5px 0px 10px 0px;">Virtual Galleries</h3><p>';
 //debug($gal);
 		if(!empty($gal['TreasuresUsergal']['comments']))
 		{
-			
 			//echo '<span class="author">From '.$this->Html->link($gal['creator'],array('controller' => 'usergals','action' => 'view', $gal['id'])).'\'s Virtual Exhibit</span>: ';		
-			echo $gal['TreasuresUsergal']['comments'].'<br />';			
+			echo $gal['TreasuresUsergal']['comments'].'<br />';		
 		}
+		echo '<hr style="clear:both;">';
 	}
 	
-	echo '</p><hr style="clear:both;">';
+	echo '</p><br style="clear:both;">';
 }
 
 //this was for the beginning of an AJAX login. It worked sort of but kept redirecting so I commented out
