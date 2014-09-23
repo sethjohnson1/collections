@@ -220,7 +220,9 @@ class TreasuresController extends AppController {
 			}
 			else {
 				if (!empty($this->request->query['a'])){
-					$treasure = $this->Treasure->findByOldid($this->request->query['a']);
+					//remove first and last character, the QR codes have curly braces in them which are no longer there
+					$a=substr(substr($this->request->query['a'],0,-1),1);
+					$treasure = $this->Treasure->findById($a);
 				}
 				else{
 					$treasure = $this->Treasure->findBySlug($slug);
