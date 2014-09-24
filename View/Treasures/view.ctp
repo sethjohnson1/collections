@@ -229,22 +229,33 @@ echo '<h3 style="margin:5px 0px 10px 0px;">Related Content</h3>';
 ?>
 
 <?php
-
-if(!empty($treasure['Usergal']['0']['TreasuresUsergal']['comments']))
+//debug($treasure);
+if(!empty($treasure['Usergal']))
 {
-echo '<p><span class="field-name">Visitor Comments: </span><br>';
+echo '<h3 style="margin:5px 0px 10px 0px;">Virtual Galleries</h3><p>';
 	foreach ($treasure['Usergal'] as $gal)
 	{
-//$gal['id']
+		$img_link='http://collections.centerofthewest.org/zoomify/1/'.str_replace(' ','_',str_replace('#','',$gal['img'])).'/TileGroup0/0-0-0.jpg';
+			echo '<p>';
+			echo $this->Html->link($gal['name'],array('controller' => 'usergals','action' => 'view', $gal['id'])).' - Curated by: '.$gal['creator'];
+			//<a href="'..'">'.$arrJson['title'].'</a> - By '.$arrJson['author']['name'];
+			//not using cakePHP convention here.. Probably should at some point
+			echo '<br/>';
+
+			echo '<a href="http://collections.centerofthewest.org/usergals/view/'.$gal['id'].'" style="background-color:#ede9e7;display: block;width: 50%;position: relative;height: 0;padding: 20% 0 0 0;overflow: hidden;float:left;"><img src="'.$img_link.'"style="position: absolute;display: block;max-width: 100%;max-height: 100%;left: 0;right: 0;top: 0;bottom: 0;margin: auto;"></a>';
+			//echo strip_tags(substr($arrJson['content'],0,150)).'...<br><a href="'.$arrJson['link'].'" class="">&#x25ba; Read More</a>';	
+			
+			echo '</p>';
+//debug($gal);
 		if(!empty($gal['TreasuresUsergal']['comments']))
 		{
 			
-			echo '<span class="author">From '.$this->Html->link($gal['creator'],array('controller' => 'usergals','action' => 'view', $gal['id'])).'\'s Virtual Exhibit</span>: ';		
-			echo $gal['TreasuresUsergal']['comments'].'<br>';			
+			//echo '<span class="author">From '.$this->Html->link($gal['creator'],array('controller' => 'usergals','action' => 'view', $gal['id'])).'\'s Virtual Exhibit</span>: ';		
+			echo $gal['TreasuresUsergal']['comments'].'<br />';			
 		}
 	}
 	
-	echo '</p>';
+	echo '</p><hr style="clear:both;">';
 }
 
 //this was for the beginning of an AJAX login. It worked sort of but kept redirecting so I commented out
