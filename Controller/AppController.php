@@ -24,6 +24,7 @@ class AppController extends Controller {
 				//ask LLoyd what variable would be useful, or just some flag?
 				//also write to DB?
 				//debug('9+ pageviews!');
+				$this->Cookie->write('overlay_displayed',1,false, '12 months');
 			}
 			else $this->Cookie->write('page_counter',$count, false, '5 days');
 			
@@ -33,6 +34,8 @@ class AppController extends Controller {
 			if (!empty($timer)){
 				$minutes=(time()-$timer)/60;
 				if ($minutes > 10){
+					$this->Cookie->write('overlay_displayed',1,false, '12 months');
+
 					//do something
 					//debug('more than 10 minutes!');
 				}
