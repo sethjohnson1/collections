@@ -22,8 +22,12 @@ var maplightbox ="<div class='overlay' onclick=\"$('.overlay').remove();$('.ligh
 
 if(getCookie("CakeCookie[show_it]")=="1")
 {
-	$('body').append(maplightbox);
-	document.cookie = "CakeCookie[overlay_displayed]=1;";
+	$('body').append(maplightbox);	
+	var d = new Date();
+    var extradays =365*1;
+	d.setTime(d.getTime() + (extradays*24*60*60*1000));
+    var expires = "expires="+d.toUTCString();
+	document.cookie = 'CakeCookie[overlay_displayed]=1; expires='+expires+' path=/' ;		
 	dropCookie('show_it');
 }
 
