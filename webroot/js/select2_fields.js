@@ -1,7 +1,9 @@
-//this is for all the select2 boxes . . very easy
- $(document).ready(function() {
+$(document).ready(function() {
+
+//this is for the 'go to page' function so that it only works when changed (otherwise it submits each time and can result in 404)
+
  
- //
+ //this is for all the select2 boxes . . very easy
  function formatVgal(img){
 	//return "<b>"+img.id+"</b>";
 	return '<img width="60%" height="60%" src="http://collections.centerofthewest.org/zoomify/1/' + img.id + '/TileGroup0/0-0-0.jpg">'

@@ -77,19 +77,20 @@
 	echo $this->Html->script('placeholders.min');		//added to automagicly fix the placeholders in older versions of IE
 	echo $this->Html->script('modernizr');				//addded to help with older versions of ie like 
 	echo $this->Html->script('jquery-ui-1.10.3.custom.min');
-	echo $this->Html->script('ajax-chosen.min');
-    echo $this->Html->script('jquery.autocomplete.min');
-    echo $this->Html->script('jquery.uix.multiselect.min');
-	echo $this->Html->css('jquery.autocomplete');
+	//echo $this->Html->script('ajax-chosen.min');
+    //echo $this->Html->script('jquery.autocomplete.min');
+    //echo $this->Html->script('jquery.uix.multiselect.min');
+	//echo $this->Html->css('jquery.autocomplete');
 	
 	echo $this->Html->css('http://cdn.jsdelivr.net/select2/3.4.8/select2.css');
 	echo $this->Html->script('http://cdn.jsdelivr.net/select2/3.4.8/select2.min.js');
+
 	echo $this->Html->script('select2_fields');
 
 
 
 	
-	echo $this->Html->css('jquery.uix.multiselect');
+	//echo $this->Html->css('jquery.uix.multiselect');
 	echo $this->Html->css('jquery-ui-1.10.3.custom.min');
 	
 	//my script uses jQuery, so it only works when loaded AFTER!

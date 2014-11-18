@@ -108,8 +108,8 @@ echo $this->Html->link('Advanced Search',$adv).'<br />';
 	
 <?php 
 		echo $this->Paginator->prev('< ' . __('previous '), array(), null, array('class' => 'prev disabled'));
-		echo $this->Form->input('pXv_9g', array('div' => false,'empty'=>true,'label'=>'Page ','default'=>$this->params['paging']['Treasure']['page']));	 
-
+		//use JS for the 'go to page' field so it only submits if changed, otherwise the value is ignored and does not become part of the named params
+		echo $this->Form->input('pXv_9g', array('div' => false,'name'=>'goto','onchange'=>'document.getElementById("TreasurePXv9g").setAttribute("name","data[Treasure][pXv_9gg]");','empty'=>true,'label'=>'Page ','default'=>$this->params['paging']['Treasure']['page']));	 
 		echo $this->Paginator->counter(array('format' => __(' of {:pages} ')));
 		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
 		echo'<div class="results">';
@@ -123,7 +123,7 @@ echo $this->Html->link('Advanced Search',$adv).'<br />';
 
 
 		echo $this->Form->end();
-		echo $this->Html->script('sj_autocp1');
+		//echo $this->Html->script('sj_autocp1');
 		echo $this->Js->writeBuffer();
 ?>
 </div>

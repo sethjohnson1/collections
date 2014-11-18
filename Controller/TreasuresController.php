@@ -75,14 +75,15 @@ class TreasuresController extends AppController {
 		
 		//first see if we need to redirect to another page. This was being done after the find before, which was causing two finds per page change
 		//the tradeoff is that we cannot count the page and therefore they can go to a page that doesn't exist. Perhaps HTML5 validation can fix this?
-		if (!empty($this->params['named']['pXv_9g'])) {
+		if (!empty($this->params['named']['pXv_9gg'])) {
 			$parms=$this->params['named'];
 			unset($parms['url']);
-			$parms['page']=$parms['pXv_9g'];
-			unset($parms['pXv_9g']);
+			$parms['page']=$parms['pXv_9gg'];
+			unset($parms['pXv_9gg']);
 			$parms['action']='index';
 			$this->redirect($parms);
 		}
+		
 		
 		//for "Find by Accnum" - could be done other ways but this works
 		if (!empty($this->params['named']['o'])) {  
