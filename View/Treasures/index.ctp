@@ -9,7 +9,7 @@ if (!empty($this->params['named']['searchall'])) echo ' > <a href="/treasures/in
 
 //collection (listed alphabetically)
 if (!empty($this->params['named']['bbm'])) echo ' > <a href="/treasures/index/bbm:'.$this->params['named']['bbm'].'">Buffalo Bill</a>';
-if (!empty($this->params['named']['dmnh'])) echo ' > <a href="/treasures/index/dmnh:'.$this->params['named']['dmnh'].'">Yellowstone Nature</a>';
+if (!empty($this->params['named']['dmnh'])) echo ' > <a href="/treasures/index/dmnh:'.$this->params['named']['dmnh'].'">Natural History</a>';
 if (!empty($this->params['named']['cfm'])) echo ' > <a href="/treasures/index/cfm:'.$this->params['named']['cfm'].'">Firearms</a>';
 if (!empty($this->params['named']['pim'])) echo ' > <a href="/treasures/index/pim:'.$this->params['named']['pim'].'">Plains Indians</a>';
 if (!empty($this->params['named']['wg'])) echo ' > <a href="/treasures/index/wg:'.$this->params['named']['wg'].'">Western Art</a>';
