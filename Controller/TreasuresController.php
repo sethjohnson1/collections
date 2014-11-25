@@ -184,7 +184,7 @@ class TreasuresController extends AppController {
 		if (!empty($pm['bbm'])) $cols['bbm']='Buffalo Bill';
 		if (!empty($pm['pim'])) $cols['pim']='Plains Indians';
 		if (!empty($pm['cfm'])) $cols['cfm']='Firearms';
-		if (!empty($pm['dmnh'])) $cols['dmnh']='Yellowstone Nature';
+		if (!empty($pm['dmnh'])) $cols['dmnh']='Natural History';
 		if (!empty($pm['wg'])) $cols['wg']='Western Art';
 		
 		if (count($cols)==1) $breadcrumb[0]=implode($cols);
