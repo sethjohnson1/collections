@@ -212,7 +212,7 @@ s.parentNode.insertBefore(ga, s);
             <li class="browse-item" <?php if(!empty($this->params['controller'])=='treasures'){if(!empty($this->params['data']['Treasure']['wg'])==1){echo 'id="glower" ';}}?>><?php echo $this->Html->link(__('> Western Art'), array('controller' => 'treasures','action' => 'index'.'/bbm:0/wg:1/cfm:0/pim:0/dmnh:0/')); ?> </li>
             <li class="browse-item" <?php if(!empty($this->params['controller'])=='treasures'){if(!empty($this->params['data']['Treasure']['cfm'])==1){echo 'id="glower" ';}}?>><?php echo $this->Html->link(__('> Firearms'), array('controller' => 'treasures','action' => 'index'.'/bbm:0/wg:0/cfm:1/pim:0/dmnh:0/')); ?> </li>
             <li class="browse-item" <?php if(!empty($this->params['controller'])=='treasures'){if(!empty($this->params['data']['Treasure']['pim'])==1){echo 'id="glower" ';}}?>><?php echo $this->Html->link(__('> Plains Indian'), array('controller' => 'treasures','action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:1/dmnh:0/')); ?> </li>
-            <li class="browse-item" <?php if(!empty($this->params['controller'])=='treasures'){if(!empty($this->params['data']['Treasure']['dmnh'])==1){echo 'id="glower" ';}}?>><?php echo $this->Html->link(__('> Yellowstone Nature'), array('controller' => 'treasures','action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:0/dmnh:1/')); ?> </li>
+            <li class="browse-item" <?php if(!empty($this->params['controller'])=='treasures'){if(!empty($this->params['data']['Treasure']['dmnh'])==1){echo 'id="glower" ';}}?>><?php echo $this->Html->link(__('> Natural History'), array('controller' => 'treasures','action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:0/dmnh:1/')); ?> </li>
         
 
 		
