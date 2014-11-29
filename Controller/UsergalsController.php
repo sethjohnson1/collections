@@ -267,20 +267,20 @@ public function callback_commentsAdd($modelId, $commentId, $displayType, $data =
 		$this->loadModel('TreasuresUsergal');
 		$this->TreasuresUsergal->recursive = 1;
 		//disabled, this can be accomplished with contain and recursion
-		/*$options['joins'] = array(
-		array('table' => 'treasures',
-        'alias' => 'Treasure2',
-        'type' => 'LEFT',
-        'conditions' => array(
-				'Treasure2.id = TreasuresUsergal.treasure_id',
-				)
-			)
-		);
-		*/
+		
+		$options['joins'] = array(
+					array(
+					'table' => 'images',
+					'alias' => 'Image',
+					'type' => 'INNER',
+					'conditions' => array("Treasure.id = Image.treasure_id","Image.sortorder = 1"),
+					)
+				);
+		
 		
 		$options['conditions']=array('TreasuresUsergal.usergal_id'=>$id);
-		//$options['fields']=array('Treasure.*','TreasuresUsergal.ord','TreasuresUsergal.comments');
-		$options['contain']=array('Treasure');
+		$options['fields']=array('Treasure.*','TreasuresUsergal.*','Image.*');
+		//$options['contain']=array('Treasure','Image');
 		$options['order']=array('TreasuresUsergal.ord'=>'asc');
 		$options['limit']=$limit;
 		
