@@ -285,12 +285,12 @@ Cody, Wyoming 82414<br>
 </div></div>
 		</div></section>
 </div><div class="home-footer-right widget-area"><section id="text-8" class="widget widget_text"><div class="widget-wrap"><h4 class="widget-title widgettitle">Rates</h4>
-			<div class="textwidget"><div class="one-third first"><p class="bold">Members Free</p><p><span class="bold">Adult</span> $18</p><p><span class="bold">Seniors </span>$16<br>age 65 &amp; older</p></div>
-<div class="one-third"><p><span class="bold">Students</span> $14<br>age 18 &amp; older<br>with valid student ID</p><p><span class="bold">Youth</span> $10<br>ages 6-17</p></div>
+			<div class="textwidget"><div class="one-third first"><p class="bold">Members Free</p><p><span class="bold">Adult</span> $19</p><p><span class="bold">Seniors </span>$17<br>age 65 &amp; older</p></div>
+<div class="one-third"><p><span class="bold">Students</span> $15<br>age 18 &amp; older<br>with valid student ID</p><p><span class="bold">Youth</span> $11<br>ages 6-17</p></div>
 <div class="one-third"><p><span class="bold">Group tour rates</span><br>call 307-578-4114</p><p><span class="bold">Children Free</span><br>age 5 &amp; younger</p></div></div>
 		</div></section>
 </div></div></div>
-<footer class="site-footer" role="contentinfo" itemscope="itemscope" itemtype="http://schema.org/WPFooter"><div class="wrap"><p><span class="creds">©&nbsp;2014 Buffalo Bill Center of the West. All rights reserved.</span>
+<footer class="site-footer" role="contentinfo" itemscope="itemscope" itemtype="http://schema.org/WPFooter"><div class="wrap"><p><span class="creds">©&nbsp;<?php echo date("Y"); ?> Buffalo Bill Center of the West. All rights reserved.</span>
  	<span class="smithsonian">Smithonian Affiliations</span>
  	<span class="aam"><abbr title="The American Alliance of Museums">AAM</abbr></span></p></div></footer>    
   </div></body>
