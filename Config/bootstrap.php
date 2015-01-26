@@ -77,10 +77,14 @@ Cache::config('default', array('engine' => 'File'));
  //'Chosen',
  'Search',
  'Utils',
- 'Users',
+ //'Users',
  'Comments'
  ));
  
+ CakePlugin::load('Users', array('routes' => true));
+ 
+ 
+ //needs to move to global config file...
  Configure::write('App.defaultEmail', 'forms@centerofthewest.org');
 
 /**

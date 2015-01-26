@@ -7,56 +7,72 @@
 
 	    echo $this->Form->input('searchall', array('div' => FALSE,'empty'=>true,'label'=>'','placeholder'=>'Search all Fields'));
 
-		echo'<div style="clear:both"></div>';
-	    echo '<div class="maglass">'.$this->Form->submit('/img/glass.png', array('div' => false)).'</div>';
-		echo'<div style="clear:both"></div>';
-		echo $this->Form->end();
-		
-?>	
+		?>
+		<div style="clear:both"></div>
+	    <div class="maglass"><?=$this->Form->submit('/img/glass.png', array('div' => false))?></div>
+		<div style="clear:both"></div>
+		<?=$this->Form->end()?>	
 
     <div class="sort-by">	
         <p class="header"><?php echo $this->Html->link('Edit your Exhibit', array('action' => 'load'));?></p>
         <p class="header">Sort By</p>		
-        <p><?php echo $this->Paginator->sort('name'); ?></p>
-        <p><?php echo $this->Paginator->sort('creator'); ?></p>
-        <p><?php echo $this->Paginator->sort('created'); ?></p>        
-        <p><?php echo $this->Paginator->sort('modified'); ?></p>                
-        
+        <p><?=$this->Paginator->sort('name'); ?></p>
+        <p><?=$this->Paginator->sort('creator'); ?></p>
+        <p><?=$this->Paginator->sort('created'); ?></p>        
+        <p><?=$this->Paginator->sort('modified'); ?></p>                
     </div>
-    
 </div>
-    <div class="search-results" style="clear:both;position:relative;top:-72px;">
+
+<div class="search-results" style="clear:both;position:relative;top:-72px;">
+	<div style="clear: both"></div>
+	<div class="paging">
+	
+<?
+		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
+		echo $this->Paginator->numbers(array('separator' => ''));
+		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
+?>	
+	</div>  
 <?php foreach ($usergals as $usergal): ?>
 <div class="the-objects">
-	<?php				
-echo'<div class="img-block" style="background-image: url(\'http://collections.centerofthewest.org/zoomify/1/'.str_replace(' ','_',$usergal['Usergal']['img']).'/TileGroup0/0-0-0.jpg\');">';
+	<div class="img-block" style="background-image: url('http://collections.centerofthewest.org/zoomify/1/<?=str_replace(' ','_',$usergal['Usergal']['img'])?>/TileGroup0/0-0-0.jpg')">
 
-			echo '<div class="link">';			
-				echo $this->Html->image('transparent.png',array('url'=>array('action' =>'view', $usergal['Usergal']['id'])));
-			echo'</div>';
+			<div class="link">			
+				<?=$this->Html->image('transparent.png',array('url'=>array('action' =>'view', $usergal['Usergal']['id'])))?>
+			</div>
 			
-			echo '<div class="caption">';
-				echo '<div class="txt">';
-				if(strlen($usergal['Usergal']['name'])>20)
+			<div class="caption">
+				<div class="txt">
+				<? if(strlen($usergal['Usergal']['name'])>20)
 					echo $this->Html->link(substr($usergal['Usergal']['name'],0,18).'...', array('action' => 'view', $usergal['Usergal']['id']),array('id'=>'beter-links'));
 				else 
 					echo $this->Html->link($usergal['Usergal']['name'], array('action' => 'view', $usergal['Usergal']['id']),array('id'=>'beter-links'));
-				echo'<br>';	
+				?>
+				<br />
+				<?				
 				if(strlen($usergal['Usergal']['creator'])>20)
 					echo $this->Html->link(substr($usergal['Usergal']['creator'],0,18).'...', array('action' => 'view', $usergal['Usergal']['id']),array('id'=>'beter-links'));
 				else 
 					echo $this->Html->link($usergal['Usergal']['creator'], array('action' => 'view', $usergal['Usergal']['id']),array('id'=>'beter-links'));
+				?>
+				<br />
+				</div>
+				<div class="gal">			
+				<!-- not sure why here -->
+				</div>			
+			</div>
+	</div><!-- /imgblock -->
+</div><!-- /theobjects -->
+<?endforeach ?>
 
-				echo '<br>';
-				
-				echo'</div>';
-				echo '<div class="gal">';				
-
-				echo '</div>';				
-			echo '</div>';
-echo '</div>'?>
+    <div style="margin-top:20px;">&nbsp;</div>
 </div>
-<?php endforeach; ?>
-
-    	<div style="margin-top:20px;">&nbsp;</div>
-	</div>
+	<div style="clear: both"></div>
+	<div class="paging">
+	
+<?
+		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
+		echo $this->Paginator->numbers(array('separator' => ''));
+		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
+?>	
+	</div>  

@@ -232,7 +232,9 @@ s.parentNode.insertBefore(ga, s);
 			</ul>
 		</div>
 	</div>
-<div class="footer-widgets"><div class="wrap"><div class="footer-widgets-1 widget-area"><section id="text-6" class="widget widget_text"><div class="widget-wrap"><h4 class="widget-title widgettitle">location</h4>
+<div class="footer-widgets">
+<div class="wrap"><div class="footer-widgets-1 widget-area"><section id="text-6" class="widget widget_text">
+<div class="widget-wrap"><h4 class="widget-title widgettitle">location</h4>
 			<div class="textwidget">Buffalo Bill Center of the West&nbsp;&nbsp;<a href="mailto:info@centerofthewest.org"><img src="http://centerofthewest.org/wp-content/uploads/2013/11/envelope-icon.png" width="14px" height="10px"></a><br>
 720 Sheridan Avenue
 Cody, Wyoming 82414<br>

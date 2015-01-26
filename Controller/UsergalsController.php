@@ -32,8 +32,10 @@ public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Searc
 		/* deal with the strange pagination glitch, without this a Not Found exception this thrown
 		there is little documentation on this, but the basic consensus is the manual JOINS with Pagination
 		invoke demons. For the rest of the code, see the $options set in the view function.
+		
+		UPDATE: but this breaks pagination on the index as well....
 		*/
-		if (isset($this->params['named']['page'])){
+		if (isset($this->params['named']['page']) && $this->params['action']=='view'){
 			$newurl=$this->params['named'];
 			$pg=$newurl['page'];
 			unset($newurl['page']);
@@ -143,7 +145,8 @@ public function callback_commentsAdd($modelId, $commentId, $displayType, $data =
 		$this->Paginator->settings['conditions'] = $pwr;
 		$this->Paginator->settings['order'] = array('Usergal.created'=>'desc');
 		$this->Paginator->settings['limit'] = 50;
-		$this->set('usergals', $this->Paginator->paginate());	
+		$usergals=$this->Paginator->paginate();
+		$this->set(compact('usergals'));	
 
 		/* 
 		//calling this on our homepage made it crash a bunch, not sure why but we don't need it anyway
@@ -171,9 +174,11 @@ public function callback_commentsAdd($modelId, $commentId, $displayType, $data =
 
 		$this->Components->load('Security');
 		//AYAH stuff
+		/*
 		require_once("ayah.php");
 		$ayah = new AYAH();
 		$this->set('ayah',$ayah->getPublisherHTML());
+		*/
 		$txt=null;
 		if ($this->request->is('post')) 
 		{
@@ -254,7 +259,6 @@ public function callback_commentsAdd($modelId, $commentId, $displayType, $data =
 		$usergal=$this->Usergal->find('first', $options);
 		//make flag if 
 		$edt=$this->Cookie->read('Treasure.edit');
-		//debug($edt);
 		$editcode=substr(strstr($edt,'-'),1);
 		$gid=strstr($edt,'-',true);
 

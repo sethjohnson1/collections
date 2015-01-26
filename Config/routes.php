@@ -11,29 +11,21 @@
 	
 //sj- routes from escaping users
 //there must be a better way, but for now its demonstration purposes
-	Router::redirect('/users/treasures/*', array('controller' => 'treasures', 'action' => 'index'));
+/*	Router::redirect('/users/treasures/*', array('controller' => 'treasures', 'action' => 'index'));
 	Router::redirect('/users/medvalues/*', array('controller' => 'medvalues', 'action' => 'index'));
 	Router::redirect('/users/makers/*', array('controller' => 'makers', 'action' => 'index'));
 	Router::redirect('/users/usergals/*', array('controller' => 'usergals', 'action' => 'index'));
+	*/
 //end sj
 
 	Router::parseExtensions('json','xml');
+	CakePlugin::routes();
 	
 	
 /** BELOW IS CAKEPHP default -- CHANGE IF YOU MUST
  * ...and connect the rest of 'Pages' controller's URLs.
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
-
-  
-  
-	
-	
-/**
- * Load all plugin routes. See the CakePlugin documentation on
- * how to customize the loading of plugin routes.
- */
-	CakePlugin::load('Users', array('routes' => true));
 
 /**
  * Load the CakePHP default routes. Only remove this if you do not want to use
