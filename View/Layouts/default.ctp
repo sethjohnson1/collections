@@ -172,47 +172,47 @@ s.parentNode.insertBefore(ga, s);
 <?php echo $this->fetch('content'); ?>
 </div></article></main></div><aside class="sidebar-secondary" style="margin-top:10px;">
 
-<h1 class="OC-header"><?php echo $this->Html->link('Online Collections', array('controller' => 'treasures','action' => 'index')); ?></h1>
+<h1 class="OC-header"><?php echo $this->Html->link('Online Collections', array('plugin'=>'','controller' => 'treasures','action' => 'index')); ?></h1>
 
 <section id="nav_menu-7" class="widget widget_nav_menu"><div class="widget-wrap">
   <div>
 	
 <ul class="menu">
 
-		<li class="menu-item"><?php echo $this->Html->link(__('New Search'), array('controller' => 'treasures','action' => 'index')); ?> </li>
-		<li class="menu-item"><?php echo $this->Html->link(__('Search Makers'), array('controller' => 'makers', 'action' => 'index')); ?> </li>
-		<li class="menu-item"><?php echo $this->Html->link(__('Search Mediums'), array('controller' => 'medvalues', 'action' => 'index')); ?> </li>
-		<li class="menu-item"><?php echo $this->Html->link(__('Virtual Exhibits'), array('controller' => 'usergals', 'action' => 'index')); ?></li>      				
-<? if( $this->Session->read('Auth.User')) echo '<li class="menu-item">'.$this->Html->link('My Virtual Exhibits',array('controller'=>'usergals','action'=>'mine')).'</li>';?>                        
+		<li class="menu-item"><?php echo $this->Html->link(__('New Search'), array('plugin'=>'','controller' => 'treasures','action' => 'index')); ?> </li>
+		<li class="menu-item"><?php echo $this->Html->link(__('Search Makers'), array('plugin'=>'','controller' => 'makers', 'action' => 'index')); ?> </li>
+		<li class="menu-item"><?php echo $this->Html->link(__('Search Mediums'), array('plugin'=>'','controller' => 'medvalues', 'action' => 'index')); ?> </li>
+		<li class="menu-item"><?php echo $this->Html->link(__('Virtual Exhibits'), array('plugin'=>'','controller' => 'usergals', 'action' => 'index')); ?></li>      				
+<? if( $this->Session->read('Auth.User')) echo '<li class="menu-item">'.$this->Html->link('My Virtual Exhibits',array('plugin'=>'','controller'=>'usergals','action'=>'mine')).'</li>';?>                        
 
 		<li class="menu-item exhibit"><?php 
 		//$ct from the AppController
-		echo $this->Html->link('My Exhibit',array('controller' => 'treasures', 'action' => 'pack'),array('id'=>'myx')); ?>(<span id="ExNum"></span>) </li>
+		echo $this->Html->link('My Exhibit',array('plugin'=>'','controller' => 'treasures', 'action' => 'pack'),array('id'=>'myx')); ?>(<span id="ExNum"></span>) </li>
         		<?php	
 		if(!$this->Session->read('Auth.User'))
-			echo '<li class="menu-item">'.$this->Html->link('Log In', '/users/users/login').'</li>';
+			echo '<li class="menu-item">'.$this->Html->link('Log In', array('plugin'=>'users','controller'=>'users','action'=>'login')).'</li>';
 		if( $this->Session->read('Auth.User'))
 			{
-				echo '<li class="menu-item">'.$this->Html->link('Log Out', '/users/users/logout').'</li>';
+				echo '<li class="menu-item">'.$this->Html->link('Log Out', array('plugin'=>'users','controller'=>'users','action'=>'logout')).'</li>';
 
 			}
 		else
-			echo '</li><li class="menu-item">'.$this->Html->link('Register', '/users/users/add').'</li>';
+			echo '</li><li class="menu-item">'.$this->Html->link('Register', array('plugin'=>'users','controller'=>'users','action'=>'add')).'</li>';
 		?>
-		<li class="menu-item"><?php echo $this->Html->link(__('About/Help'), array('controller' => 'pages','action' => 'about')); ?> </li>
+		<li class="menu-item"><?php echo $this->Html->link(__('About/Help'), array('plugin'=>'','controller' => 'pages','action' => 'about')); ?> </li>
 
 </ul>
 <ul class="browse-menu">
         
        		<li class="browse-item heading">Browse Museums</li>
             <li class="browse-item" <?php if(!empty($this->params['controller'])=='treasures'){if(!empty($this->params['data']['Treasure']['bbm'])==1){echo 'id="glower" ';}}?>>
-			<?php echo $this->Html->link(__('> Buffalo Bill'),array('controller' => 'treasures','action' => 'index'.'/bbm:1/wg:0/cfm:0/pim:0/dmnh:0/')); ?> 
+			<?php echo $this->Html->link(__('> Buffalo Bill'),array('plugin'=>'','controller' => 'treasures','action' => 'index'.'/bbm:1/wg:0/cfm:0/pim:0/dmnh:0/')); ?> 
             </li>
             
-            <li class="browse-item" <?php if(!empty($this->params['controller'])=='treasures'){if(!empty($this->params['data']['Treasure']['wg'])==1){echo 'id="glower" ';}}?>><?php echo $this->Html->link(__('> Western Art'), array('controller' => 'treasures','action' => 'index'.'/bbm:0/wg:1/cfm:0/pim:0/dmnh:0/')); ?> </li>
-            <li class="browse-item" <?php if(!empty($this->params['controller'])=='treasures'){if(!empty($this->params['data']['Treasure']['cfm'])==1){echo 'id="glower" ';}}?>><?php echo $this->Html->link(__('> Firearms'), array('controller' => 'treasures','action' => 'index'.'/bbm:0/wg:0/cfm:1/pim:0/dmnh:0/')); ?> </li>
-            <li class="browse-item" <?php if(!empty($this->params['controller'])=='treasures'){if(!empty($this->params['data']['Treasure']['pim'])==1){echo 'id="glower" ';}}?>><?php echo $this->Html->link(__('> Plains Indian'), array('controller' => 'treasures','action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:1/dmnh:0/')); ?> </li>
-            <li class="browse-item" <?php if(!empty($this->params['controller'])=='treasures'){if(!empty($this->params['data']['Treasure']['dmnh'])==1){echo 'id="glower" ';}}?>><?php echo $this->Html->link(__('> Natural History'), array('controller' => 'treasures','action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:0/dmnh:1/')); ?> </li>
+            <li class="browse-item" <?php if(!empty($this->params['controller'])=='treasures'){if(!empty($this->params['data']['Treasure']['wg'])==1){echo 'id="glower" ';}}?>><?php echo $this->Html->link(__('> Western Art'), array('plugin'=>'','controller' => 'treasures','action' => 'index'.'/bbm:0/wg:1/cfm:0/pim:0/dmnh:0/')); ?> </li>
+            <li class="browse-item" <?php if(!empty($this->params['controller'])=='treasures'){if(!empty($this->params['data']['Treasure']['cfm'])==1){echo 'id="glower" ';}}?>><?php echo $this->Html->link(__('> Firearms'), array('plugin'=>'','controller' => 'treasures','action' => 'index'.'/bbm:0/wg:0/cfm:1/pim:0/dmnh:0/')); ?> </li>
+            <li class="browse-item" <?php if(!empty($this->params['controller'])=='treasures'){if(!empty($this->params['data']['Treasure']['pim'])==1){echo 'id="glower" ';}}?>><?php echo $this->Html->link(__('> Plains Indian'), array('plugin'=>'','controller' => 'treasures','action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:1/dmnh:0/')); ?> </li>
+            <li class="browse-item" <?php if(!empty($this->params['controller'])=='treasures'){if(!empty($this->params['data']['Treasure']['dmnh'])==1){echo 'id="glower" ';}}?>><?php echo $this->Html->link(__('> Natural History'), array('plugin'=>'','controller' => 'treasures','action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:0/dmnh:1/')); ?> </li>
         
 
 		
@@ -274,7 +274,7 @@ Cody, Wyoming 82414<br>
 <li id="menu-item-8498" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8498"><a href="http://centerofthewest.org/get-involved/annual-reports/">Annual Reports<small class="nav-desc"> </small></a></li>
 </ul></div></div></section>
 </div></div></div>
-<div class="home-footer"><div class="wrap"><div class="home-footer-left widget-area"><section id="text-7" class="widget widget_text"><div class="widget-wrap"><h4 class="widget-title widgettitle">Hours</h4>
+<!-- div class="home-footer"><div class="wrap"><div class="home-footer-left widget-area"><section id="text-7" class="widget widget_text"><div class="widget-wrap"><h4 class="widget-title widgettitle">Hours</h4>
 			<div class="textwidget"><div class="one-third first">
 <p><span class="bold">March 1 - April 30</span><br>10 a.m.-5 p.m.</p>
 <p><span class="bold">May 1 - September 15</span><br>8 a.m.-6 p.m.</p>
@@ -291,7 +291,7 @@ Cody, Wyoming 82414<br>
 <div class="one-third"><p><span class="bold">Students</span> $15<br>age 18 &amp; older<br>with valid student ID</p><p><span class="bold">Youth</span> $11<br>ages 6-17</p></div>
 <div class="one-third"><p><span class="bold">Group tour rates</span><br>call 307-578-4114</p><p><span class="bold">Children Free</span><br>age 5 &amp; younger</p></div></div>
 		</div></section>
-</div></div></div>
+</div></div></div -->
 <footer class="site-footer" role="contentinfo" itemscope="itemscope" itemtype="http://schema.org/WPFooter"><div class="wrap"><p><span class="creds">©&nbsp;<?php echo date("Y"); ?> Buffalo Bill Center of the West. All rights reserved.</span>
  	<span class="smithsonian">Smithonian Affiliations</span>
  	<span class="aam"><abbr title="The American Alliance of Museums">AAM</abbr></span></p></div></footer>    
