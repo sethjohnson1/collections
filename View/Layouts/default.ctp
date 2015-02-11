@@ -247,10 +247,10 @@ Cody, Wyoming 82414<br>
 <li id="menu-item-8488" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8488"><a href="http://centerofthewest.org/explore/beyond-our-walls/">Beyond Our Walls<small class="nav-desc"> </small></a></li>
 </ul></div></div></section>
 </div><div class="footer-widgets-3 widget-area"><section id="nav_menu-3" class="widget widget_nav_menu"><div class="widget-wrap"><h4 class="widget-title widgettitle"><a href="http://centerofthewest.org/calendar/">Calendar of Events</a></h4>
-<div class="menu-events-footer-container"><ul id="menu-events-footer" class="menu"><li id="menu-item-9732" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9732"><a href="http://centerofthewest.org/ai1ec_event/buffalo-bill-birthday-celebration/?instance_id=74">Buffalo Bill’s Birthday</a></li>
-<li id="menu-item-9730" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9730"><a href="http://centerofthewest.org/ai1ec_event/plains-indian-museum-powwow/?instance_id=54">Powwow</a></li>
-<li id="menu-item-9731" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9731"><a href="http://centerofthewest.org/ai1ec_event/patrons-ball/?instance_id=69">Patrons Ball</a></li>
-<li id="menu-item-9729" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9729"><a href="http://centerofthewest.org/ai1ec_event/holiday-open-house/?instance_id=79">Holiday Open House</a></li>
+<div class="menu-events-footer-container"><ul id="menu-events-footer" class="menu"><li id="menu-item-9732" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9732"><a href="http://centerofthewest.org/event/buffalo-bills-birthday-bash/">Buffalo Bill’s Birthday</a></li>
+<li id="menu-item-9730" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9730"><a href="http://centerofthewest.org/event/plains-indian-museum-powwow/">Powwow</a></li>
+<li id="menu-item-9731" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9731"><a href="http://centerofthewest.org/event/patrons-ball/">Patrons Ball</a></li>
+<li id="menu-item-9729" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9729"><a href="http://centerofthewest.org/event/holiday-open-house/">Holiday Open House</a></li>
 </ul></div></div></section>
 </div><div class="footer-widgets-4 widget-area"><section id="nav_menu-4" class="widget widget_nav_menu"><div class="widget-wrap"><h4 class="widget-title widgettitle"><a href="http://centerofthewest.org/online-collections/">Online Collections</a></h4>
 <div class="menu-online-collections-footer-container"><ul id="menu-online-collections-footer" class="menu"><li id="menu-item-8234" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8234"><a href="http://library.centerofthewest.org/">Photographs</a></li>
@@ -258,7 +258,7 @@ Cody, Wyoming 82414<br>
 <li id="menu-item-8236" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8236"><a href="http://collections.centerofthewest.org/treasures/index/bbm:0/wg:0/cfm:1/pim:0/dmnh:0">Firearms</a></li>
 <li id="menu-item-8237" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8237"><a href="http://collections.centerofthewest.org/treasures/index/bbm:0/wg:0/cfm:0/pim:1/dmnh:0">Plains Indians</a></li>
 <li id="menu-item-8238" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8238"><a href="http://collections.centerofthewest.org/treasures/index/bbm:0/wg:1/cfm:0/pim:0/dmnh:0">Western Art</a></li>
-<li id="menu-item-8238" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8238"><a href="http://collections.centerofthewest.org/treasures/index/bbm:0/wg:0/cfm:0/pim:0/dmnh:1">Yellowstone Nature</a></li>
+<li id="menu-item-8238" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8238"><a href="http://collections.centerofthewest.org/treasures/index/bbm:0/wg:0/cfm:0/pim:0/dmnh:1">Natural History</a></li>
 </ul></div></div></section>
 </div><div class="footer-widgets-5 widget-area"><section id="nav_menu-5" class="widget widget_nav_menu"><div class="widget-wrap"><h4 class="widget-title widgettitle"><a href="http://centerofthewest.org/get-involved/">Support</a></h4>
 <div class="menu-get-involved-footer-container"><ul id="menu-get-involved-footer" class="menu"><li id="menu-item-8328" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8328"><a href="http://centerofthewest.org/get-involved/membership-support/">Membership</a></li>
@@ -267,11 +267,12 @@ Cody, Wyoming 82414<br>
 <li id="menu-item-8330" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8330"><a href="http://centerofthewest.org/get-involved/volunteering/">Volunteer<small class="nav-desc"> </small></a></li>
 </ul></div></div></section>
 </div><div class="footer-widgets-6 widget-area"><section id="nav_menu-6" class="widget widget_nav_menu"><div class="widget-wrap"><h4 class="widget-title widgettitle"><a href="http://centerofthewest.org/about-us/">About Us</a></h4>
-<div class="menu-about-us-footer-container"><ul id="menu-about-us-footer" class="menu"><li id="menu-item-8233" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8233"><a href="http://centerofthewest.org/category/newsroom/">Newsroom</a></li>
+<div class="menu-about-us-footer-container"><ul id="menu-about-us-footer" class="menu"><li id="menu-item-18989" class="menu-item menu-item-type-post_type menu-item-object-page menu-item=18989"><a href="http://centerofthewest.org/about-us/mission/">Our Mission</a></li>
+<li id="menu-item-8233" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8233"><a href="http://centerofthewest.org/category/newsroom/">Newsroom</a></li>
 <li id="menu-item-8303" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8303"><a href="http://centerofthewest.org/about-us/employment/">Employment<small class="nav-desc"> </small></a></li>
 <li id="menu-item-8316" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8316"><a href="http://centerofthewest.org/about-us/staff-directory/">Staff Directory<small class="nav-desc"> </small></a></li>
-<li id="menu-item-8474" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8474"><a href="http://centerofthewest.org/about-us/terms-and-policies/">Terms and Policies<small class="nav-desc"> </small></a></li>
 <li id="menu-item-8498" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8498"><a href="http://centerofthewest.org/get-involved/annual-reports/">Annual Reports<small class="nav-desc"> </small></a></li>
+<li id="menu-item-8474" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8474"><a href="http://centerofthewest.org/about-us/terms-and-policies/">Terms and Policies<small class="nav-desc"> </small></a></li>
 </ul></div></div></section>
 </div></div></div>
 <!-- div class="home-footer"><div class="wrap"><div class="home-footer-left widget-area"><section id="text-7" class="widget widget_text"><div class="widget-wrap"><h4 class="widget-title widgettitle">Hours</h4>
@@ -293,6 +294,6 @@ Cody, Wyoming 82414<br>
 		</div></section>
 </div></div></div -->
 <footer class="site-footer" role="contentinfo" itemscope="itemscope" itemtype="http://schema.org/WPFooter"><div class="wrap"><p><span class="creds">©&nbsp;<?php echo date("Y"); ?> Buffalo Bill Center of the West. All rights reserved.</span>
- 	<span class="smithsonian">Smithonian Affiliations</span>
+ 	<span class="smithsonian">Smithsonian Affiliations</span>
  	<span class="aam"><abbr title="The American Alliance of Museums">AAM</abbr></span></p></div></footer>    
   </div></body>
