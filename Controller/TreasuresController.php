@@ -202,6 +202,7 @@ class TreasuresController extends AppController {
 		if(array_key_exists('synopsis',$pm)) $breadcrumb[5]='Advanced Search';
 
 		$this->set('breadcrumb',$breadcrumb);
+		$this->render('index','mobile');
 		//end breadcrumbs
 	}
 	

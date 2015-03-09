@@ -1,33 +1,39 @@
 <!DOCTYPE html>
-<html lang="en-US" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
+<html>
 <head>
-	<?php echo $this->Html->charset(); 
+<? //the title can be updated later ?>
+	<title>
+Collections | <? echo $this->fetch('title'); ?>
+	</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">	
+	<?
+		//echo $this->Html->meta('description', $meta_description );
+		echo $this->Html->css('jquery.mobile-1.4.5');	
+		echo $this->Html->css('themes/iscout1.min');		
+		echo $this->Html->css('themes/jquery.mobile.icons.min');			
+		echo $this->Html->css('style');		
 	
-	//begin jQuery regular and mobile
-	echo $this->Html->script('http://code.jquery.com/jquery-1.9.1.min.js');
-	echo $this->Html->script('http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js');
-	echo $this->Html->script('mobile/sj');
-	echo $this->Html->css('http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css');
-	echo $this->Html->css('mobile/sj');
-	echo $this->Html->meta(array('name'=>'viewport','content'=>'width=device-width, initial-scale=1'));
-	
-	//my script uses jQuery, so it only works when loaded AFTER!
-	echo $this->Html->script('sj_cookie1');	
-	//this one too
+		echo $this->Html->script('jquery-1.11.2.min');
+		echo $this->Html->script('jquery.mobile-1.4.5.min');			
+		echo $this->Html->script('qr_scripts');
+		
+		echo $this->fetch('script');
+		echo $this->fetch('css');
+		echo $this->fetch('meta');
+	?>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-	echo '<title>Mobile</title>';
-	echo $this->Html->meta('icon');
-	echo $this->fetch('meta');
-	echo $this->fetch('css');
-	echo $this->fetch('script');
+  ga('create', 'UA-46559601-1', 'auto');
+  ga('send', 'pageview');
 
-
-	
-?>
+</script>
 </head>
 <body>
-
-<?php echo $this->Session->flash(); ?>
-<?php echo $this->fetch('content'); ?>
-
+	<?=$this->fetch('content')?>
 </body>
+</html>
