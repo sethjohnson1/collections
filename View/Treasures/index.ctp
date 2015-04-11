@@ -171,7 +171,8 @@ if(empty($this->params['named']['bbm']))
 <div class="draperdiv">
 
 </div>
-<div class="search-results" style="clear:both">
+
+<div class="search-results featured-vgals" style="clear:both">
 <?php 
 if(empty($treasures)){
 echo 'No results found. Try Google Custom search instead!
@@ -190,30 +191,33 @@ echo 'No results found. Try Google Custom search instead!
 //$strJson = @file_get_contents('http://collections.centerofthewest.org/usergals/index.json?f');
 //$arrJson = json_decode($strJson,true);
 //seth updated to use regular variable and only appear on homepage
-if ($usergals && $this->here=='/') 
-{
+if ($usergals && $this->request['action']=='index') :
+
 
 	echo $this->Html->script('jquery.scrollbox.js');
-	echo $this->Html->script('myScroll.js');
-	echo '<div class="the-objects"><div class="img-block" style="text-align: center;vertical-align: middle;">Take a look at these Virtual Exhibits Create your own and it might be featured too!</div></div>';
-	echo '<div id="featured-gals" class="scroll-img" style="width:616px;height: 156px;overflow: hidden;color:white;"><ul style="margin: 0;padding:0px;width: 1500px;">';
-	foreach($usergals as $gal){
-		echo '<li id="slidez" style="display: inline-block;margin: 0px;">';
-		echo '<a href="http://collections.centerofthewest.org/Usergals/view/'.$gal['Usergal']['id'].'">';
-		echo '<div class="the-objects">';
-			if(!empty($gal['Usergal']['img']))echo '<div class="img-block" style="background-image: url(\'//collections.centerofthewest.org/zoomify/1/'.str_replace(' ','_',str_replace('#','',$gal['Usergal']['img'])).'/TileGroup0/0-0-0.jpg\');"></div>';
-			else echo '<div class="img-block" style="background-image: url(\'//collections.centerofthewest.org/img/non.jpg\');"></div>';
+	echo $this->Html->script('myScroll.js');?>
+	<div class="the-objects"><div class="img-block" style="text-align: center;vertical-align: middle;">
+	Take a look at these Virtual Exhibits Create your own and it might be featured too!</div></div>
+	<div id="featured-gals" class="scroll-img" style="width:616px;height: 156px;overflow: hidden;color:white;">
+	<ul style="margin: 0;padding:0px;width: 1500px;">
+	<?
+	foreach($usergals as $gal):?>
+		<li id="slidez" style="display: inline-block;margin: 0px;">
+		<a href="http://collections.centerofthewest.org/usergals/view/<?=$gal['Usergal']['id']?>">
+		<div class="the-objects">
+			
+			<div class="img-block" style="background-image: url('//collections.centerofthewest.org/zoomify/1/<?=str_replace(' ','_',str_replace('#','',$gal['Usergal']['img']))?>/TileGroup0/0-0-0.jpg');"></div>
+			<?
 			if(!empty($gal['Usergal']['name']))echo '<div class="caption" style="position:relative;top: -50px;left: 0;background: url(http://collections.centerofthewest.org/img/trans-black.png);width: 100%;height: 50px;color:white;">'.$gal['Usergal']['name'].'</div>';
 			if(!empty($gal['Usergal']['gloss']))echo '<div class="bubble" style="z-index:99999;display:none;position:absolute;width:300px;background-color: #ede9e7;color:#766a62;border: 1px solid #ddd;border-radius: 10px;">Curated by:'.$gal['Usergal']['creator'].'<br>'.$gal['Usergal']['gloss'].'</div>';
-			else if(!empty($gal['Usergal']['creator']))echo '<div class="bubble" style="z-index:99999;display:none;position:absolute;width:300px;background-color: #ede9e7;color:#766a62;border: 1px solid #ddd;border-radius: 10px;">Curated By:'.$gal['Usergal']['creator'].'</div>';
-		echo '</div></a></li>';
-	}
-	echo '</ul></div>';
-	echo '<hr style="clear:both">';
+			else if(!empty($gal['Usergal']['creator']))echo '<div class="bubble" style="z-index:99999;display:none;position:absolute;width:300px;background-color: #ede9e7;color:#766a62;border: 1px solid #ddd;border-radius: 10px;">Curated By:'.$gal['Usergal']['creator'].'</div>';?>
+		</div></a></li>
+	<?endforeach?>
+	</ul></div>
 
-}
+	<hr style="clear:both">
+<?endif;
 
-//Featured Galleries
 foreach ($treasures as $treasure):
 
 //debug($treasure);
