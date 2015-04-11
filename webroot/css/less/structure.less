@@ -265,7 +265,7 @@ body:not(.home) .site-inner {
 		margin: -7px;
 		@media @mq-site-width {
 			float: none;
-			margin: 0 auto;
+			margin: 0 0 0 15px;
 		}
 	}
 
@@ -708,6 +708,10 @@ div.entry-content
 		border-bottom:1px dashed @warm-gray;
 		text-align:left;
 		float:left;
+		
+		@media @mq-site-width {
+			display: none;
+		}
 	}
 	.gallery
 	{
@@ -786,6 +790,9 @@ div.entry-content
 				{
 					margin-left:13px;
 				}
+				@media @mq-site-width {
+					display: none;
+				}
 			}
 			div.input
 			{				
@@ -854,6 +861,9 @@ div.entry-content
 		top: 44px;
 		float:right;
 		z-index:9;
+		@media @mq-site-width {
+			display: none;
+		}
 	}
 	.search-help-t{
 		font-family:@sans-serif;
@@ -1011,9 +1021,19 @@ div.entry-content
 
 form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm
 {
+	.the-boxs{
+		@media @mq-site-width {
+			display: none;
+		}
+	}
 
 	#TreasureSearchall{
 		width:61%;
+		@media @mq-site-width {
+			width: 97%;
+			height:42px;
+			font-size:130%;
+		}
 	}
 	#MedvalueName{width:600px;}
 	#oid-search{display:none;/*position: relative;top: -36px;*/}
@@ -1022,6 +1042,13 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm
 		position: relative;
 		top: -31px;
 		left: -269px;
+		@media @mq-site-width {
+			top:-43px;
+			left:-32px;
+			height:34px;
+			
+		}
+		
 }
 	div{
 		.pagging
@@ -1257,16 +1284,19 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm
 
 .sidebar-secondary{
 		
-		.OC-header{
+		.OC-header {
 			border-top:1px dashed #ede9e7;
 			margin-bottom:22px;			
 			color:#6e3219 !important;
-			a:link {color:#6e3219!important;  }
+			a:link {color:#6e3219!important;}
 			a:visited {color:#6e3219!important;}
 			a:hover {color:#6e3219!important;}
 			a:active {color:#6e3219!important;}
+		@media @mq-site-width {
+			border: 0px;
+			margin: 0 0 -17px 0;
 		}
-	
+		}	
 }
 ul.browse-menu{
 	.browse-item
