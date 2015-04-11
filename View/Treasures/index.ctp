@@ -172,7 +172,8 @@ if(empty($this->params['named']['bbm']))
 
 </div>
 
-<div class="search-results featured-vgals" style="clear:both">
+<div class="search-results" style="clear:both">
+<div class="featured-vgals">
 <?php 
 if(empty($treasures)){
 echo 'No results found. Try Google Custom search instead!
@@ -196,7 +197,7 @@ if ($usergals && $this->request['action']=='index') :
 
 	echo $this->Html->script('jquery.scrollbox.js');
 	echo $this->Html->script('myScroll.js');?>
-	<div class="the-objects"><div class="img-block" style="text-align: center;vertical-align: middle;">
+	<div class="the-objects vgalbox"><div class="img-block" style="text-align: center;vertical-align: middle;">
 	Take a look at these Virtual Exhibits Create your own and it might be featured too!</div></div>
 	<div id="featured-gals" class="scroll-img" style="width:616px;height: 156px;overflow: hidden;color:white;">
 	<ul style="margin: 0;padding:0px;width: 1500px;">
@@ -216,6 +217,7 @@ if ($usergals && $this->request['action']=='index') :
 	</ul></div>
 
 	<hr style="clear:both">
+	</div>
 <?endif;
 
 foreach ($treasures as $treasure):
