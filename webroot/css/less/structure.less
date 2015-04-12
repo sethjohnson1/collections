@@ -520,45 +520,8 @@ div.sharedaddy .sd-content{float:none !important;}
 	}
 .footer-top-bar{margin:0px !important}
 
-/* don't need this sd
-.paging{
-	width:95%;
-	
-	.prev{
-		padding-right:5px;
-		font-weight:bold;
-		.disabled{font-weight:normal !important;color:@burnt-orange}
-	}
-	.current{color:#000;font-weight:bold;}
-	.next{
-		float:right;
-		font-weight:bold;
-	}
-	span{padding-left:5%;}
-}
-*/
 
-.medium-paging{
-	.results{float:right}
-	float:right;
-	position: relative;
-	top: -54px;	
-	
-	#MedvaluePXv9g{width:30px;}
-	.maglass{float:right;}
-	.prev{
-		padding-right:5px;
-		font-weight:bold;
-		.disabled{font-weight:normal !important;color:@burnt-orange}
-	}
-	.current{color:#000;font-weight:bold;}
-	.next{
-		
-		font-weight:bold;
-	}
-	
-	
-}
+
 .overlay{ background-image: url(../img/overlay.png);position:absolute;top:0px;left:0px;width:100%;height:100%;z-index:99;}
 * html .overlay{
 	background-color: #000;
@@ -590,26 +553,7 @@ div.sharedaddy .sd-content{float:none !important;}
 
 #glower a:visited,#glower a:hover,#glower a:active
 {color:#bd4f19;text-decoration:underline !important;}
-.maker-paging{
-	.results{float:right}
-	float:right;
-	position: relative;
-	top: -52px;	
-	#MakerPXv9g{width:30px;}
-	.maglass{float:right}
-	.prev{
-		padding-right:5px;
-		font-weight:bold;
-		.disabled{font-weight:normal !important;color:@burnt-orange}
-	}
-	.current{color:#000;font-weight:bold;}
-	.next{
-		
-		font-weight:bold;
-	}
-	
-	
-}
+
 table tbody tr td{border:1px dashed #ede9e7;padding-left:5px;}
 	/*table tbody tr:second-child+td{padding-left:5px;}*/
 
@@ -879,69 +823,9 @@ width:100%;
 		top: 5px;
 		float:right;
 		
-	}	
-	.medium-search{
-		#MedvalueIndexForm{
-			input#Medvalue{
-				width:600px;
-			}
-			.submit{
-				float:right;
-				position:relative;
-				top:-24px;
-				left:-140px;
-			}
-		
-		}	
-	}
-	.virtual-exhibits-search
-	{
-		.sort-by
-		{
-			text-align:right;
-			float: right;
-			position: relative;
-			top: -72px;			
-			width:100px;
-			padding:10px;
-			p{		
-				margin:0px;font-family:@sans-serif;font-size:.7em;		
-			}
-			.header{text-decoration:underline;}
-		
-		}		
-		form#UsergalIndexForm
-		{
-			#UsergalSearchall
-			{
-				width:600px;								
-			}
-			.maglass
-			{
-				float: right;
-				left: -140px;
-				position: relative;
-				top: -27px;
-
-			}
-		}
 	}
 	
-	.makers-search{
-		#MakerIndexForm{
-			#MakerName{
-				width:600px;						
-			}
-/*			.submit{
-				float:right;
-				left:-140px;
-				top:-24px;
-				position:relative;				
-				
-			}*/
-		}
 		
-	}		
 	.neighbors{
 		float:right;
 		.the-objects{
@@ -1023,21 +907,45 @@ width:100%;
 .disabled{display:none;}
 
 
-form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm
+
+form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm,form#UsergalSearchall, .makers-search
 {
 
+	.pagenum{
+		width:30px;
+		@media @mq-site-width {
+			.pagenum{width:50px;}
+		}
+	}
 	.paging{
 		position:relative;
 		top:-73px;
 		float:right;
 		
-		#TreasurePXv9g{width:30px;}
-		@media @mq-site-width {
-			#TreasurePXv9g{width:50px;}
+		@media @mq-site-width{
 			top: 0;
 			float:none;
 			font-size:110%;
 			
+		}
+	}
+	
+	.notindex-paging{
+		@media @mq-site-width {
+			font-size:110%;
+		}
+		.results{
+			position:initial;
+		}
+	}
+	
+	.searchbox{
+		width:80%;
+		font-size:168%;
+		@media @mq-site-width {
+			width: 97%;
+			height:42px;
+			font-size:130%;
 		}
 	}
 	
@@ -1046,41 +954,43 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm
 		top:-2px;
 		left: 645px;
 		@media @mq-site-width {
-//display: none;
 			left: 0;
 			top: 0;
 			font-size:110%;
 		}
 	}
+	
 	.the-boxs{
 		@media @mq-site-width {
 			display: none;
 		}
 	}
 
-	#TreasureSearchall{
-		width:61%;
-		@media @mq-site-width {
-			width: 97%;
-			height:42px;
-			font-size:130%;
-		}
-	}
-	#MedvalueName{width:600px;}
 	#oid-search{display:none;/*position: relative;top: -36px;*/}
 	.submit input{
 		float: right;
 		position: relative;
 		top: -31px;
-		left: -269px;
+		left: -160px;
 		@media @mq-site-width {
 			top:-43px;
 			left:-32px;
 			height:34px;
-			
 		}
 		
 }
+	.notindex input{
+		top:-66px;
+		@media @mq-site-width {
+			top:-82px;
+		}
+	}
+	.vgalsubmit{
+		top:-42px !important;
+		@media @mq-site-width {
+			top: -48px !important;
+		}
+	}
 	div{
 
 		input#TreasureCfm{
@@ -1116,10 +1026,11 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm
 	border:1px dashed #ede9e7;
 	border-left:none;
 	border-right:none;
-	
+	top: -27px;
+	position: relative;
 	@media @mq-site-width {
-		//margin-top:-21px;
 		border: 0;
+		top: 0;
 	}
 }
 
@@ -1363,15 +1274,14 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm
 		width:100%;
 		position: relative;
 		top: -34px;
-		button{
-			margin-right:10px;
-			font-size:159%;
-		}
+		font-size:152%;
+		font-weight:bold;
 		.login-button{
 			float:left;
 		}
-		.toggle-button{
-			float:left;
+		.toggle-button{ 
+			float:left; 
+			padding-right:60px;			
 		}
 	}
 }
@@ -1410,4 +1320,16 @@ ul.browse-menu{
 		{padding-left:5px;
 		padding-bottom:5px;}		
 		
+}
+
+div.trigram {
+    content: "";
+    position: absolute;
+    left: 0;
+    display: block;
+    width: 16px;
+    top: 2px;
+    height: 0;
+    -webkit-box-shadow: 1px 10px 1px 1px @burnt-orange,1px 16px 1px 1px @burnt-orange,1px 22px 1px 1px @burnt-orange;
+    box-shadow: 0 10px 0 1px @burnt-orange,0 16px 0 1px @burnt-orange,0 22px 0 1px @burnt-orange;
 }

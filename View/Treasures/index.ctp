@@ -1,19 +1,5 @@
 <div class="breadcrumb">
 <?php
-/* ALL OLD BREADCRUMBS DISABLED
-//the order is still TBD
-//debug($this->params['url']);
-//searchall
-echo '<a href="/treasures/index/">Search</a>';
-if (!empty($this->params['named']['searchall'])) echo ' > <a href="/treasures/index/searchall:'.$this->params['named']['searchall'].'">'.$this->params['named']['searchall'].'</a>';
-
-//collection (listed alphabetically)
-if (!empty($this->params['named']['bbm'])) echo ' > <a href="/treasures/index/bbm:'.$this->params['named']['bbm'].'">Buffalo Bill</a>';
-if (!empty($this->params['named']['dmnh'])) echo ' > <a href="/treasures/index/dmnh:'.$this->params['named']['dmnh'].'">Natural History </a>';
-if (!empty($this->params['named']['cfm'])) echo ' > <a href="/treasures/index/cfm:'.$this->params['named']['cfm'].'">Firearms</a>';
-if (!empty($this->params['named']['pim'])) echo ' > <a href="/treasures/index/pim:'.$this->params['named']['pim'].'">Plains Indians</a>';
-if (!empty($this->params['named']['wg'])) echo ' > <a href="/treasures/index/wg:'.$this->params['named']['wg'].'">Western Art</a>';
-*/
 
 //NEW BREADCRUMBS
 $i=0;
@@ -80,7 +66,7 @@ echo $this->Html->link('Advanced Search',$adv).'<br />';
 		
 
 	    <?
-		echo $this->Form->input('searchall', array('div' => FALSE,'empty'=>true,'label'=>'','placeholder'=>'Search all Fields'));	 		
+		echo $this->Form->input('searchall', array('div' => FALSE,'empty'=>true,'label'=>'','placeholder'=>'Search all Fields','class'=>'searchbox'));	 		
 	    echo $this->Form->submit('/img/glass.png', array('div' => true));
 ?>		
 		<div class="the-boxs" id="boxs"><?
@@ -110,7 +96,7 @@ echo $this->Html->link('Advanced Search',$adv).'<br />';
 			<?php 
 					echo $this->Paginator->prev('< ' . __('prev '), array(), null, array('class' => 'prev disabled'));
 					//use JS for the 'go to page' field so it only submits if changed, otherwise the value is ignored and does not become part of the named params
-					echo $this->Form->input('pXv_9g', array('div' => false,'name'=>'goto','onchange'=>'document.getElementById("TreasurePXv9g").setAttribute("name","data[Treasure][pXv_9gg]");','empty'=>true,'label'=>'Page ','default'=>$this->params['paging']['Treasure']['page']));	 
+					echo $this->Form->input('pXv_9g', array('div' => false,'name'=>'goto','onchange'=>'document.getElementById("TreasurePXv9g").setAttribute("name","data[Treasure][pXv_9gg]");','empty'=>true,'label'=>'Page ','class'=>'pagenum','default'=>$this->params['paging']['Treasure']['page']));	 
 					echo $this->Paginator->counter(array('format' => __(' of {:pages} ')));
 					echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
 				?>
@@ -222,10 +208,7 @@ if ($usergals && $this->request['action']=='index') :
 
 <?
 foreach ($treasures as $treasure):
-
-//debug($treasure);
-					
-//					debug($val); ?>
+?>
 <div class="the-objects">
 	<?php				
 //seth added anchor tags//lol i almost deleted them //haha that's why i left a comment

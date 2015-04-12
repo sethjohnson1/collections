@@ -1,20 +1,19 @@
-<h2>Medium</h2>
 <div class="medium-search">
 		<?php
 		echo $this->Form->create('Medvalue');
-	    echo $this->Form->input('name', array('div' => true,'placeholder'=>'Search Medium','empty'=>true,'label'=>false,'type'=>'text'));	    
+	    echo $this->Form->input('name', array('div' => true,'placeholder'=>'Search Medium','empty'=>true,'label'=>false,'type'=>'text','class'=>'searchbox'));	    
 		?>		
 
 
-<div class="medium-paging">
+<div class="notindex-paging">
 <?php 
 
 		echo $this->Paginator->prev('< ' . __('previous '), array(), null, array('class' => 'prev disabled'));
-		echo $this->Form->input('pXv_9g', array('div' => false,'empty'=>true,'label'=>'Page ','default'=>$this->params['paging']['Medvalue']['page']));	 
+		echo $this->Form->input('pXv_9g', array('class'=>'pagenum','div' => false,'empty'=>true,'label'=>'Page ','default'=>$this->params['paging']['Medvalue']['page']));	 
 		echo $this->Paginator->counter(array('format' => __(' of {:pages} ')));
 		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
 echo'<div style="clear:both"></div>';
-	    echo '<div class="maglass">'.$this->Form->submit('/img/glass.png', array('div' => false)).'</div>';
+	    echo '<div class="notindex submit">'.$this->Form->submit('/img/glass.png', array('div' => false)).'</div>';
 		echo'<div style="clear:both"></div>';
 		echo '<div class="results">'.$this->Form->input('n',array('div'=>false,'options'=>array(25=>25,50=>50,75=>75,100=>100),'default'=>$limit,'label'=>'Results per Page ','onchange'=>'this.form.submit()')).'</div>';
 		echo $this->Form->end();

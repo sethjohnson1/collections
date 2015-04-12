@@ -168,10 +168,9 @@ s.parentNode.insertBefore(ga, s);
 <?php echo $this->fetch('content'); ?>
 </div></article></main></div>
 <div id="mobilebuttons">
-
-<button class="toggle-button">☰ Menu</button>
+<div class="toggle-button"><a><div class="trigram"></div><span style="padding-left:26px">Menu</a></div>
 <!-- eventually this will trigger a social sign-in popup similar to iScout -->
-<!-- button class="login-button">&#9733; Login</button -->
+<div class="login-button"><?=$this->Html->link('&#9733; Login',array('plugin'=>'users','controller'=>'users','action'=>'login'),array('escape'=>false))?></div>
 </div>
 <aside class="sidebar-secondary" style="margin-top:10px;">
 
@@ -192,7 +191,7 @@ s.parentNode.insertBefore(ga, s);
 
 		<li class="menu-item exhibit"><?php 
 		//$ct from the AppController
-		echo $this->Html->link('My Exhibit',array('plugin'=>'','controller' => 'treasures', 'action' => 'pack'),array('id'=>'myx')); ?>(<span id="ExNum"></span>) </li>
+		echo $this->Html->link('My Exhibit<span id="excount"> (<span id="ExNum"></span>)</span>',array('plugin'=>'','controller' => 'treasures', 'action' => 'pack'),array('id'=>'myx','escape'=>false));?></li>
         		<?php	
 		if(!$this->Session->read('Auth.User'))
 			echo '<li class="menu-item">'.$this->Html->link('Log In', array('plugin'=>'users','controller'=>'users','action'=>'login')).'</li>';

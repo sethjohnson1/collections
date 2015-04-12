@@ -13,8 +13,7 @@ if(!empty($scr)) echo $scr;
 				
 echo $this->Form->create('Load');
 if(!$this->Session->read('Auth.User'))
-	echo $ayah;
-$this->Form->unlockField('session_secret');
+
 echo '<div class="tog">';
 echo 'Enter the code to edit your Virtual Gallery. This code was e-mailed to you when you created your gallery.';
 echo $this->Form->input('editcode',array('label'=>'Edit Code Emailed to you: '));

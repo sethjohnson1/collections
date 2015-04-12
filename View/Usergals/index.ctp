@@ -1,29 +1,29 @@
 <h2>Virtual Exhibits</h2>
 
 <h3>Check out the virtual exhibits created by others and compare them to your own!</h3>
-<div class="virtual-exhibits-search">    
+<div class="makers-search">    
 		<?
 		echo $this->Form->create('Usergal', array('url' => array_merge(array('action' => 'index'), $this->params['pass'])));
 
-	    echo $this->Form->input('searchall', array('div' => FALSE,'empty'=>true,'label'=>'','placeholder'=>'Search all Fields'));
+	    echo $this->Form->input('searchall', array('div' => FALSE,'empty'=>true,'label'=>'','placeholder'=>'Search all Fields','class'=>'searchbox'));
 
 		?>
 		<div style="clear:both"></div>
-	    <div class="maglass"><?=$this->Form->submit('/img/glass.png', array('div' => false))?></div>
+	    <div class="notindex submit"><?=$this->Form->submit('/img/glass.png', array('div' => false,'class'=>'vgalsubmit'))?></div>
 		<div style="clear:both"></div>
 		<?=$this->Form->end()?>	
 
     <div class="sort-by">	
-        <p class="header"><?php echo $this->Html->link('Edit your Exhibit', array('action' => 'load'));?></p>
+        <!--p class="header"><?php echo $this->Html->link('Edit your Exhibit', array('action' => 'load'));?></p-->
         <p class="header">Sort By</p>		
-        <p><?=$this->Paginator->sort('name'); ?></p>
-        <p><?=$this->Paginator->sort('creator'); ?></p>
-        <p><?=$this->Paginator->sort('created'); ?></p>        
-        <p><?=$this->Paginator->sort('modified'); ?></p>                
+        <p><?=$this->Paginator->sort('name').' | '.
+        $this->Paginator->sort('creator').' | '.
+        $this->Paginator->sort('created').' | '. 
+        $this->Paginator->sort('modified')?></p>                
     </div>
 </div>
 
-<div class="search-results" style="clear:both;position:relative;top:-72px;">
+<div class="search-results" style="clear:both;">
 	<div style="clear: both"></div>
 	<div class="paging">
 	
