@@ -520,6 +520,7 @@ div.sharedaddy .sd-content{float:none !important;}
 	}
 .footer-top-bar{margin:0px !important}
 
+/* don't need this sd
 .paging{
 	width:95%;
 	
@@ -535,6 +536,8 @@ div.sharedaddy .sd-content{float:none !important;}
 	}
 	span{padding-left:5%;}
 }
+*/
+
 .medium-paging{
 	.results{float:right}
 	float:right;
@@ -1022,6 +1025,33 @@ width:100%;
 
 form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm
 {
+
+	.paging{
+		position:relative;
+		top:-73px;
+		float:right;
+		
+		#TreasurePXv9g{width:30px;}
+		@media @mq-site-width {
+			#TreasurePXv9g{width:50px;}
+			top: 0;
+			float:none;
+			font-size:110%;
+			
+		}
+	}
+	
+	.results{
+		position:relative;
+		top:-2px;
+		left: 645px;
+		@media @mq-site-width {
+//display: none;
+			left: 0;
+			top: 0;
+			font-size:110%;
+		}
+	}
 	.the-boxs{
 		@media @mq-site-width {
 			display: none;
@@ -1052,16 +1082,7 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm
 		
 }
 	div{
-		.pagging
-		{position:relative;top:-73px;float:right;text-align:right;
 
-		.results{
-		position:relative;
-		top:52px;
-		
-		}
-		#TreasurePXv9g{width:30px;}
-		}
 		input#TreasureCfm{
 			margin-left:74px;
 		}
@@ -1302,6 +1323,11 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm
 		@media @mq-site-width {
 			border: 0px;
 			margin: 0 0 -17px 0;
+			position: relative;
+			top: -95px;
+			left: 0;
+			float: right;
+			width:42%;
 		}
 		}	
 }

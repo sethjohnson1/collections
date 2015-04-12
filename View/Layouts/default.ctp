@@ -7,7 +7,7 @@
 <link rel="icon" sizes="196x196" href="http://collections.centerofthewest.org/img/truckerhat.png">
 <meta name="mobile-web-app-capable" content="yes">
 
-<meta name="viewport" content="width=device-width,user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width,user-scalable=1, minimum-scale=1.0, maximum-scale=4.0">
 
 <meta name="apple-mobile-web-app-title" content="Center of the West Online Collections">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -65,9 +65,6 @@
 #mc_embed_signup #num-subscribers span {padding:.5em; border:1px solid #ccc; margin-right:.5em; font-weight:bold;}	
 </style>
 
-
-
-
 	<?php echo $this->Html->charset(); 
 	echo $this->Html->meta('icon', $this->Html->url('http://collections.centerofthewest.org/img/truckerhat.ico'));
 	echo $this->Html->script('ZoomifyImageViewer');
@@ -77,10 +74,6 @@
 	echo $this->Html->script('placeholders.min');		//added to automagicly fix the placeholders in older versions of IE
 	echo $this->Html->script('modernizr');				//addded to help with older versions of ie like 
 	echo $this->Html->script('jquery-ui-1.10.3.custom.min');
-	//echo $this->Html->script('ajax-chosen.min');
-    //echo $this->Html->script('jquery.autocomplete.min');
-    //echo $this->Html->script('jquery.uix.multiselect.min');
-	//echo $this->Html->css('jquery.autocomplete');
 	
 	echo $this->Html->css('http://cdn.jsdelivr.net/select2/3.4.8/select2.css');
 	echo $this->Html->script('http://cdn.jsdelivr.net/select2/3.4.8/select2.min.js');
@@ -95,8 +88,6 @@
 	
 	//my script uses jQuery, so it only works when loaded AFTER!
 	echo $this->Html->script('sj_cookie1');	
-	//this one too
-
 	echo $this->Html->meta('icon');
 	echo $this->fetch('meta');
 	echo $this->fetch('css');
@@ -115,7 +106,7 @@
 	if(!empty($TheDescription))	
 		echo '<meta name="description" content="'.$TheDescription.'">';
 	else
-		echo '<meta name="description" content="The Buffalo Bill Center of the West shares our online collections with these images to give you a glimpse of thousands of photographs and objects from our vast artifact collections">';
+		echo '<meta name="description" content="The Buffalo Bill Center of the West Online Collection contains nearly every photographed object in our database.">';
 
 	
 	if(!empty($FeaturedImage))	
@@ -295,4 +286,41 @@ Cody, Wyoming 82414<br>
 <footer class="site-footer" role="contentinfo" itemscope="itemscope" itemtype="http://schema.org/WPFooter"><div class="wrap"><p><span class="creds">©&nbsp;<?php echo date("Y"); ?> Buffalo Bill Center of the West. All rights reserved.</span>
  	<span class="smithsonian">Smithonian Affiliations</span>
  	<span class="aam"><abbr title="The American Alliance of Museums">AAM</abbr></span></p></div></footer>    
-  </div></body>
+  </div>
+  <!-- loader Gif stuff -->
+<style> 
+.modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('http://192.168.1.119/collections/img/ajax-loader.gif') 
+                50% 50% 
+                no-repeat;
+}
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading {
+    overflow: hidden;   
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .modal {
+    display: block;
+}
+</style>
+  <div class="modal"><!-- for loader GIF--></div>
+<script>
+$body = $("body");
+
+$(document).on({
+    ajaxStart: function() { $body.addClass("loading");    },
+     ajaxStop: function() { $body.removeClass("loading"); }    
+});
+</script> 
+  </body>

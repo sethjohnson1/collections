@@ -73,18 +73,17 @@ echo $this->Html->link('Advanced Search',$adv).'<br />';
 
 </div>
 <div class="treasure-search">
-	<?php
-
-		echo $this->Form->create('Treasure');
-		//echo '<div id="oid-search">'.$this->Chosen->select('Treasure.o',array(),array('data-placeholder' => 'Search by Object ID','onchange'=>'this.form.submit()')).'</div>';
-		echo '<div id="oid-search">';
-		echo $this->Form->input('Treasure.o',array('type'=>'hidden','onchange'=>'this.form.submit()'));
-		echo '</div>';
+<?=$this->Form->create('Treasure')?>
+		<div id="oid-search">
+		<?=$this->Form->input('Treasure.o',array('type'=>'hidden','onchange'=>'this.form.submit()'))?>
+		</div>
 		
 
-	    echo $this->Form->input('searchall', array('div' => FALSE,'empty'=>true,'label'=>'','placeholder'=>'Search all Fields'));	 		
-	    echo $this->Form->submit('/img/glass.png', array('div' => true));	
-		echo '<div class="the-boxs" id="boxs">';
+	    <?
+		echo $this->Form->input('searchall', array('div' => FALSE,'empty'=>true,'label'=>'','placeholder'=>'Search all Fields'));	 		
+	    echo $this->Form->submit('/img/glass.png', array('div' => true));
+?>		
+		<div class="the-boxs" id="boxs"><?
 		if(empty($this->params['named'])){
 			echo $this->Form->checkbox('bbm',array('div'=>false, 'class'=>'chkxbox','checked'=>1)).'Buffalo Bill Museum    ';
 			echo $this->Form->checkbox('cfm',array('div'=>false, 'class'=>'chkxbox','checked'=>1)).'Cody Firearms Museum ';
@@ -103,27 +102,26 @@ echo $this->Html->link('Advanced Search',$adv).'<br />';
 		echo $this->Form->checkbox('d',array('div'=>false, 'class'=>'chkxbox')).'Show only items on display<br />';
 
 ?>
+     
+		</div>		
+		
+		<div class="paging">
+				
+			<?php 
+					echo $this->Paginator->prev('< ' . __('previous '), array(), null, array('class' => 'prev disabled'));
+					//use JS for the 'go to page' field so it only submits if changed, otherwise the value is ignored and does not become part of the named params
+					echo $this->Form->input('pXv_9g', array('div' => false,'name'=>'goto','onchange'=>'document.getElementById("TreasurePXv9g").setAttribute("name","data[Treasure][pXv_9gg]");','empty'=>true,'label'=>'Page ','default'=>$this->params['paging']['Treasure']['page']));	 
+					echo $this->Paginator->counter(array('format' => __(' of {:pages} ')));
+					echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
+				?>
+					
+		</div>  
+		<div class="results">
+					<?=$this->Form->input('n',array('div'=>false,'options'=>array(25=>25,50=>50,75=>75,100=>100),'default'=>$limit,'label'=>'Results per Page ','onchange'=>'this.form.submit()'))?>
+		</div>
 
-<div class="pagging">
-	
-<?php 
-		echo $this->Paginator->prev('< ' . __('previous '), array(), null, array('class' => 'prev disabled'));
-		//use JS for the 'go to page' field so it only submits if changed, otherwise the value is ignored and does not become part of the named params
-		echo $this->Form->input('pXv_9g', array('div' => false,'name'=>'goto','onchange'=>'document.getElementById("TreasurePXv9g").setAttribute("name","data[Treasure][pXv_9gg]");','empty'=>true,'label'=>'Page ','default'=>$this->params['paging']['Treasure']['page']));	 
-		echo $this->Paginator->counter(array('format' => __(' of {:pages} ')));
-		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
-		echo'<div class="results">';
-		echo $this->Form->input('n',array('div'=>false,'options'=>array(25=>25,50=>50,75=>75,100=>100),'default'=>$limit,'label'=>'Results per Page ','onchange'=>'this.form.submit()'));
-		echo '</div>';
-?>	
-</div>       
-
-<?		echo '</div>';		
-
-
-
+<?
 		echo $this->Form->end();
-		//echo $this->Html->script('sj_autocp1');
 		echo $this->Js->writeBuffer();
 ?>
 </div>
@@ -139,10 +137,10 @@ echo $this->Html->link('Advanced Search',$adv).'<br />';
 
     <div class="g-plusone" data-href="<? echo 'http://collections.centerofthewest.org'.$this->here.'?utm_source=googleplus&utm_campaign=onlinecollections'?>"></div>
 
-    <div style="display: inline-block;">
+    <!--div style="display: inline-block;">
 	<a href="https://twitter.com/share" class="twitter-share-button" data-via="centerofthewest" data-hashtags="OnlineCollections" data-url="<? echo $TWshorturl;?>">Tweet</a>
 	<script type="text/javascript" src="//www.reddit.com/static/button/button1.js"></script>
-	</div>
+	</div-->
 	
 
 	</div><?
