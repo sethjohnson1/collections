@@ -108,7 +108,7 @@ echo $this->Html->link('Advanced Search',$adv).'<br />';
 		<div class="paging">
 				
 			<?php 
-					echo $this->Paginator->prev('< ' . __('previous '), array(), null, array('class' => 'prev disabled'));
+					echo $this->Paginator->prev('< ' . __('prev '), array(), null, array('class' => 'prev disabled'));
 					//use JS for the 'go to page' field so it only submits if changed, otherwise the value is ignored and does not become part of the named params
 					echo $this->Form->input('pXv_9g', array('div' => false,'name'=>'goto','onchange'=>'document.getElementById("TreasurePXv9g").setAttribute("name","data[Treasure][pXv_9gg]");','empty'=>true,'label'=>'Page ','default'=>$this->params['paging']['Treasure']['page']));	 
 					echo $this->Paginator->counter(array('format' => __(' of {:pages} ')));
@@ -217,7 +217,10 @@ if ($usergals && $this->request['action']=='index') :
 	<hr style="clear:both">
 	</div>
 <?endif;
+?>
 
+
+<?
 foreach ($treasures as $treasure):
 
 //debug($treasure);

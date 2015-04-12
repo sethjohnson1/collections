@@ -79,6 +79,8 @@
 	echo $this->Html->script('http://cdn.jsdelivr.net/select2/3.4.8/select2.min.js');
 
 	echo $this->Html->script('select2_fields');
+	echo $this->Html->script('jquery.jpanelmenu');
+	//echo $this->Html->css('slideout');
 
 
 
@@ -93,8 +95,8 @@
 	echo $this->fetch('css');
 	echo $this->fetch('script');
 	echo $this->Html->css('center_of_the_west');
-    echo $this->Html->script('add2home');
-	echo $this->Html->css('add2home');	
+    //echo $this->Html->script('add2home');
+	//echo $this->Html->css('add2home');	
 ?>
 
 <?php 
@@ -157,16 +159,28 @@ s.parentNode.insertBefore(ga, s);
 </li>
 <li id="menu-item-8291" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-8291"><a href="http://centerofthewest.org/get-involved/">Support<small class="nav-desc"> </small></a>
 </li></ul></nav></div></header>
+
+
 <div class="site-inner"><div class="wrap"><div class="content-sidebar-wrap"><main class="content" role="main" itemprop="mainContentOfPage"><article class="post-10546 page type-page status-draft entry" itemscope="itemscope" itemtype="http://schema.org/CreativeWork"><header class="entry-header">
 </header><div class="entry-content" itemprop="text">
 <?php echo $this->Session->flash(); ?>
+
 <?php echo $this->fetch('content'); ?>
-</div></article></main></div><aside class="sidebar-secondary" style="margin-top:10px;">
+</div></article></main></div>
+<div id="mobilebuttons">
+
+<button class="toggle-button">☰ Menu</button>
+<!-- eventually this will trigger a social sign-in popup similar to iScout -->
+<!-- button class="login-button">&#9733; Login</button -->
+</div>
+<aside class="sidebar-secondary" style="margin-top:10px;">
 
 <h1 class="OC-header"><?php echo $this->Html->link('Online Collections', array('plugin'=>'','controller' => 'treasures','action' => 'index')); ?></h1>
 
-<section id="nav_menu-7" class="widget widget_nav_menu"><div class="widget-wrap">
-  <div>
+
+<section id="nav_menu-7" class="widget widget_nav_menu">
+<div class="widget-wrap">
+<div id="mainmenu">
 	
 <ul class="menu">
 
@@ -208,10 +222,14 @@ s.parentNode.insertBefore(ga, s);
 
 		
 </ul>
-
-<?php //seth added these other menus for Proof-of-Concept ?>
   
-  </div></div></section></aside></div></div>  
+  </div><!-- /mainmenu -->
+  </div></section>
+  </aside></div></div>  
+  
+
+  
+  
   <div class="footer-top-bar">
 		<div class="wrap">
 			<div class="our-blogs">Our Blogs: <a href="http://centerofthewest.org/center-west-blogs/">View all the blogs from the Center of the West</a></div>
@@ -316,11 +334,13 @@ body.loading .modal {
 </style>
   <div class="modal"><!-- for loader GIF--></div>
 <script>
-$body = $("body");
-
-$(document).on({
-    ajaxStart: function() { $body.addClass("loading");    },
-     ajaxStop: function() { $body.removeClass("loading"); }    
+//call this after the menu is drawn, this is for mobile slide-out menu
+var jPM = $.jPanelMenu();
+var jPM = $.jPanelMenu({
+    menu: '#mainmenu',
+    trigger: '.toggle-button'
 });
+jPM.on();
+
 </script> 
   </body>

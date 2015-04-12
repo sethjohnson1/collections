@@ -1113,12 +1113,14 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm
 	}
 
 .treasure-search{
-
-	
-	padding-top:6px;
 	border:1px dashed #ede9e7;
 	border-left:none;
 	border-right:none;
+	
+	@media @mq-site-width {
+		//margin-top:-21px;
+		border: 0;
+	}
 }
 
 #post-comments > div > ul > li > ul > li > ul > li > ul,#post-comments > div > ul > li > ul > li > ul > li,#post-comments > div > ul > li > ul > li,#post-comments > div > ul{list-style:none;}
@@ -1309,6 +1311,71 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm
 		
 	}
 }
+/* overriding things located in base.less for mobile menu */
+#jPanelMenu-menu{
+	background-color: @antique-white;
+	overflow-y:auto !important;
+	
+	ul.menu, ul.browse-menu{
+		box-shadow: -6px 2px 15px #888888;
+		background-color: #FFFFFF;
+		list-style: none;
+		li{
+			border-bottom: 1px dotted #999;
+			border-width: 1px 0;
+			padding:0;
+		}
+		
+		li a {
+			color: @sandstone;
+			display: block;
+			padding: 5px;
+			text-decoration: none;
+		}
+		li a:hover {
+			color: @burnt-orange;
+		}
+	}
+}
+#mainmenu{
+	@media @mq-site-width {
+		display:none;
+		
+		ul{
+		list-style: none;
+    background: #111;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+		}
+	}
+}
+
+#mobilebuttons{
+	display:none;
+	@media @mq-site-width {
+		display:block;
+		width:100%;
+		position: relative;
+		top: -34px;
+		button{
+			margin-right:10px;
+			font-size:159%;
+		}
+		.login-button{
+			float:left;
+		}
+		.toggle-button{
+			float:left;
+		}
+	}
+}
+
 
 .sidebar-secondary{
 		

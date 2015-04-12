@@ -352,7 +352,14 @@ div#yelp-biz-badge-rrc-6cb5BilSTwFTX0efyAi7lQ a img{width:136px !important;}
 	.em(10);
 	padding-top: 12px;
 	color: @beige;
-	@media @mq-site-width{display:none !important;}
+	@media @mq-site-width{
+		position: relative;
+		max-width:100%;
+		top:-24px;
+		left:-20px;
+		font-size:81%;
+		
+	}
 }
 
 
@@ -378,17 +385,6 @@ div#yelp-biz-badge-rrc-6cb5BilSTwFTX0efyAi7lQ a img{width:136px !important;}
 	color: @beige;
 	font-style: italic;
 	margin-bottom: 3em;
-}
-
-.widget {
-	ul {
-		margin: 1em 0;
-		padding: 0;
-		list-style: none;
-		@media @mq-site-width {
-			display:none;
-		}
-	}
 }
 
 .sidebar-primary {
@@ -422,22 +418,20 @@ div#yelp-biz-badge-rrc-6cb5BilSTwFTX0efyAi7lQ a img{width:136px !important;}
 	}
 
 }
-
-.sidebar-secondary {
-	font-family: @sans-serif_medium;
-	@media @mq-site-width{margin-top:0px !important;}
-	.em(13);
-	ul {
-/*		width:60%;*/
+	ul.menu {
+		margin: 1em 0;
+		padding: 0;
+		list-style: none;
 		li {
 			border-top: 1px dashed @warm-gray;
 			padding: 1em 0;
-			@media @mq-site-width{
+			/*@media @mq-site-width{
 			border-top:none;
 			float:left;
 			padding-left:7px;
 			:after{content:" | "}
-			}
+			
+			}*/
 		}
 		ul {
 			display: none;
@@ -452,6 +446,10 @@ div#yelp-biz-badge-rrc-6cb5BilSTwFTX0efyAi7lQ a img{width:136px !important;}
 			color: @burnt-orange;
 		}
 	}
+.sidebar-secondary {
+	font-family: @sans-serif_medium;
+	/*@media @mq-site-width{margin-top:0px !important;}*/
+	.em(13);
 	a,
 	a:visited {
 		color: @gray;
