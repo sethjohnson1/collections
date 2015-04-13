@@ -27,11 +27,15 @@
 
 @site-width:            1002px;
 
+@zoomify-width:            600px;
+
 // Breakpoints
 @breakpoint-site-width: "@{site-width}";
+@breakpoint-zoomify-width: "@{zoomify-width}";
 
 // MQs
 @mq-site-width:  ~"only screen and (max-width: @{breakpoint-site-width})";
+@mq-zoomify-width:  ~"only screen and (max-width: @{breakpoint-zoomify-width})";
 @mq-tablet-ipad:  ~"only screen and (min-device-width : 768px) and (max-device-width : 1024px)";/*iPads (portrait and landscape)*/
 @mq-smartphone:  ~"only screen and (min-device-width : 320px) and (max-device-width : 480px)";/*Smartphones (portrait and landscape)*/
 

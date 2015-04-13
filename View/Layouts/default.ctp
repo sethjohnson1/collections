@@ -208,7 +208,7 @@ s.parentNode.insertBefore(ga, s);
 </ul>
 <ul class="browse-menu">
         
-       		<li class="browse-item heading">Browse Museums</li>
+       		<li class="browse-item heading"><strong>Browse Museums</strong></li>
             <li class="browse-item" <?php if(!empty($this->params['controller'])=='treasures'){if(!empty($this->params['data']['Treasure']['bbm'])==1){echo 'id="glower" ';}}?>>
 			<?php echo $this->Html->link(__('> Buffalo Bill'),array('plugin'=>'','controller' => 'treasures','action' => 'index'.'/bbm:1/wg:0/cfm:0/pim:0/dmnh:0/')); ?> 
             </li>

@@ -66,7 +66,7 @@ echo $this->Html->link('Advanced Search',$adv).'<br />';
 		
 
 	    <?
-		echo $this->Form->input('searchall', array('div' => FALSE,'empty'=>true,'label'=>'','placeholder'=>'Search all Fields','class'=>'searchbox'));	 		
+		echo $this->Form->input('searchall', array('div' => FALSE,'empty'=>true,'label'=>'','placeholder'=>'Search all Fields','class'=>'searchbox indexsearch'));	 		
 	    echo $this->Form->submit('/img/glass.png', array('div' => true));
 ?>		
 		<div class="the-boxs" id="boxs"><?

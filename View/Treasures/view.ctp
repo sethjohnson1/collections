@@ -87,18 +87,42 @@ if(!empty($file))
 if(!empty($treasure['Treasure']['opencartid']))
 	echo'<p style="float:left;font-weight:bold;font-size:0.9em"><a href="http://prints.centerofthewest.org/index.php?route=product/product&product_id='.$treasure['Treasure']['opencartid'].'">Purchase a Museum Quality Repoduction</a></p>';
 
-	?>
-<div class="share-links">
+
+if (count($treasure['Image'])>1):?>
+<div class="related-img">
+<?	
+	foreach ($treasure['Image'] as $image):
+		$file = file_get_contents("http://collections.centerofthewest.org/zoomify/".$image['sortorder']."/".str_replace(' ','_',str_replace('#','',$image['name']))."/ImageProperties.xml");?>
+
+	<div class="the-related-objects" style="background-image: url('http://collections.centerofthewest.org/zoomify/<?=$image['sortorder'].'/'.str_replace(' ','_',str_replace('#','',$image['name']))?>/TileGroup0/0-0-0.jpg');">
+	
+	<a href="#" onclick="" onMouseDown="Z.Viewer.setImagePath('http://collections.centerofthewest.org/zoomify/<?=$image['sortorder'].'/'.str_replace(' ','_',str_replace('#','',$image['name']))?>')" onTouchStart="Z.Viewer.setImagePath('http://collections.centerofthewest.org/zoomify/<?=$image['sortorder'].'/'.$image['name']?>')"><?=$this->Html->image('transparent.png',array('width'=>'100','height'=>'100'))?></a></div>
+	
+	<?endforeach?>
+</div>
+<?endif?>
+<!--div id="mobileview">
+<div class="imgcontainer">
+<a href="
+<?='http://collectionimages.s3-website-us-west-1.amazonaws.com/1/'.urlencode(str_replace(' ','_',$treasure['Treasure']['img']))?>
+">
+<img src="http://collections.centerofthewest.org/zoomify/1/<?=str_replace(' ','_',str_replace('#','',$treasure['Treasure']['img']))?>/TileGroup0/0-0-0.jpg"></a>
+</div>
+</div --> <!-- /mobileview -->
+<!--div class="share-links">
     <div id="fb-root"></div>
     <div class="fb-like" data-href="https://www.facebook.com/centerofthewest" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
 
     <div class="fb-share-button" data-href="<? echo 'http://collections.centerofthewest.org'.$this->here.'?utm_source=facebook&utm_campaign=onlinecollections' ?>" data-type="button_count"></div>
 
     <div class="g-plusone" data-href="<? echo $GPshorturl;?>"></div>
-    <div style="display: inline-block;"><a href="https://twitter.com/share" class="twitter-share-button" data-via="centerofthewest" data-hashtags="OnlineCollections" data-url="<? echo $TWshorturl;?>">Tweet</a></div>
-    <script type="text/javascript" src="//www.reddit.com/static/button/button1.js"></script>
-</div>
+
+</div-->
 <div class="clear"></div>
+<div class="info-container">
+<?
+
+?>
 <div class="data">
 <?php if(!empty($treasure['Treasure']['objtitle']))echo '<p><span class="field-name">Object name: </span> '. $treasure['Treasure']['objtitle'].'</p>'; 
 if(!empty($treasure['Treasure']['accnum']))echo '<p><span class="field-name">Accession Number:</span> '.$treasure['Treasure']['accnum'].'</p>';
@@ -196,27 +220,57 @@ if(!empty($treasure['Treasure']['inscription']))echo '<p><span class="field-name
 
 
 if(!empty($treasure['Treasure']['synopsis']))echo '<p><span class="field-name">Synopsis: </span>'.$treasure['Treasure']['synopsis'].'</p>';
+
+?>
+
+</div><!-- /data -->
+<?
+
 /*Related Relations Section*/
-if(!empty($treasure['Relation'])){
-echo '<h3 style="margin:5px 0px 10px 0px;">Related Content</h3>';
-	foreach ($treasure['Relation'] as $article){
+if(!empty($treasure['Relation'])):?>
+<span>
+<h3 style="margin:5px 0px 10px 0px;">Related Articles</h3>
+	<?foreach ($treasure['Relation'] as $article):
 		$strJson = @file_get_contents('http://centerofthewest.org/wp-json/posts/'.$article['blogid'].'/');
 		$arrJson = json_decode($strJson,true);
-		if(!empty($arrJson['featured_image']['source'])){
-			echo '<p><a href="'.$arrJson['link'].'">'.$arrJson['title'].'</a> - By '.$arrJson['author']['name'];
-			echo '<br/><a href="'.$arrJson['link'].'" style="background-color:#ede9e7;display: block;width: 50%;position: relative;height: 0;padding: 20% 0 0 0;overflow: hidden;float:left;"><img src="'.$arrJson['featured_image']['source'].'"style="position: absolute;display: block;max-width: 100%;max-height: 100%;left: 0;right: 0;top: 0;bottom: 0;margin: auto;"></a>';
-			echo strip_tags(substr($arrJson['content'],0,150)).'...<br><a href="'.$arrJson['link'].'" class="">&#x25ba; Read More</a>';		
-			
-		}
-		else
+		if(!empty($arrJson['featured_image']['source'])):?>
+		<p style="text-align:justify;"><a href="<?=$arrJson['link']?>"><?=$arrJson['title']?></a>
+		<br/><span style="font-style: italic; font-size:90%"> By <?=$arrJson['author']['name']?></span><br />
+		<?=strip_tags(substr($arrJson['content'],0,100)).'...<br><a href="'.$arrJson['link'].'" class="">&#x25ba; Read More</a>';	
+		endif;?>
+		
+		</p>
+		<hr />
+	<?endforeach;?>
+</span>
+<?endif;
+if(!empty($treasure['Usergal'])):?>
+<span>
+<h3 style="margin:5px 0px 10px 0px;">Virtual Galleries</h3>
+<p>
+	<?foreach ($treasure['Usergal'] as $gal):
+	
+		$img_link='http://collections.centerofthewest.org/zoomify/1/'.str_replace(' ','_',str_replace('#','',$gal['img'])).'/TileGroup0/0-0-0.jpg';?>
+
+			<?
+			echo $this->Html->link($gal['name'],array('controller' => 'usergals','action' => 'view', $gal['id'])).'<span style="font-style: italic; font-size:90%"> - Curated by: '.$gal['creator'].'</span>';
+			echo '<br/>';?>
+	
+<?
+		if(!empty($gal['TreasuresUsergal']['comments']))
 		{
-			echo '<p>Invalid POST ID</p>';
-		//	break;
+	
+			echo $gal['TreasuresUsergal']['comments'].'<br />';		
 		}
-		echo '</p><hr style="clear:both;">';
-	}
-}
-/*Related Relations Section*/
+		//echo '<hr style="clear:both;">';
+	endforeach;?>
+	
+	</p>
+	</span>
+<?endif;
+
+//this was for the beginning of an AJAX login. It worked sort of but kept redirecting so I commented out
+//echo ' <button id="login-button">Login</button>';
 
 //sj break here for CommentPlugin 
 
@@ -226,47 +280,12 @@ echo '<h3 style="margin:5px 0px 10px 0px;">Related Content</h3>';
 //but the plugin itself has layouts in
 //  Plugin/Comments/View/Elements for each structure (tree, flat, threaded)
 // my tests have found 'tree' to be a good display, but the data is all stored the same
-?>
-
-<?php
-//debug($treasure);
-if(!empty($treasure['Usergal']))
-{
-echo '<h3 style="margin:5px 0px 10px 0px;">Virtual Galleries</h3><p>';
-	foreach ($treasure['Usergal'] as $gal)
-	{
-		$img_link='http://collections.centerofthewest.org/zoomify/1/'.str_replace(' ','_',str_replace('#','',$gal['img'])).'/TileGroup0/0-0-0.jpg';
-			echo '<p>';
-			echo $this->Html->link($gal['name'],array('controller' => 'usergals','action' => 'view', $gal['id'])).' - Curated by: '.$gal['creator'];
-			//<a href="'..'">'.$arrJson['title'].'</a> - By '.$arrJson['author']['name'];
-			//not using cakePHP convention here.. Probably should at some point
-			echo '<br/>';
-
-			echo '<a href="http://collections.centerofthewest.org/usergals/view/'.$gal['id'].'" style="background-color:#ede9e7;display: block;width: 50%;position: relative;height: 0;padding: 20% 0 0 0;overflow: hidden;float:left;"><img src="'.$img_link.'"style="position: absolute;display: block;max-width: 100%;max-height: 100%;left: 0;right: 0;top: 0;bottom: 0;margin: auto;"></a>';
-			//echo strip_tags(substr($arrJson['content'],0,150)).'...<br><a href="'.$arrJson['link'].'" class="">&#x25ba; Read More</a>';	
-			
-			echo '</p>';
-//debug($gal);
-		if(!empty($gal['TreasuresUsergal']['comments']))
-		{
-			//echo '<span class="author">From '.$this->Html->link($gal['creator'],array('controller' => 'usergals','action' => 'view', $gal['id'])).'\'s Virtual Exhibit</span>: ';		
-			echo $gal['TreasuresUsergal']['comments'].'<br />';		
-		}
-		echo '<hr style="clear:both;">';
-	}
-	
-	echo '</p><br style="clear:both;">';
-}
-
-//this was for the beginning of an AJAX login. It worked sort of but kept redirecting so I commented out
-//echo ' <button id="login-button">Login</button>';
  ?>
-
-
+</div><!-- /info-container -->
+<div style="clear:both"></div>
 <div id="post-comments">
     <?php $this->CommentWidget->options(array('allowAnonymousComment' => false));?>
     <?php echo $this->CommentWidget->display();?>
-</div>
 </div>
 <?    $this->Js->get('#login-button')->event(
             'click', $this->Js->request(
@@ -280,28 +299,6 @@ echo '<h3 style="margin:5px 0px 10px 0px;">Virtual Galleries</h3><p>';
 	echo $this->Js->writeBuffer();
 
 ?>
-
-
-<?php 
-if (!empty($treasure['Image']))
-{
-	echo '<div class="related-img">';
-	echo '<h2>More Images</h2>';	
-	foreach ($treasure['Image'] as $image){
-		$file = file_get_contents("http://collections.centerofthewest.org/zoomify/".$image['sortorder']."/".str_replace(' ','_',str_replace('#','',$image['name']))."/ImageProperties.xml");
-
-echo'<div class="the-related-objects" style="background-image: url(\'http://collections.centerofthewest.org/zoomify/'.$image['sortorder'].'/'.str_replace(' ','_',str_replace('#','',$image['name'])).'/TileGroup0/0-0-0.jpg\');">';
-echo'<a href="#" onclick="" onMouseDown="Z.Viewer.setImagePath(\'http://collections.centerofthewest.org/zoomify/'.$image['sortorder'].'/'.str_replace(' ','_',str_replace('#','',$image['name'])).'\')" onTouchStart="Z.Viewer.setImagePath(\'http://collections.centerofthewest.org/zoomify/'.$image['sortorder'].'/'.$image['name'].'\')">'.$this->Html->image('transparent.png',array('width'=>'100','height'=>'100')).'</a></div>';
-
-
-
-
-
-		
-		
-	}
-echo '</div>';
-}?>
 
 <div style="margin-bottom:25px;">&nbsp;</div>
 <? //debug($commentsData);?>

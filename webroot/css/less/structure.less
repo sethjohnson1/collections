@@ -846,11 +846,15 @@ width:100%;
 				.invisible{display:none;position:absolute}
 	
 	}
-	#myContainer{ 
-		width:720px; height:425px; border:1px; border-style:solid; border-color:#696969;
+	#myContainer{
+		width:100%; height:425px; border:1px; border-style:solid; border-color:#696969;
+		
 		#non{
 			height:100%;
 			margin-left:10%;
+		}
+		@media @mq-zoomify-width {
+			//display: none;
 		}		
 	}
 	#myContainerCFM{ 
@@ -860,8 +864,14 @@ width:100%;
 			margin-left:20%;
 		}
 	}
+	.info-container{
+		width:774px;
+		@media @mq-site-width {
+			width:100%;
+		}
+	}
 	div.data{		
-		width:530px;
+		width:548px;
 		float:left;
 		padding-bottom:20px;
 		margin-right: 20px;
@@ -878,12 +888,16 @@ width:100%;
 			span.field-name{
 				font-family:@sans-serif_bold;
 				font-color:@gray;
-				
-				
-				
 			}
 		}
+		@media @mq-site-width {
+			width:100%;
+		}
+	}
 	
+	.right-column{
+		float:left;
+		display:inline;
 	}
 
 	.left{
@@ -945,6 +959,13 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm,form#UsergalSe
 		@media @mq-site-width {
 			width: 97%;
 			height:42px;
+			font-size:130%;
+		}
+	}
+	
+	.indexsearch{
+		font-size: 100%;
+		@media @mq-site-width {
 			font-size:130%;
 		}
 	}
@@ -1207,8 +1228,8 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm,form#UsergalSe
 }
 #dialog-confirm{display:none;}
 .related-img{
-	width:225px;
-	float:right;
+	width:100%;
+	//float:right;
 	h2{margin:0 43px;}
 	.the-related-objects{
 			margin:6px 6px;
@@ -1219,6 +1240,10 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm,form#UsergalSe
 			background-repeat:no-repeat;
 			background-position:center;
 			background-size:contain;
+			@media @mq-smartphone {
+				height: 50px;
+				width: 50px;
+			}
 		
 	}
 }
@@ -1309,11 +1334,16 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm,form#UsergalSe
 		}	
 }
 ul.browse-menu{
+	list-style:none;
+	margin-left:-45px;
+	@media @mq-site-width {
+		margin-left:-34px;
+	}
 	.browse-item
 		{border:none !important;
 		padding:0px;
 		font-family:@sans-serif;
-		font-family:10px !IMPORTANT;
+		//font-family:10px !IMPORTANT;
 		padding-left:10px;
 		}
 	.heading
