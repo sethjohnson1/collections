@@ -304,34 +304,7 @@ Cody, Wyoming 82414<br>
  	<span class="smithsonian">Smithonian Affiliations</span>
  	<span class="aam"><abbr title="The American Alliance of Museums">AAM</abbr></span></p></div></footer>    
   </div>
-  <!-- loader Gif stuff -->
-<style> 
-.modal {
-    display:    none;
-    position:   fixed;
-    z-index:    1000;
-    top:        0;
-    left:       0;
-    height:     100%;
-    width:      100%;
-    background: rgba( 255, 255, 255, .8 ) 
-                url('http://192.168.1.119/collections/img/ajax-loader.gif') 
-                50% 50% 
-                no-repeat;
-}
-/* When the body has the loading class, we turn
-   the scrollbar off with overflow:hidden */
-body.loading {
-    overflow: hidden;   
-}
 
-/* Anytime the body has the loading class, our
-   modal element will be visible */
-body.loading .modal {
-    display: block;
-}
-</style>
-  <div class="modal"><!-- for loader GIF--></div>
 <script>
 //call this after the menu is drawn, this is for mobile slide-out menu
 var jPM = $.jPanelMenu();
