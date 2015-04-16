@@ -85,7 +85,7 @@ if(!empty($file))
 
 //Prints Links
 if(!empty($treasure['Treasure']['opencartid']))
-	echo'<p style="float:left;font-weight:bold;font-size:0.9em"><a href="http://prints.centerofthewest.org/index.php?route=product/product&product_id='.$treasure['Treasure']['opencartid'].'">Purchase a Museum Quality Repoduction</a></p>';
+	echo'<p style="float:left;font-weight:bold;font-size:0.9em"><a href="http://prints.centerofthewest.org/index.php?route=product/product&product_id='.$treasure['Treasure']['opencartid'].'">Purchase a Museum Quality Reproduction</a></p>';
 
 
 if (count($treasure['Image'])>1):?>
