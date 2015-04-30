@@ -65,7 +65,9 @@
 #mc_embed_signup #num-subscribers span {padding:.5em; border:1px solid #ccc; margin-right:.5em; font-weight:bold;}	
 </style>
 
-	<?php echo $this->Html->charset(); 
+<?php 
+
+	echo $this->Html->charset(); 
 	echo $this->Html->meta('icon', $this->Html->url('http://collections.centerofthewest.org/img/truckerhat.ico'));
 	echo $this->Html->script('ZoomifyImageViewer');
 	
