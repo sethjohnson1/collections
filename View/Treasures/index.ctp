@@ -59,62 +59,67 @@ echo $this->Html->link('Advanced Search',$adv).'<br />';
 
 </div>
 <div class="treasure-search">
-<?=$this->Form->create('Treasure')?>
-		<div id="oid-search">
+<?=$this->Form->create('Treasure',array('class'=>'form-inline'))?>
+		<div id="oid-search" class="col-md-6">
 		<?=$this->Form->input('Treasure.o',array('type'=>'hidden','onchange'=>'this.form.submit()'))?>
 		</div>
 		
 
 	    <?
-		echo $this->Form->input('searchall', array('div' => FALSE,'empty'=>true,'label'=>'','placeholder'=>'Search all Fields','class'=>'searchbox indexsearch'));	 		
+		echo $this->Form->input('searchall', array('div' => FALSE,'empty'=>true,'label'=>'','placeholder'=>'Search the Collection','class'=>'searchbox indexsearch form-control'));	 		
 	    echo $this->Form->submit('/img/glass.png', array('div' => true));
 ?>		
-		<div class="the-boxs" id="boxs"><?
-		if(empty($this->params['named'])){
-			echo $this->Form->checkbox('bbm',array('div'=>false, 'class'=>'chkxbox','checked'=>1)).'Buffalo Bill Museum    ';
-			echo $this->Form->checkbox('cfm',array('div'=>false, 'class'=>'chkxbox','checked'=>1)).'Cody Firearms Museum ';
-			echo $this->Form->checkbox('dmnh',array('div'=>false, 'class'=>'chkxbox','checked'=>1)).'Draper Natural History Museum<br>';
-			echo $this->Form->checkbox('wg',array('div'=>false, 'class'=>'chkxbox','checked'=>1)).'Whitney Western Art Museum';
-			echo $this->Form->checkbox('pim',array('div'=>false, 'class'=>'chkxbox','checked'=>1)).'Plains Indian Museum';
-		}
-		else{
-			echo $this->Form->checkbox('bbm',array('div'=>false, 'class'=>'chkxbox')).'Buffalo Bill Museum    ';
-			echo $this->Form->checkbox('cfm',array('div'=>false, 'class'=>'chkxbox')).'Cody Firearms Museum ';
-			echo $this->Form->checkbox('dmnh',array('div'=>false, 'class'=>'chkxbox')).'Draper Natural History Museum<br>';
-			echo $this->Form->checkbox('wg',array('div'=>false, 'class'=>'chkxbox')).'Whitney Western Art Museum';
-			echo $this->Form->checkbox('pim',array('div'=>false, 'class'=>'chkxbox')).'Plains Indian Museum';
-		}
 
-		echo $this->Form->checkbox('d',array('div'=>false, 'class'=>'chkxbox')).'Show only items on display<br />';
-
+<div class="row">
+		<?
+		$boxoptions=array(
+			'div'=>false,
+			'class'=>'form-control'
+		);
+		if(empty($this->params['named'])) $boxoptions['checked']=1;
 ?>
+<div class="col-md-3">
+<?
+echo $this->Form->checkbox('bbm',$boxoptions).' Buffalo Bill';
+?>
+</div>
+<div class="col-md-3">
+<?
+echo $this->Form->checkbox('wg',$boxoptions).' Western Art';?>
+</div>
+<div class="col-md-3">
+<?
+echo $this->Form->checkbox('cfm',$boxoptions).' Firearms';
+?>
+</div>
+</div>
+<div class="row">
+<div class="col-md-3">
+<?
+echo $this->Form->checkbox('pim',$boxoptions).' Plains Indian';
+?>
+</div>
+<div class="col-md-3">
+<?
+echo $this->Form->checkbox('dmnh',$boxoptions).' Natural History';
+?>
+</div>
+<div class="col-md-3">
+<?
+echo $this->Form->checkbox('d',array('div'=>false)).' on display';
+?>
+</div>
      
-		</div>		
+</div>		
 		
-		<div class="paging">
-				
-			<?php 
-					echo $this->Paginator->prev('< ' . __('prev '), array(), null, array('class' => 'prev disabled'));
-					//use JS for the 'go to page' field so it only submits if changed, otherwise the value is ignored and does not become part of the named params
-					echo $this->Form->input('pXv_9g', array('div' => false,'name'=>'goto','onchange'=>'document.getElementById("TreasurePXv9g").setAttribute("name","data[Treasure][pXv_9gg]");','empty'=>true,'label'=>'Page ','class'=>'pagenum','default'=>$this->params['paging']['Treasure']['page']));	 
-					echo $this->Paginator->counter(array('format' => __(' of {:pages} ')));
-					echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
-				?>
-					
-		</div>  
-		<div class="results">
-					<?=$this->Form->input('n',array('div'=>false,'options'=>array(25=>25,50=>50,75=>75,100=>100),'default'=>$limit,'label'=>'Results per Page ','onchange'=>'this.form.submit()'))?>
-		</div>
 
 <?
-		echo $this->Form->end();
+		
 		echo $this->Js->writeBuffer();
 ?>
 </div>
 
-<div>
-<?php echo $this->Paginator->counter(array('format' => __('Showing objects {:start} to {:end} out of {:count}')));?>	
-</div>
+<? /*
 <div class="share-links-index">
     <div id="fb-root"></div>
     <div class="fb-like" data-href="https://www.facebook.com/centerofthewest" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>	
@@ -126,10 +131,12 @@ echo $this->Html->link('Advanced Search',$adv).'<br />';
     <!--div style="display: inline-block;">
 	<a href="https://twitter.com/share" class="twitter-share-button" data-via="centerofthewest" data-hashtags="OnlineCollections" data-url="<? echo $TWshorturl;?>">Tweet</a>
 	<script type="text/javascript" src="//www.reddit.com/static/button/button1.js"></script>
-	</div-->
+	</div -->
 	
 
-	</div><?
+</div> */
+?>
+<?
 
 if(empty($this->params['named']['bbm']))
 {
@@ -157,7 +164,6 @@ if(empty($this->params['named']['bbm']))
 </div>
 
 <div class="search-results" style="clear:both">
-<div class="featured-vgals">
 <?php 
 if(empty($treasures)){
 echo 'No results found. Try Google Custom search instead!
@@ -165,29 +171,26 @@ echo 'No results found. Try Google Custom search instead!
 <form method="get" action="http://www.google.com/search"> 
 <input type="text" name="q" size="70" maxlength="255" value="" placeholder="Google Search"> 
 <input type="submit" value="Search"><br>
-<input type="checkbox" checked name="sitesearch" value="collections.centerofthewest.org">search only Online CollectionsCenter of the West
+<input type="checkbox" checked name="sitesearch" value="collections.centerofthewest.org">search only Online Collections Center of the West
 </form>
 </div>
 
 ';
 }
-//Featured Galleries
-
-//$strJson = @file_get_contents('http://collections.centerofthewest.org/usergals/index.json?f');
-//$arrJson = json_decode($strJson,true);
-//seth updated to use regular variable and only appear on homepage
-if ($usergals && $this->request['action']=='index') :
-
-
+//featured Galleries
+if ($usergals && empty($this->request->params['named'])) :?>
+<div class="featured-vgals">
+<div class="well">
+<?
 	echo $this->Html->script('jquery.scrollbox.js');
 	echo $this->Html->script('myScroll.js');?>
 	<div class="the-objects vgalbox"><div class="img-block" style="text-align: center;vertical-align: middle;">
 	Take a look at these Virtual Exhibits Create your own and it might be featured too!</div></div>
-	<div id="featured-gals" class="scroll-img" style="width:616px;height: 156px;overflow: hidden;color:white;">
+	<div id="featured-gals" class="scroll-img" style="height: 156px;overflow: hidden;color:white;">
 	<ul style="margin: 0;padding:0px;width: 1500px;">
 	<?
 	foreach($usergals as $gal):?>
-		<li id="slidez" style="display: inline-block;margin: 0px;">
+		<li id="slidez" style="display: inline-block;margin: 0px; font-size:1em;">
 		<a href="http://collections.centerofthewest.org/usergals/view/<?=$gal['Usergal']['id']?>">
 		<div class="the-objects">
 			
@@ -199,35 +202,71 @@ if ($usergals && $this->request['action']=='index') :
 		</div></a></li>
 	<?endforeach?>
 	</ul></div>
+	</div>
 
 	<hr style="clear:both">
 	</div>
 <?endif;
 ?>
+<div class="row">
+<div class="form-group col-md-4">
+    <div class="input-group">
+      <div class="input-group-addon">Jump to</div>
+	  <?=$this->Form->input('pXv_9g', array('div' => false,'name'=>'goto','onchange'=>'document.getElementById("TreasurePXv9g").setAttribute("name","data[Treasure][pXv_9gg]");','empty'=>true,'placeholder'=>'Page ','label'=>'','class'=>'pagenum form-control','type'=>'number','min'=>1,'max'=>$this->Paginator->counter(array('format' => __('{:pages}')))
+//,'default'=>$this->params['paging']['Treasure']['page']
+));	 ?>
+      <div class="input-group-addon">of<?= $this->Paginator->counter(array('format' => __(' {:pages}')))?></div>
+    </div>
+</div>
 
+<div class="form-group col-md-4">
+    <div class="input-group">
+      <div class="input-group-addon">Show</div>
+	  <?=$this->Form->input('n',array('div'=>false,'options'=>array(25=>25,50=>50,75=>75,100=>100),'default'=>$limit,'label'=>'','onchange'=>'this.form.submit()','class'=>'form-control'))?>
+      <div class="input-group-addon">per page</div>
+    </div>
+</div>
+</div>
 
+<div class="row">
+<div class="col-md-12">
+<ul class="pagination">
+<?
+
+//this is the way to do it with Bootstrap, probably will make this an element 
+		echo $this->Paginator->prev('<<', array('tag'=>'li'), null, array('class' => 'prev disabled','escape'=>'false','tag'=>'li','disabledTag'=>'a'));
+		echo $this->Paginator->numbers(array('currentTag'=>'a','currentClass'=>'active visible-xs-*','separator' => '','tag'=>'li','before'=>'','after'=>'','modulus'=>13,'class'=>'hidden-xs'));
+		echo $this->Paginator->next('>>', array('tag'=>'li'), null, array('class' => 'next disabled'));
+?>
+</ul>
+</div>
+</div>
+
+<div class="col-md-12">
+<? 
+$cnt =$this->Number->format($this->Paginator->counter(array('format' => __('{:count}'))));
+echo $this->Paginator->counter(array('format' => __('Viewing records {:start} to {:end} out of '.$cnt)));
+?>
+
+</div>
 <?
 foreach ($treasures as $treasure):
 ?>
-<div class="the-objects">
+<div class="the-objects col-md-2">
 	<?php				
 //seth added anchor tags//lol i almost deleted them //haha that's why i left a comment
 echo '<a name="t_'.$treasure['Treasure']['id'].'"></a>';
 if(!empty($treasure['Treasure']['img']))
-{
-	echo'<div class="img-block" style="background-image: url(\'//collections.centerofthewest.org/zoomify/1/'.str_replace(' ','_',str_replace('#','',$treasure['Treasure']['img'])).'/TileGroup0/0-0-0.jpg\');">';
-}
-else
-	echo'<div class="img-block" style="background-image: url(\'//collections.centerofthewest.org/img/non.jpg\');">';	
-
-
-			echo '<div class="link">';			
-				echo $this->Html->image('transparent.png',array('url'=>array('action' =>'view', $treasure['Treasure']['slug'])));
-			echo'</div>';
-			
-			echo '<div class="caption">';
-				echo '<div class="txt">';
-				
+$css_img='zoomify/1/'.str_replace(' ','_',str_replace('#','',$treasure['Treasure']['img'])).'/TileGroup0/0-0-0.jpg';
+else $css_img='img/non.jpg';
+?>
+<div class="img-block" style="background-image: url('//collections.centerofthewest.org/<?=$css_img?>');">
+	<div class="link">
+	<?=$this->Html->image('transparent.png',array('url'=>array('action' =>'view', $treasure['Treasure']['slug'])))?>
+	</div>
+	<div class="caption visible-xs-*">
+		<div class="txt">
+				<?
 			//seth wrapped in bigger IF for Draper
 			 if ($treasure['Treasure']['collection']!='DMNH'){
 				if(!empty($treasure['Treasure']['objtitle']))
@@ -253,8 +292,9 @@ else
 				
 				$i=0;
 				$caption='';
-				echo '<br>';
+				echo '<br />';
 				//seth wrapped whole thing in bigger IF for Draper.
+				//sj - not sure why this was so complicated...
 				if (!empty($treasure['Maker'])){
 						foreach ($treasure['Maker'] as $val)
 						{
@@ -274,13 +314,9 @@ else
 										$caption .= $val['name'];
 										if($i < 3)//checks if its not this is the last loop only reason to add a pipe
 											$caption .= '|';
-										
 									}
 								}
 								$i++;
-								//echo '</span>';
-								
-								
 							}	
 						}
 					if(strlen($caption)>=21)
@@ -305,11 +341,11 @@ else
 						echo '</span>';
 					}
 				}
-
+?>
 				
-				echo'</div>';
-				echo '<div class="gal">';				
-
+				</div>
+				<div class="gal">			
+<?
 				if(in_array($treasure['Treasure']['id'],$Vgals))
 				{
 					// already in pack
@@ -321,23 +357,27 @@ else
 					//not in pack yet
 					echo '<a id="add" class="xs" onclick="setCookie(\''.$treasure['Treasure']['id'].'\');">'.$this->Html->image('add.png',array('id'=>'add')).'</a>';
 					echo '<a class="invisible" id="remove" onclick="deleteCookie(\''.$treasure['Treasure']['id'].'\');">'.$this->Html->image('remove.png',array('id'=>'remove')).'</a>';				
-				}
-				echo '</div>';				
-			echo '</div>';
-echo '</div>'
-		?>
-</div>
+				}?>
+				</div>			
+				
+			</div><!-- /caption -->
+</div><!-- /img-block -->
+		
+</div><!-- /the-objects -->
 
 
 <?php endforeach; ?>
 <div style="margin-top:20px;">&nbsp;</div>
-</div>
+</div><!-- /search-results -->
 
 <div class="btm-pagging">
 <?php
 		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
 		echo $this->Paginator->numbers(array('separator' => ''));
 		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
+
+		//end the giant long form
+		echo $this->Form->end();
 ?>
 
 </div>
