@@ -270,7 +270,7 @@ Cody, Wyoming 82414<br>
 <li id="menu-item-8236" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8236"><a href="http://collections.centerofthewest.org/treasures/index/bbm:0/wg:0/cfm:1/pim:0/dmnh:0">Firearms</a></li>
 <li id="menu-item-8237" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8237"><a href="http://collections.centerofthewest.org/treasures/index/bbm:0/wg:0/cfm:0/pim:1/dmnh:0">Plains Indians</a></li>
 <li id="menu-item-8238" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8238"><a href="http://collections.centerofthewest.org/treasures/index/bbm:0/wg:1/cfm:0/pim:0/dmnh:0">Western Art</a></li>
-<li id="menu-item-8238" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8238"><a href="http://collections.centerofthewest.org/treasures/index/bbm:0/wg:0/cfm:0/pim:0/dmnh:1">Yellowstone Nature</a></li>
+<li id="menu-item-8238" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8238"><a href="http://collections.centerofthewest.org/treasures/index/bbm:0/wg:0/cfm:0/pim:0/dmnh:1">Natural History</a></li>
 </ul></div></div></section>
 </div><div class="footer-widgets-5 widget-area"><section id="nav_menu-5" class="widget widget_nav_menu"><div class="widget-wrap"><h4 class="widget-title widgettitle"><a href="http://centerofthewest.org/get-involved/">Support</a></h4>
 <div class="menu-get-involved-footer-container"><ul id="menu-get-involved-footer" class="menu"><li id="menu-item-8328" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8328"><a href="http://centerofthewest.org/get-involved/membership-support/">Membership</a></li>
@@ -279,11 +279,14 @@ Cody, Wyoming 82414<br>
 <li id="menu-item-8330" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8330"><a href="http://centerofthewest.org/get-involved/volunteering/">Volunteer<small class="nav-desc"> </small></a></li>
 </ul></div></div></section>
 </div><div class="footer-widgets-6 widget-area"><section id="nav_menu-6" class="widget widget_nav_menu"><div class="widget-wrap"><h4 class="widget-title widgettitle"><a href="http://centerofthewest.org/about-us/">About Us</a></h4>
-<div class="menu-about-us-footer-container"><ul id="menu-about-us-footer" class="menu"><li id="menu-item-8233" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8233"><a href="http://centerofthewest.org/category/newsroom/">Newsroom</a></li>
+<div class="menu-about-us-footer-container"><ul id="menu-about-us-footer" class="menu">
+<li id="menu-item-8233" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8233"><a href="http://centerofthewest.org/about-us/mission/">Our Mission</a></li>
+<li id="menu-item-8233" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8233"><a href="http://centerofthewest.org/category/newsroom/">Newsroom</a></li>
 <li id="menu-item-8303" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8303"><a href="http://centerofthewest.org/about-us/employment/">Employment<small class="nav-desc"> </small></a></li>
 <li id="menu-item-8316" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8316"><a href="http://centerofthewest.org/about-us/staff-directory/">Staff Directory<small class="nav-desc"> </small></a></li>
-<li id="menu-item-8474" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8474"><a href="http://centerofthewest.org/about-us/terms-and-policies/">Terms and Policies<small class="nav-desc"> </small></a></li>
 <li id="menu-item-8498" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8498"><a href="http://centerofthewest.org/get-involved/annual-reports/">Annual Reports<small class="nav-desc"> </small></a></li>
+<li id="menu-item-8474" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8474"><a href="http://centerofthewest.org/about-us/terms-and-policies/">Terms and Policies<small class="nav-desc"> </small></a></li>
+
 </ul></div></div></section>
 </div></div></div>
 <!-- div class="home-footer"><div class="wrap"><div class="home-footer-left widget-area"><section id="text-7" class="widget widget_text"><div class="widget-wrap"><h4 class="widget-title widgettitle">Hours</h4>
