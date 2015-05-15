@@ -6,6 +6,7 @@
 	margin: 0 auto;
 }
 
+
 .site-header,
 .breadcrumb,
 .site-inner,
@@ -36,10 +37,11 @@
 
 .breadcrumb,
 body:not(.home) .site-inner {
-	@media @mq-site-width {
+/*	@media @mq-site-width {
 		padding-left: 20px;
 		padding-right: 20px;
 	}
+	*/
 }
 /* Column Widths and Positions
 --------------------------------------------- */
@@ -602,6 +604,10 @@ div.changepass{
 div.entry-content
 {
 width:100%;
+		@media @mq-site-width {
+			margin-left:14px;
+			width:94%;
+		}
 	.mine
 	{
 		margin-left:5%;
@@ -799,25 +805,43 @@ width:100%;
 		span{padding-left:6.5%;}
 		.next{float:right;}
 	}
-	.search-help{
-
+	
+	.allcaps{
 		font-family:@sans-serif;
 		text-transform:uppercase !important;
-		font-size:12px;
-		text-align:right;		
-		position: RELATIVE;
-		left: 3px;
-		top: 44px;
-		float:right;
-		z-index:9;
+		font-size:.9em;
+	}
+	
+	.checkbox-label{
+		font-size: 1.2em;
+		font-weight: bold;
+		width: 75%;
 		@media @mq-site-width {
-			display: none;
+			width: 100%;
 		}
+	}
+	
+	.search-btn{
+		position: relative;
+		top: -49px;
+		//left: 525px;
+		height: 42px;
+	}
+	
+	.orange-bg{
+		background-color: @burnt-orange;
+		//background-color: @snow;
+		color: @white;
+	}
+	
+	.search-help{
+		padding-top: 37px;
+		display: inline-block;
 	}
 	.search-help-t{
 		font-family:@sans-serif;
 		text-transform:uppercase !important;
-		font-size:12px;
+		font-size:.9em;
 		text-align:right;		
 		position: relative;
 		left: 3px;
@@ -825,6 +849,37 @@ width:100%;
 		float:right;
 		
 	}
+	
+.regular-checkbox {
+	-webkit-appearance: none;
+	background-color: #f1f2ed;
+	border: 1px solid #aa9c8f;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+	padding: 9px;
+	border-radius: 3px;
+	display: inline-block;
+	position: relative;
+}
+
+.regular-checkbox:active, .regular-checkbox:checked:active {
+	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
+}
+
+.regular-checkbox:checked {
+	background-color: @burnt-orange;
+	//border: 1px solid #adb8c0;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
+	color: #99a1a7;
+}
+
+.regular-checkbox:checked:after {
+	content: '\2714';
+	font-size: 14px;
+	position: absolute;
+	top: 0px;
+	left: 3px;
+	color: @white;
+}
 	
 		
 	.neighbors{
@@ -921,7 +976,15 @@ width:100%;
 .chzn-container{width:70% !important}
 //.disabled{display:none;}
 
+.searchbox{
+	font-size:2em;
+	height:54px;
+}
 
+.advanced{
+font-family: Verdana, Geneva, sans-serif;
+}
+/* begin IDIOTCODE
 
 form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm,form#UsergalSearchall, .makers-search
 {
@@ -955,7 +1018,7 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm,form#UsergalSe
 	}
 	
 	.searchbox{
-		width:80%;
+		//width:80%;
 		font-size:168%;
 		@media @mq-site-width {
 			width: 97%;
@@ -963,13 +1026,14 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm,form#UsergalSe
 			font-size:130%;
 		}
 	}
-	
+
 	.indexsearch{
 		font-size: 145%;
 		@media @mq-site-width {
 			font-size:130%;
 		}
 	}
+	
 	
 	.results{
 		position:relative;
@@ -988,7 +1052,7 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm,form#UsergalSe
 		}
 	}
 
-	#oid-search{display:none;/*position: relative;top: -36px;*/}
+	#oid-search{display:none;position: relative;top: -36px;}
 	.submit input{
 		float: right;
 		position: relative;
@@ -1027,7 +1091,7 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm,form#UsergalSe
 		input#TreasureD{
 			margin-left:30px;
 		}	
-*/		
+	
 		padding-top:5px;
 		font-family:@sans-serif;
 		text-transform:uppercase !important;
@@ -1037,6 +1101,8 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm,form#UsergalSe
 		}		
 	}
 }
+*/	
+
 
 	#ExNum
 	{
@@ -1044,18 +1110,18 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm,form#UsergalSe
 		font-weight:bold;
 		font-size:.9em;
 	}
-
-.treasure-search{
-	border:1px dashed #ede9e7;
+/*
+.treasure-search{ 
+	//the worst CSS writer on the planet wrote this shit 
+	border:1px dashed #ede9e7; 
 	border-left:none;
 	border-right:none;
-	top: -27px;
-	position: relative;
 	@media @mq-site-width {
 		border: 0;
 		top: 0;
 	}
 }
+*/
 
 #post-comments > div > ul > li > ul > li > ul > li > ul,#post-comments > div > ul > li > ul > li > ul > li,#post-comments > div > ul > li > ul > li,#post-comments > div > ul{list-style:none;}
 	.comment
@@ -1314,6 +1380,10 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm,form#UsergalSe
 			padding-right:60px;			
 		}
 	}
+}
+
+.form-control{
+
 }
 
 

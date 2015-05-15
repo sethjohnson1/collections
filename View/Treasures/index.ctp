@@ -1,7 +1,10 @@
+<div class="treasure-search allcaps">
+<div class="row">
+<div class="col-sm-9 col-xs-12">
 <div class="breadcrumb">
 <?php
 
-//NEW BREADCRUMBS
+//NEW BREADCRUMBS - not sure if they work right, need to check later
 $i=0;
 foreach ($breadcrumb as $key=>$val){
 $arr=$this->params['named'];
@@ -37,8 +40,7 @@ else
 		unset($arr['loc']);
 		unset($arr['d']);
 		}
-		
-//pr($arr);		
+			
 	echo $this->Html->link($val,$arr). ' > ';
 	
 	}
@@ -47,66 +49,59 @@ $i++;
 
 ?>
 </div>
-<div class="search-help" id="srch">
-<?php
+
+
+<?
+echo $this->Form->create('Treasure',array('class'=>''));
+echo $this->Form->input('searchall', array('div' => FALSE,'empty'=>true,'label'=>'','placeholder'=>'Search the Collection','class'=>'searchbox indexsearch form-control'));	 
+echo $this->Form->submit('/img/glass.png', array('div' => false,'class'=>'search-btn','style'=>'visibility:hidden; position: absolute; top: -9999px; left:-9999px;'));
+?>
+</div>
+
+<div class="col-sm-3 hidden-xs">
+<div class="fb-like hidden-xs" data-href="https://www.facebook.com/centerofthewest" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>	
+<?
 $adv=$this->params['named'];
 $adv['action']='advancedsearch';
-echo $this->Html->link('Advanced Search',$adv).'<br />';
+echo $this->Html->link('Advanced Search',$adv,array('class'=>'search-help')).'<br />';
+
+$boxoptions=array('div'=>false,'class'=>'regular-checkbox');
+
+if(empty($this->params['named']['bbm'])) $boxoptions['checked']=1;
+
 ?>
-<!-- a href="#">Advanced Search</a><br / -->
-
-<a href="#" class="search-acc" id="tclass">Search by Accession Number</a>
-
 </div>
-<div class="treasure-search">
-<?=$this->Form->create('Treasure',array('class'=>'form-inline'))?>
-		<div id="oid-search" class="col-md-6">
-		<?=$this->Form->input('Treasure.o',array('type'=>'hidden','onchange'=>'this.form.submit()'))?>
-		</div>
-		
-
-	    <?
-		echo $this->Form->input('searchall', array('div' => FALSE,'empty'=>true,'label'=>'','placeholder'=>'Search the Collection','class'=>'searchbox indexsearch form-control'));	 		
-	    echo $this->Form->submit('/img/glass.png', array('div' => true));
-?>		
-
-<div class="row">
-		<?
-		$boxoptions=array(
-			'div'=>false,
-			'class'=>'form-control'
-		);
-		if(empty($this->params['named'])) $boxoptions['checked']=1;
-?>
-<div class="col-md-3">
+</div>
+<br />
+<div class="row checkbox-label">
+<div class="col-sm-4 col-xs-6">
 <?
 echo $this->Form->checkbox('bbm',$boxoptions).' Buffalo Bill';
 ?>
 </div>
-<div class="col-md-3">
+<div class="col-sm-4 col-xs-6">
 <?
 echo $this->Form->checkbox('wg',$boxoptions).' Western Art';?>
 </div>
-<div class="col-md-3">
+<div class="col-sm-4 col-xs-6">
 <?
 echo $this->Form->checkbox('cfm',$boxoptions).' Firearms';
 ?>
 </div>
-</div>
-<div class="row">
-<div class="col-md-3">
+
+<div class="col-sm-4 col-xs-6">
 <?
 echo $this->Form->checkbox('pim',$boxoptions).' Plains Indian';
 ?>
 </div>
-<div class="col-md-3">
+<div class="col-sm-4 col-xs-12">
 <?
 echo $this->Form->checkbox('dmnh',$boxoptions).' Natural History';
 ?>
 </div>
-<div class="col-md-3">
+<div class="col-sm-4 col-xs-12">
 <?
-echo $this->Form->checkbox('d',array('div'=>false)).' on display';
+echo $this->Form->checkbox('d',array('div'=>false,'class'=>'regular-checkbox')).' on display';
 ?>
 </div>
      
@@ -117,7 +112,7 @@ echo $this->Form->checkbox('d',array('div'=>false)).' on display';
 		
 		echo $this->Js->writeBuffer();
 ?>
-</div>
+</div><!-- /treasure-search -->
 
 <? /*
 <div class="share-links-index">
@@ -202,46 +197,54 @@ if ($usergals && empty($this->request->params['named'])) :?>
 		</div></a></li>
 	<?endforeach?>
 	</ul></div>
-	</div>
+</div><!-- /well -->
 
 	<hr style="clear:both">
-	</div>
-<?endif;
+</div><!-- /featured vgals -->
+<?endif?>
+<?
+//only show paging if more than one page
+$controller = $this->name;
+$model = trim($controller , "s");
+if ($this->request->paging[$model]['pageCount']>1):
 ?>
-<div class="row">
-<div class="form-group col-md-4">
+<hr />
+<div class="row allcaps">
+<div class="form-group col-sm-4">
     <div class="input-group">
-      <div class="input-group-addon">Jump to</div>
+      <div class="input-group-addon orange-bg">Jump to</div>
 	  <?=$this->Form->input('pXv_9g', array('div' => false,'name'=>'goto','onchange'=>'document.getElementById("TreasurePXv9g").setAttribute("name","data[Treasure][pXv_9gg]");','empty'=>true,'placeholder'=>'Page ','label'=>'','class'=>'pagenum form-control','type'=>'number','min'=>1,'max'=>$this->Paginator->counter(array('format' => __('{:pages}')))
 //,'default'=>$this->params['paging']['Treasure']['page']
 ));	 ?>
-      <div class="input-group-addon">of<?= $this->Paginator->counter(array('format' => __(' {:pages}')))?></div>
+      <div class="input-group-addon orange-bg">of<?= $this->Paginator->counter(array('format' => __(' {:pages}')))?></div>
     </div>
 </div>
 
-<div class="form-group col-md-4">
+<div class="form-group col-sm-4">
     <div class="input-group">
-      <div class="input-group-addon">Show</div>
+      <div class="input-group-addon orange-bg">Show</div>
 	  <?=$this->Form->input('n',array('div'=>false,'options'=>array(25=>25,50=>50,75=>75,100=>100),'default'=>$limit,'label'=>'','onchange'=>'this.form.submit()','class'=>'form-control'))?>
-      <div class="input-group-addon">per page</div>
+      <div class="input-group-addon orange-bg">per page</div>
     </div>
 </div>
 </div>
-
-<div class="row">
+<!-- this should be an element -->
+<div class="row allcaps">
 <div class="col-md-12">
 <ul class="pagination">
 <?
 
 //this is the way to do it with Bootstrap, probably will make this an element 
 		echo $this->Paginator->prev('<<', array('tag'=>'li'), null, array('class' => 'prev disabled','escape'=>'false','tag'=>'li','disabledTag'=>'a'));
-		echo $this->Paginator->numbers(array('currentTag'=>'a','currentClass'=>'active visible-xs-*','separator' => '','tag'=>'li','before'=>'','after'=>'','modulus'=>13,'class'=>'hidden-xs'));
+		//notice class names, there is a special one for "xs" view
+		echo $this->Paginator->numbers(array('currentTag'=>'a','currentClass'=>'active','separator' => '','tag'=>'li','before'=>'','after'=>'','modulus'=>13,'class'=>'hidden-xs'));
+		echo $this->Paginator->numbers(array('currentTag'=>'a','currentClass'=>'active','separator' => '','tag'=>'li','before'=>'','after'=>'','modulus'=>6,'class'=>'visible-xs-inline'));
 		echo $this->Paginator->next('>>', array('tag'=>'li'), null, array('class' => 'next disabled'));
 ?>
 </ul>
 </div>
 </div>
-
+<?endif?>
 <div class="col-md-12">
 <? 
 $cnt =$this->Number->format($this->Paginator->counter(array('format' => __('{:count}'))));
@@ -369,17 +372,22 @@ else $css_img='img/non.jpg';
 <?php endforeach; ?>
 <div style="margin-top:20px;">&nbsp;</div>
 </div><!-- /search-results -->
+<br style="clear:both;" />
+<?if ($this->request->paging[$model]['pageCount']>1):?>
+<div class="row allcaps">
+<div class="col-md-12">
+<ul class="pagination">
+<?
 
-<div class="btm-pagging">
-<?php
-		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
-		echo $this->Paginator->numbers(array('separator' => ''));
-		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
-
-		//end the giant long form
-		echo $this->Form->end();
+//this is the way to do it with Bootstrap, probably will make this an element 
+		echo $this->Paginator->prev('<<', array('tag'=>'li'), null, array('class' => 'prev disabled','escape'=>'false','tag'=>'li','disabledTag'=>'a'));
+		//notice class names, there is a special one for "xs" view
+		echo $this->Paginator->numbers(array('currentTag'=>'a','currentClass'=>'active','separator' => '','tag'=>'li','before'=>'','after'=>'','modulus'=>13,'class'=>'hidden-xs'));
+		echo $this->Paginator->numbers(array('currentTag'=>'a','currentClass'=>'active','separator' => '','tag'=>'li','before'=>'','after'=>'','modulus'=>6,'class'=>'visible-xs-inline'));
+		echo $this->Paginator->next('>>', array('tag'=>'li'), null, array('class' => 'next disabled'));
 ?>
-
+</ul>
 </div>
-
+</div>
+<?endif?>
 <div style="margin-top:20px;">&nbsp;</div>
