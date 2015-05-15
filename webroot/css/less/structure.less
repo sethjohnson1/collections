@@ -668,7 +668,7 @@ width:100%;
 			display: none;
 		}
 	}
-	.gallery
+	/*.gallery
 	{
 		.share-links
 		{
@@ -701,6 +701,7 @@ width:100%;
 			float:right;
 		}
 	}
+	*/
 	.virtual-exhibits
 	{
 		h2{margin:0px;float:left;padding-right:10px;}
@@ -812,6 +813,12 @@ width:100%;
 		font-size:.9em;
 	}
 	
+	.vgal-info{
+		font-family:@sans-serif;
+		//font-weight: bold;
+		//font-size:.9em;
+	}
+	
 	.checkbox-label{
 		font-size: 1.2em;
 		font-weight: bold;
@@ -822,10 +829,11 @@ width:100%;
 	}
 	
 	.search-btn{
-		position: relative;
-		top: -49px;
-		//left: 525px;
-		height: 42px;
+		/* just hide it - iOS won't submit with display: none */
+		visibility:hidden; 
+		position: absolute; 
+		top: -9999px; 
+		left:-9999px;
 	}
 	
 	.orange-bg{
@@ -1165,7 +1173,7 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm,form#UsergalSe
 .ui-state-highlight {background-color:@warm-gray; height:222px;width:152px;float:left;margin: 3px 3px;}
 }
 	.the-objects{
-	float:left;
+	//float:left;
 	margin:2px;;
 	width:150px;
 	

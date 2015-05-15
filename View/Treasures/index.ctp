@@ -53,8 +53,9 @@ $i++;
 
 <?
 echo $this->Form->create('Treasure',array('class'=>''));
-echo $this->Form->input('searchall', array('div' => FALSE,'empty'=>true,'label'=>'','placeholder'=>'Search the Collection','class'=>'searchbox indexsearch form-control'));	 
-echo $this->Form->submit('/img/glass.png', array('div' => false,'class'=>'search-btn','style'=>'visibility:hidden; position: absolute; top: -9999px; left:-9999px;'));
+echo $this->Form->input('searchall', array('div' => FALSE,'empty'=>true,'label'=>'','placeholder'=>'Search the Collection','class'=>'searchbox form-control'));	 
+//this is hidden with CSS right now
+echo $this->Form->submit('/img/glass.png', array('div' => false,'class'=>'search-btn'));
 ?>
 </div>
 
@@ -228,22 +229,9 @@ if ($this->request->paging[$model]['pageCount']>1):
     </div>
 </div>
 </div>
-<!-- this should be an element -->
-<div class="row allcaps">
-<div class="col-md-12">
-<ul class="pagination">
-<?
 
-//this is the way to do it with Bootstrap, probably will make this an element 
-		echo $this->Paginator->prev('<<', array('tag'=>'li'), null, array('class' => 'prev disabled','escape'=>'false','tag'=>'li','disabledTag'=>'a'));
-		//notice class names, there is a special one for "xs" view
-		echo $this->Paginator->numbers(array('currentTag'=>'a','currentClass'=>'active','separator' => '','tag'=>'li','before'=>'','after'=>'','modulus'=>13,'class'=>'hidden-xs'));
-		echo $this->Paginator->numbers(array('currentTag'=>'a','currentClass'=>'active','separator' => '','tag'=>'li','before'=>'','after'=>'','modulus'=>6,'class'=>'visible-xs-inline'));
-		echo $this->Paginator->next('>>', array('tag'=>'li'), null, array('class' => 'next disabled'));
-?>
-</ul>
-</div>
-</div>
+<?=$this->element('paging')?>
+
 <?endif?>
 <div class="col-md-12">
 <? 
@@ -255,7 +243,7 @@ echo $this->Paginator->counter(array('format' => __('Viewing records {:start} to
 <?
 foreach ($treasures as $treasure):
 ?>
-<div class="the-objects col-md-2">
+<div class="the-objects col-xs-4">
 	<?php				
 //seth added anchor tags//lol i almost deleted them //haha that's why i left a comment
 echo '<a name="t_'.$treasure['Treasure']['id'].'"></a>';
@@ -373,21 +361,5 @@ else $css_img='img/non.jpg';
 <div style="margin-top:20px;">&nbsp;</div>
 </div><!-- /search-results -->
 <br style="clear:both;" />
-<?if ($this->request->paging[$model]['pageCount']>1):?>
-<div class="row allcaps">
-<div class="col-md-12">
-<ul class="pagination">
-<?
-
-//this is the way to do it with Bootstrap, probably will make this an element 
-		echo $this->Paginator->prev('<<', array('tag'=>'li'), null, array('class' => 'prev disabled','escape'=>'false','tag'=>'li','disabledTag'=>'a'));
-		//notice class names, there is a special one for "xs" view
-		echo $this->Paginator->numbers(array('currentTag'=>'a','currentClass'=>'active','separator' => '','tag'=>'li','before'=>'','after'=>'','modulus'=>13,'class'=>'hidden-xs'));
-		echo $this->Paginator->numbers(array('currentTag'=>'a','currentClass'=>'active','separator' => '','tag'=>'li','before'=>'','after'=>'','modulus'=>6,'class'=>'visible-xs-inline'));
-		echo $this->Paginator->next('>>', array('tag'=>'li'), null, array('class' => 'next disabled'));
-?>
-</ul>
-</div>
-</div>
-<?endif?>
+<?=$this->element('paging')?>
 <div style="margin-top:20px;">&nbsp;</div>

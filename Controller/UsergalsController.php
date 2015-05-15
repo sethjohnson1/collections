@@ -144,8 +144,17 @@ public function callback_commentsAdd($modelId, $commentId, $displayType, $data =
 		
 		$this->Paginator->settings['conditions'] = $pwr;
 		$this->Paginator->settings['order'] = array('Usergal.created'=>'desc');
-		$this->Paginator->settings['limit'] = 50;
+		$this->Paginator->settings['limit'] = 10;
 		$usergals=$this->Paginator->paginate();
+		//clean out personal info and make count
+		$x=0;
+		foreach ($usergals as $val=>$key){
+			unset($usergals[$x]['Usergal']['email']);
+			unset($usergals[$x]['Usergal']['editcode']);
+			$usergals[$x]['Usergal']['count']=$this->Usergal->TreasuresUsergal->find('count',array('conditions'=>array('TreasuresUsergal.usergal_id'=>$usergals[$x]['Usergal']['id'])));
+			$x++;
+			
+		}
 		$this->set(compact('usergals'));	
 
 		/* 
