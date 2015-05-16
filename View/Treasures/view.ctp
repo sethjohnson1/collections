@@ -1,3 +1,9 @@
+<?//make link to self if Ajax
+if (isset($ajax)):
+echo $this->Html->link('Visit record &raquo;',array(),array('escape'=>false)).'<br />';
+//also skip a lot if Ajax is set...
+else:
+?>
 <div class="backto">
 <?
 	if(in_array($treasure['Treasure']['id'],$Vgals))
@@ -18,10 +24,10 @@
 <? 
 if (isset($backto)){
 echo $this->Html->link('back to Search Results',$backto);
-}	
-//print_r( $backto);
+}
 ?>
 </div>
+
 
 <div class="neighbors">
 <?php 
@@ -72,6 +78,10 @@ echo'</div>';
 
 <div style="clear:both"></div>
 <?
+
+?>
+<div class="hidden-xs">
+<?
 if(empty($treasure['Treasure']['img']))
 {
 	echo '<div id="myContainer">'.$this->html->image('non.jpg',array('id'=>'non')).'</div>';
@@ -86,9 +96,8 @@ if(!empty($file))
 //Prints Links
 if(!empty($treasure['Treasure']['opencartid']))
 	echo'<p style="float:left;font-weight:bold;font-size:0.9em"><a href="http://prints.centerofthewest.org/index.php?route=product/product&product_id='.$treasure['Treasure']['opencartid'].'">Purchase a Museum Quality Reproduction</a></p>';
-
-
 if (count($treasure['Image'])>1):?>
+
 <div class="related-img">
 <?	
 	foreach ($treasure['Image'] as $image):
@@ -101,14 +110,22 @@ if (count($treasure['Image'])>1):?>
 	<?endforeach?>
 </div>
 <?endif?>
-<!--div id="mobileview">
+</div><!-- hidden-xs -->
+<?endif //hidden from ajax?>
+<? //the ajax call this is still hidden, so we remove the class
+$mclass='visible-xs-inline';
+if (isset($ajax))$mclass='';
+?>
+<div id="mobileview" class="<?=$mclass?>">
 <div class="imgcontainer">
-<a href="
-<?='http://collectionimages.s3-website-us-west-1.amazonaws.com/1/'.urlencode(str_replace(' ','_',$treasure['Treasure']['img']))?>
-">
-<img src="http://collections.centerofthewest.org/zoomify/1/<?=str_replace(' ','_',str_replace('#','',$treasure['Treasure']['img']))?>/TileGroup0/0-0-0.jpg"></a>
+<?
+$img='http://collectionimages.s3-website-us-west-1.amazonaws.com/1/'.urlencode(str_replace(' ','_',$treasure['Treasure']['img']));
+?>
+<a href="<?=$img?>">
+<img src="<?=$img?>" class="img-responsive"></a>
 </div>
-</div --> <!-- /mobileview -->
+</div> <!-- /mobileview -->
+
 <!--div class="share-links">
     <div id="fb-root"></div>
     <div class="fb-like" data-href="https://www.facebook.com/centerofthewest" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
@@ -123,61 +140,19 @@ if (count($treasure['Image'])>1):?>
 <?
 
 ?>
-<div class="data">
+<div class="row">
+<div class="data col-md-8">
 <?php if(!empty($treasure['Treasure']['objtitle']))echo '<p><span class="field-name">Object name: </span> '. $treasure['Treasure']['objtitle'].'</p>'; 
 if(!empty($treasure['Treasure']['accnum']))echo '<p><span class="field-name">Accession Number:</span> '.$treasure['Treasure']['accnum'].'</p>';
-if (!empty($treasure['Maker']))
-{ 
-	echo '<p><span class="field-name">Made by:</span> ';
-	
-	$numItems = count($treasure['Maker']);
-	$i = 0;
-	
-	foreach ($treasure['Maker'] as $artist) 
-	{
 
-		echo $this->Html->link($artist['name'], array('controller' => 'treasures', 'action' => 'index', 'makers'=>$artist['slug']));
-		if(++$i != $numItems)
-			echo ' | ';
-	}
-	echo'</p>';
-}
-
-if (!empty($treasure['Medvalue']))
-{
-	echo '<p><span class="field-name">Medium : </span>';	
-	$numItems = count($treasure['Medvalue']);
-	$i = 0;
-
-	foreach ($treasure['Medvalue'] as $tag)
-	{
-		echo $this->Html->link($tag['name'], array('controller' => 'treasures', 'action' => 'index', 'medvalues'=>$tag['slug'])); 
-		if(++$i != $numItems)
-			echo' | ';
-	}
-	echo'</p>';}
+//sj -makers and stuff were here
 
 if(!empty($treasure['Treasure']['daterange']))echo '<p><span class="field-name">Date : </span> '.$treasure['Treasure']['daterange'].'</p>'; 
 if(!empty($treasure['Treasure']['gloss']))echo '<p><span class="field-name">Gloss: </span>'.$treasure['Treasure']['gloss'].'</p>';
 if(!empty($treasure['Treasure']['dimensions']))echo '<p><span class="field-name">Dimensions: </span>'.$treasure['Treasure']['dimensions'].'</p>';
 if(!empty($treasure['Treasure']['creditline']))echo '<p><span class="field-name">Credit Line: </span>'.$treasure['Treasure']['creditline'].'</p>';
 
-
-if (!empty($treasure['Tag']))
-{
-	echo'<p style="word-wrap: break-word"><span class="field-name">Tags :</span> ';
-	$numItems = count($treasure['Tag']);
-	$i = 0;
-
-	foreach ($treasure['Tag'] as $tag)
-	{
-		echo $this->Html->link($tag['name'], array('controller' => 'treasures', 'action' => 'index', 'tags:'.$tag['name']));
-		if(++$i != $numItems)
-			echo' | ';
-	}
-	echo'</p>';
-}
-
+//sj - tags were here
 
 if(!empty($treasure['Treasure']['collection']))
 {
@@ -224,6 +199,77 @@ if(!empty($treasure['Treasure']['synopsis']))echo '<p><span class="field-name">S
 ?>
 
 </div><!-- /data -->
+<div class="col-md-4">
+<style>
+.badge{
+	
+}
+
+
+</style>
+<?
+if (!empty($treasure['Maker'])):?>
+<h3>Made by</h3>
+<p>
+<?
+	$numItems = count($treasure['Maker']);
+	$i = 0;
+	foreach ($treasure['Maker'] as $artist) 
+	{
+	if ($artist['num']>1){
+		$mk = preg_replace("/[^ \w]+/", "", $artist['name']);
+		$badge=' <span class="badge">'.$artist['num'].'</span>';
+		echo $this->Html->link($artist['name'].$badge, array('controller' => 'treasures', 'action' => 'index', 'makers'=>$artist['slug']),array('class'=>'badge-hov','onclick'=>'makerCook(\''.$mk.'\')','escape'=>false));
+	}
+	else echo $artist['name'];
+	if(++$i != $numItems) echo ' <br /> ';
+	}?>
+</p>
+<?
+endif;
+
+if (!empty($treasure['Medvalue'])):?>
+	<h3>Medium</h3>
+	<p>
+<?
+	$numItems = count($treasure['Medvalue']);
+	$i = 0;
+
+	foreach ($treasure['Medvalue'] as $tag)
+	{
+	if ($tag['num']>1){
+		$mk = preg_replace("/[^ \w]+/", "", $tag['name']);
+		echo $this->Html->link($tag['name'], array('controller' => 'treasures', 'action' => 'index', 'medvalues'=>$tag['slug']),array('onclick'=>'medvalCook(\''.$mk.'\')'));
+	}
+	else echo $tag['name'];
+	if(++$i != $numItems) echo' | ';
+	}
+	?>
+</p>
+<?
+endif;
+	
+if (!empty($treasure['Tag'])):?>
+<h3>Tags</h3>
+<p>
+<?
+	$numItems = count($treasure['Tag']);
+	$i = 0;
+
+	foreach ($treasure['Tag'] as $tag)
+	{
+		echo $this->Html->link($tag['name'], array('controller' => 'treasures', 'action' => 'index', 'tags:'.$tag['name']));
+		if(++$i != $numItems)
+			echo' | ';
+	}
+	?>
+</p>
+<?
+endif;
+?>
+</div>
+</div><!-- /row -->
+
 <?
 
 /*Related Relations Section*/
@@ -253,7 +299,7 @@ if(!empty($treasure['Usergal'])):?>
 		$img_link='http://collections.centerofthewest.org/zoomify/1/'.str_replace(' ','_',str_replace('#','',$gal['img'])).'/TileGroup0/0-0-0.jpg';?>
 
 			<?
-			echo $this->Html->link($gal['name'],array('controller' => 'usergals','action' => 'view', $gal['id'])).'<span style="font-style: italic; font-size:90%"> - Curated by: '.$gal['creator'].'</span>';
+			echo $this->Html->link($gal['name'],array('controller' => 'usergals','action' => 'view', $gal['id'])).'<span style="font-style: italic; font-size:90%"> - Curated by '.$gal['creator'].'</span>';
 			echo '<br/>';?>
 	
 <?

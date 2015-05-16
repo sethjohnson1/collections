@@ -53,10 +53,10 @@ echo $this->Paginator->counter(array('format' => __('Viewing records {:start} to
 <div class="the-objects">
 	<?php				
 echo'<div class="img-block" style="background-image: url(\'http://collections.centerofthewest.org/zoomify/1/'.str_replace(' ','_',$medvalue['Medvalue']['img']).'/TileGroup0/0-0-0.jpg\');">';
-//have to use a cookie for maker name, better for performance anyway
+//have to use a cookie for name, better for performance anyway
 $mk = preg_replace("/[^ \w]+/", "", $medvalue['Medvalue']['name']);
 			echo '<div class="link">';			
-				echo $this->Html->image('transparent.png',array('onclick'=>'makerCook(\''.$mk.'\')','url'=>array('controller'=>'treasures','action' => 'index','makers'=>$medvalue['Medvalue']['slug'])));
+				echo $this->Html->image('transparent.png',array('onclick'=>'medvalCook(\''.$mk.'\')','url'=>array('controller'=>'treasures','action' => 'index','medvalues'=>$medvalue['Medvalue']['slug'])));
 			echo'</div>';
 			
 			echo '<div class="caption">';
@@ -64,9 +64,9 @@ $mk = preg_replace("/[^ \w]+/", "", $medvalue['Medvalue']['name']);
 				echo '<div class="txt">';
 				{
 					if(strlen($medvalue['Medvalue']['name'])>=39)
-						echo $this->Html->link(substr($medvalue['Medvalue']['name'],0,38).'...', array('controller'=>'treasures','action' => 'index','makers'=>$medvalue['Medvalue']['id']),array('onclick'=>'makerCook(\''.$mk.'\')'));
+						echo $this->Html->link(substr($medvalue['Medvalue']['name'],0,38).'...', array('controller'=>'treasures','action' => 'index','medvalues'=>$medvalue['Medvalue']['id']),array('onclick'=>'medvalCook(\''.$mk.'\')'));
 					else
-						echo $this->Html->link($medvalue['Medvalue']['name'], array('controller'=>'treasures','action' => 'index','makers'=>$medvalue['Medvalue']['id']),array('onclick'=>'makerCook(\''.$mk.'\')'));
+						echo $this->Html->link($medvalue['Medvalue']['name'], array('controller'=>'treasures','action' => 'index','medvalues'=>$medvalue['Medvalue']['id']),array('onclick'=>'medvalCook(\''.$mk.'\')'));
 
 				}
 			

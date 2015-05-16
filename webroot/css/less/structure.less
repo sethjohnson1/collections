@@ -934,11 +934,24 @@ width:100%;
 			width:100%;
 		}
 	}
+
+.badge-hov{
+	span.badge:hover{
+		background-color: @burnt-orange;
+		color: @white;
+	}
+	span.badge{
+		background-color:@warm-gray;
+		color: @sandstone;
+		font-family: verdana, sans-serif;
+		font-weight: 400;
+	}
+}
 	div.data{		
-		width:548px;
-		float:left;
-		padding-bottom:20px;
-		margin-right: 20px;
+		//width:548px;
+		//float:left;
+		//padding-bottom:20px;
+		//margin-right: 20px;
 		border-right:1px dashed @warm-gray;
 
 	
@@ -960,8 +973,8 @@ width:100%;
 	}
 	
 	.right-column{
-		float:left;
-		display:inline;
+	//	float:left;
+	//	display:inline;
 	}
 
 	.left{
@@ -1162,13 +1175,8 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm,form#UsergalSe
 				}
 			}
 	}
-
-.featured-vgals{
-	@media @mq-site-width {
-		display:none;
-	}
-	
-}
+ 
+ 
 .search-results{ list-style-type: none; margin: 0; padding: 0; width: 100%; height:100%; 
 .ui-state-highlight {background-color:@warm-gray; height:222px;width:152px;float:left;margin: 3px 3px;}
 }

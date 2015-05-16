@@ -262,6 +262,12 @@ class TreasuresController extends AppController {
 		}
 		$this->set('treasure', $treasure);
 		$this->set('_serialize', array('treasure'));
+		
+		//used as a flag for the Colorbox ajax calls
+		if ($this->request->is('ajax')){
+			$this->set('ajax',true);
+		}
+		
 		//begin Lloyd SEO stuff
 		if(!empty($treasure['Treasure']['objtitle']))
 			$this->set('TheTitle',$treasure['Treasure']['objtitle'].' - Buffalo Bill Online Collections Search');

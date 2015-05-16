@@ -176,7 +176,7 @@ echo 'No results found. Try Google Custom search instead!
 //featured Galleries
 if ($usergals && empty($this->request->params['named'])) :?>
 <br />
-<div class="featured-vgals">
+<div class="featured-vgals hidden-xs hidden-sm">
 <div class="panel panel-default">
 <div class="panel-heading"><h1 class="panel-title">Featured Virtual Exhibits</h1></div>
 <div class="panel-body">
@@ -184,7 +184,7 @@ if ($usergals && empty($this->request->params['named'])) :?>
 	echo $this->Html->script('jquery.scrollbox.js');
 	echo $this->Html->script('myScroll.js');?>
 	<div id="featured-gals" class="scroll-img" style="height: 156px;overflow: hidden;color:white;">
-	<ul style="margin: 0;padding:0px;width: 1500px;">
+	<ul style="margin: 0;padding:0px;width:1500px;">
 	<?
 	foreach($usergals as $gal):?>
 		<li class="slides" style="display: inline-block;margin: 0px; font-size:1em;">
@@ -197,7 +197,7 @@ if ($usergals && empty($this->request->params['named'])) :?>
 			?>
 			<div class="bubble">
 			<?
-			if(!empty($gal['Usergal']['gloss']))echo '"'.$gal['Usergal']['gloss'].'"<hr />';
+			if(!empty($gal['Usergal']['gloss']))echo '"'.$this->Text->truncate($gal['Usergal']['gloss'],200,array('exact'=>true)).'"<hr />';
 			?>
 			<span class="allcaps" style="font-weight:bold">
 			<?
