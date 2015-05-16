@@ -82,6 +82,8 @@
 
 	echo $this->Html->script('select2_fields');
 	echo $this->Html->script('jquery.jpanelmenu');
+	echo $this->Html->script('jquery.colorbox');
+	echo $this->Html->css('colorbox');
 	echo $this->Html->script('bootstrap.min');
 	echo $this->Html->css('bootstrap.min');
 //	echo $this->Html->css('bootstrap-theme.min');
@@ -307,7 +309,10 @@ Cody, Wyoming 82414<br>
 <div class="one-third"><p><span class="bold">Group tour rates</span><br>call 307-578-4114</p><p><span class="bold">Children Free</span><br>age 5 &amp; younger</p></div></div>
 		</div></section>
 </div></div></div -->
-<footer class="site-footer" role="contentinfo" itemscope="itemscope" itemtype="http://schema.org/WPFooter"><div class="wrap"><p><span class="creds">©&nbsp;<?php echo date("Y"); ?> Buffalo Bill Center of the West. All rights reserved.</span>
+<footer class="site-footer" role="contentinfo" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+
+
+<div class="wrap"><p><span class="creds">©&nbsp;<?php echo date("Y"); ?> Buffalo Bill Center of the West. All rights reserved.</span>
  	<span class="smithsonian">Smithonian Affiliations</span>
  	<span class="aam"><abbr title="The American Alliance of Museums">AAM</abbr></span></p></div></footer>    
   </div>

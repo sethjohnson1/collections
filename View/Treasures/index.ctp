@@ -175,30 +175,43 @@ echo 'No results found. Try Google Custom search instead!
 }
 //featured Galleries
 if ($usergals && empty($this->request->params['named'])) :?>
+<br />
 <div class="featured-vgals">
-<div class="well">
+<div class="panel panel-default">
+<div class="panel-heading"><h1 class="panel-title">Featured Virtual Exhibits</h1></div>
+<div class="panel-body">
 <?
 	echo $this->Html->script('jquery.scrollbox.js');
 	echo $this->Html->script('myScroll.js');?>
-	<div class="the-objects vgalbox"><div class="img-block" style="text-align: center;vertical-align: middle;">
-	Take a look at these Virtual Exhibits Create your own and it might be featured too!</div></div>
 	<div id="featured-gals" class="scroll-img" style="height: 156px;overflow: hidden;color:white;">
 	<ul style="margin: 0;padding:0px;width: 1500px;">
 	<?
 	foreach($usergals as $gal):?>
-		<li id="slidez" style="display: inline-block;margin: 0px; font-size:1em;">
+		<li class="slides" style="display: inline-block;margin: 0px; font-size:1em;">
 		<a href="http://collections.centerofthewest.org/usergals/view/<?=$gal['Usergal']['id']?>">
 		<div class="the-objects">
 			
 			<div class="img-block" style="background-image: url('//collections.centerofthewest.org/zoomify/1/<?=str_replace(' ','_',str_replace('#','',$gal['Usergal']['img']))?>/TileGroup0/0-0-0.jpg');"></div>
 			<?
 			if(!empty($gal['Usergal']['name']))echo '<div class="caption" style="position:relative;top: -50px;left: 0;background: url(http://collections.centerofthewest.org/img/trans-black.png);width: 100%;height: 50px;color:white;">'.$gal['Usergal']['name'].'</div>';
-			if(!empty($gal['Usergal']['gloss']))echo '<div class="bubble" style="z-index:99999;display:none;position:absolute;width:300px;background-color: #ede9e7;color:#766a62;border: 1px solid #ddd;border-radius: 10px;">Curated by:'.$gal['Usergal']['creator'].'<br>'.$gal['Usergal']['gloss'].'</div>';
-			else if(!empty($gal['Usergal']['creator']))echo '<div class="bubble" style="z-index:99999;display:none;position:absolute;width:300px;background-color: #ede9e7;color:#766a62;border: 1px solid #ddd;border-radius: 10px;">Curated By:'.$gal['Usergal']['creator'].'</div>';?>
+			?>
+			<div class="bubble">
+			<?
+			if(!empty($gal['Usergal']['gloss']))echo '"'.$gal['Usergal']['gloss'].'"<hr />';
+			?>
+			<span class="allcaps" style="font-weight:bold">
+			<?
+			echo 'Curated by '.$gal['Usergal']['creator'];
+			?>
+			</span>
+			</div>
+			
 		</div></a></li>
 	<?endforeach?>
 	</ul></div>
-</div><!-- /well -->
+</div>
+<div class="panel-footer"><?=$this->Html->link('Create your own',array('controller'=>'treasures','action'=>'pack'))?> and it might be featured too!</div>
+</div><!-- /panel -->
 
 	<hr style="clear:both">
 </div><!-- /featured vgals -->

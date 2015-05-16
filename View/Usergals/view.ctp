@@ -1,12 +1,14 @@
+
 <div class="row">
 <div class="col-md-12">
 <?
 		if(!empty($usergal['Usergal']['name']))
 			echo '<h2>'.$usergal['Usergal']['name'].'</h2>';
-		if(!empty($usergal['Usergal']['creator']))
-			echo '<strong>Curated by:</strong> '.$usergal['Usergal']['creator'];
 		if(!empty($usergal['Usergal']['gloss']))
-			echo '<br><em>'.$usergal['Usergal']['gloss'].'</em>';?>
+			echo '<em>'.$usergal['Usergal']['gloss'].'</em>';
+		if(!empty($usergal['Usergal']['creator']))
+			echo '<br /><span class="allcaps">Curated by '.$usergal['Usergal']['creator'].'</span>';
+			?>
 
 <!-- div class="share-links">
     <div id="fb-root"></div>
@@ -21,7 +23,11 @@
  </div>
 </div><!-- /row -->
 <hr />
-
+<script>
+$(document).ready(function(){
+	$(".ajax").colorbox();
+});
+</script>
 <?php foreach ($treasures as $treasure): ?>
 <div class="row">
 <div class="the-objects col-sm-3">
@@ -30,39 +36,21 @@ $css_img='zoomify/1/'.str_replace(' ','_',str_replace('#','',$treasure['Treasure
 else $css_img='img/non.jpg';
 ?>
 <div class="img-block" style="background-image: url('//collections.centerofthewest.org/<?=$css_img?>');">
-<div class="link"><?=$this->Html->image('transparent.png',array('url'=>array('controller'=>'treasures','action' =>'view', $treasure['Treasure']['slug'])))?>
+<div class="link">
+<?=$this->Html->link($this->Html->image('transparent.png'),array('controller'=>'treasures','action' =>'view', $treasure['Treasure']['slug']),array('escape'=>false,'class'=>'ajax cboxElement'))?>
+<? //=$this->Html->link($this->Html->image('transparent.png'),'#mode',array('escape'=>false,'data-toggle'=>'modal', 'data-target'=>'.bs-example-modal-lg'))?>
+<? //=$this->Html->image('transparent.png',array('url'=>array('controller'=>'treasures','action' =>'view', $treasure['Treasure']['slug'])))?>
 </div>
 			
-	<div class="caption">
-		<div class="txt">
-			<?if(!empty($treasure['Treasure']['objtitle']))echo $this->Html->link(substr($treasure['Treasure']['objtitle'],0,20).'...', array('controller'=>'treasures','action' => 'view', $treasure['Treasure']['slug']));
-			else echo $this->Html->link($treasure['Treasure']['accnum'], array('controller'=>'treasures','action' => 'view', $treasure['Treasure']['slug']));
-		?>
-		</div>
-		
-		<div class="gal">				
-		<?if(in_array($treasure['Treasure']['id'],$Vgals))
-		{
-			
-				//already in pack
-				echo '<a id="add" class="invisible" onclick="setCookie(\''.$treasure['Treasure']['id'].'\');">'.$this->Html->image('add.png',array('id'=>'add')).'</a>';
-				echo '<a class="xs" id="remove" onclick="deleteCookie(\''.$treasure['Treasure']['id'].'\');">'.$this->Html->image('remove.png',array('id'=>'remove')).'</a>';
-
-		}
-		else
-		{
-			//not in pack yet
-			echo '<a id="add" class="xs" onclick="setCookie(\''.$treasure['Treasure']['id'].'\');">'.$this->Html->image('add.png',array('id'=>'add')).'</a>';
-			echo '<a class="invisible" id="remove" onclick="deleteCookie(\''.$treasure['Treasure']['id'].'\');">'.$this->Html->image('remove.png',array('id'=>'remove')).'</a>';				
-		}
-		?>
-		</div>				
+	<div class="caption vgal">
+	<span class="glyphicon glyphicon-search icon"></span>			
 	</div>
 </div><!-- /imgblock -->
 <!--div class="comments"><?=$treasure['TreasuresUsergal']['comments']?></div -->
 </div><!-- /the objects -->
 <div class="col-sm-1"></div>
 <div class="col-sm-8 vgal-info">
+<br />
 <?
 if (!empty($treasure['TreasuresUsergal']['comments'])) '<em>'.$comment=$treasure['TreasuresUsergal']['comments'].'</em>';
 else $comment=$this->Text->truncate($treasure['Treasure']['synopsis'],160,array('exact'=>true));
@@ -91,4 +79,12 @@ else $comment=$this->Text->truncate($treasure['Treasure']['synopsis'],160,array(
 <div id="post-comments">
     <?php $this->CommentWidget->options(array('allowAnonymousComment' => false));?>
     <?php echo $this->CommentWidget->display();?>
+</div>
+
+<div id="mode" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      ...
+    </div>
+  </div>
 </div>

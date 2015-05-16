@@ -1173,9 +1173,22 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm,form#UsergalSe
 .ui-state-highlight {background-color:@warm-gray; height:222px;width:152px;float:left;margin: 3px 3px;}
 }
 	.the-objects{
-	//float:left;
-	margin:2px;;
+	float:left;
+	margin:2px;
 	width:150px;
+	
+	.bubble{
+		z-index:99;
+		display:none;
+		position:absolute;
+		width:300px;
+		background-color:white;
+		color:#766a62;
+		border: 1px solid #ddd;
+		border-radius: 1px;
+		box-shadow:2px;
+		padding:6px;
+	}
 	
 	.comments
 	{
@@ -1198,6 +1211,7 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm,form#UsergalSe
 	.link
 		{
 			position:absolute;
+			z-index:999;
 			a{
 				img
 				{	
@@ -1222,7 +1236,8 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm,form#UsergalSe
 				display:block;
 			}
 			
-			.txt
+			
+			.txt 
 			{
 				
 				a{
@@ -1261,6 +1276,24 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm,form#UsergalSe
 				}
 			
 			}
+		}
+		
+		.vgal {
+			display: none;
+			width: 25%;
+			background: black; 
+			opacity: .45;
+			padding-top: 0;
+			height: 25%;
+			left: 112px;
+			top: 112px;
+			
+			.icon{
+				font-size: 1.4em;
+				padding: 8px;
+				color: white;
+			}
+			
 		}
 		.caption-pack
 		{
