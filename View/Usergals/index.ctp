@@ -26,8 +26,8 @@
 
 <?php foreach ($usergals as $usergal): ?>
 <div class="row">
-<div class="col-sm-3">
-<div class="the-objects col-md-12" style="width:150px;">
+<div class="col-sm-3 col-xs-6">
+<div class="the-objects" style="">
 	<div class="img-block" style="background-image: url('http://collections.centerofthewest.org/zoomify/1/<?=str_replace(' ','_',$usergal['Usergal']['img'])?>/TileGroup0/0-0-0.jpg')">
 
 			<div class="link">			
@@ -37,7 +37,7 @@
 	</div><!-- /imgblock -->
 </div><!-- /theobjects -->
 </div>
-<div class="col-sm-9">
+<div class="col-sm-9 col-xs-6">
 <br />
 <p class="vgal-info"><em><?=$usergal['Usergal']['name']?></em>
 <br />

@@ -603,7 +603,7 @@ div.changepass{
 }	
 div.entry-content
 {
-width:100%;
+//width:100%;
 		@media @mq-site-width {
 			margin-left:14px;
 			width:94%;
@@ -936,17 +936,23 @@ width:100%;
 	}
 
 .badge-hov{
-	span.badge:hover{
-		background-color: @burnt-orange;
-		color: @white;
-	}
-	span.badge{
+display: inline;
+span.badge{
 		background-color:@warm-gray;
 		color: @sandstone;
 		font-family: verdana, sans-serif;
 		font-weight: 400;
 	}
+a:hover{
+	span.badge{
+		background-color: @burnt-orange;
+		color: @white;
+	}
+	text-decoration: none;
 }
+}
+
+
 	div.data{		
 		//width:548px;
 		//float:left;
@@ -956,19 +962,16 @@ width:100%;
 
 	
 		a{
-			font-weight:bold;
+			//font-weight:bold;
 		}
 		p{
-			font-size:.9em;
+			font-size:1em;
 			margin-top:0px;
 			margin-bottom:0px;
 			span.field-name{
 				font-family:@sans-serif_bold;
 				font-color:@gray;
 			}
-		}
-		@media @mq-site-width {
-			width:100%;
 		}
 	}
 	
@@ -1181,7 +1184,7 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm,form#UsergalSe
 .ui-state-highlight {background-color:@warm-gray; height:222px;width:152px;float:left;margin: 3px 3px;}
 }
 	.the-objects{
-	float:left;
+	float:left; 
 	margin:2px;
 	width:150px;
 	

@@ -141,7 +141,107 @@ $img='http://collectionimages.s3-website-us-west-1.amazonaws.com/1/'.urlencode(s
 
 ?>
 <div class="row">
-<div class="data col-md-8">
+
+<script>
+$('.badge-hov').hover(function(e) {
+    $('span.badge-hov').trigger(e.type);
+});
+</script>
+<div class="col-sm-4 col-sm-push-8">
+<div class="row">
+<?if(!empty($treasure['Treasure']['collection'])):?>
+
+<div class="col-sm-12">
+
+<h3>Collection</h3>
+<p>
+<?
+	if($treasure['Treasure']['collection']=='BBM')
+		echo $this->Html->link(
+		$this->Html->image('icons/bbm.png',array('alt'=>'Buffalo Bill Museum','class'=>'img-responsive')),
+		array('controller' => 'treasures', 'action' => 'index'.'/bbm:1/wg:0/cfm:0/pim:0/dmnh:0/'),array('escape'=>false)); 
+	if($treasure['Treasure']['collection']=='WG')
+		echo $this->Html->link($this->Html->image('icons/wg.png',array('alt'=>'Whitney Western Art Museum','class'=>'img-responsive')), array('controller' => 'treasures', 'action' =>'index'.'/bbm:0/wg:1/cfm:0/pim:0/dmnh:0/'),array('escape'=>false));
+	if($treasure['Treasure']['collection']=='PIM')
+		echo $this->Html->link($this->Html->image('icons/pim.png',array('alt'=>'Plains Indian Museum','class'=>'img-responsive')), array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:1/dmnh:0/'),array('escape'=>false)); 
+	if($treasure['Treasure']['collection']=='CFM')
+		echo $this->Html->link($this->Html->image('icons/cfm.png',array('alt'=>'Cody Firearms Museum','class'=>'img-responsive')), array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:1/pim:0/dmnh:0/'),array('escape'=>false)); 
+	if($treasure['Treasure']['collection']=='DMNH')
+		echo $this->Html->link($this->Html->image('icons/dmnh.png',array('alt'=>'Draper Natural History Museum','class'=>'img-responsive')), array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:0/dmnh:1/'),array('escape'=>false));							
+?>
+</p>
+</div>
+<?endif?>
+
+<?if (!empty($treasure['Maker'])):?>
+<div class="col-sm-12">
+<h3>Made by</h3>
+
+<?
+	$numItems = count($treasure['Maker']);
+	$i = 0;
+	foreach ($treasure['Maker'] as $artist):?>
+	<div class="badge-hov">
+	<?
+	if ($artist['num']>1){
+		$mk = preg_replace("/[^ \w]+/", "", $artist['name']);
+		$badge=' <span class="badge">'.$artist['num'].'</span>';
+		echo $this->Html->link($artist['name'].$badge, array('controller' => 'treasures', 'action' => 'index', 'makers'=>$artist['slug']),array('class'=>'badge-hov','onclick'=>'makerCook(\''.$mk.'\')','escape'=>false));
+	}
+	else echo $artist['name'];
+	if(++$i != $numItems) echo ' <br /> ';?>
+	</div>
+	<?endforeach?>
+
+</div>
+<?endif?>
+
+<?if (!empty($treasure['Medvalue'])):?>
+<div class="col-sm-12">
+	<h3>Medium</h3>
+<?
+	$numItems = count($treasure['Medvalue']);
+	$i = 0;
+
+	foreach ($treasure['Medvalue'] as $tag):?>
+	<div class="badge-hov">
+	<?if ($tag['num']>1){
+		$mk = preg_replace("/[^ \w]+/", "", $tag['name']);
+		$badge=' <span class="badge">'.$tag['num'].'</span>';
+		echo $this->Html->link($tag['name'].$badge, array('controller' => 'treasures', 'action' => 'index', 'medvalues'=>$tag['slug']),array('escape'=>false,'onclick'=>'medvalCook(\''.$mk.'\')'));
+	}
+	else echo $tag['name'];
+	if(++$i != $numItems) echo' - ';?>
+	</div>
+	<?endforeach?>
+</div>
+<?endif?>
+<div class="col-sm-12">
+<h3>Location</h3>
+<?
+$loctxt='<em>Not currently on display</em>';
+if(!empty($treasure['Treasure']['location'])){
+
+	$arr = explode(".", $treasure['Treasure']['location'], 2);
+	if($arr[0]=='PIM'){
+		$loctxt=$this->Html->link('Plains Indian Museum', array('action' => 'index', 'loc:'.$arr[0]));}
+	if($arr[0]=='DMNH'){
+		$loctxt=$this->Html->link('Draper Natural History Museum', array('action' => 'index', 'loc:'.$arr[0]));}
+	if($arr[0]=='CFM'){
+		$loctxt=$this->Html->link('Cody Firearms Museum', array('action' => 'index', 'loc:'.$arr[0]));}
+	if($arr[0]=='BBM'){
+		$loctxt=$this->Html->link('Buffalo Bill Museum', array('action' => 'index', 'loc:'.$arr[0]));}
+	if($arr[0]=='WG'){
+		$loctxt=$this->Html->link('Whitney Western Art Museum', array('action' => 'index', 'loc:'.$arr[0]));}
+}
+
+echo $loctxt;		
+?>
+</div>
+</div><!-- /row (inner) -->
+</div><!-- inner grid -->
+<br />
+<div class="data col-sm-8 col-sm-pull-4 col-xs-12">
 <?php if(!empty($treasure['Treasure']['objtitle']))echo '<p><span class="field-name">Object name: </span> '. $treasure['Treasure']['objtitle'].'</p>'; 
 if(!empty($treasure['Treasure']['accnum']))echo '<p><span class="field-name">Accession Number:</span> '.$treasure['Treasure']['accnum'].'</p>';
 
@@ -151,38 +251,6 @@ if(!empty($treasure['Treasure']['daterange']))echo '<p><span class="field-name">
 if(!empty($treasure['Treasure']['gloss']))echo '<p><span class="field-name">Gloss: </span>'.$treasure['Treasure']['gloss'].'</p>';
 if(!empty($treasure['Treasure']['dimensions']))echo '<p><span class="field-name">Dimensions: </span>'.$treasure['Treasure']['dimensions'].'</p>';
 if(!empty($treasure['Treasure']['creditline']))echo '<p><span class="field-name">Credit Line: </span>'.$treasure['Treasure']['creditline'].'</p>';
-
-//sj - tags were here
-
-if(!empty($treasure['Treasure']['collection']))
-{
-	echo '<p><span class="field-name">Collection:</span> ';
-	if($treasure['Treasure']['collection']=='BBM')
-		echo $this->Html->link('Buffalo Bill Museum', array('controller' => 'treasures', 'action' => 'index'.'/bbm:1/wg:0/cfm:0/pim:0/dmnh:0/')).'</p>'; 
-	if($treasure['Treasure']['collection']=='WG')
-		echo $this->Html->link('Whitney Western Art Museum', array('controller' => 'treasures', 'action' =>'index'.'/bbm:0/wg:1/cfm:0/pim:0/dmnh:0/')).'</p>';
-	if($treasure['Treasure']['collection']=='PIM')
-		echo $this->Html->link('Plains Indian Museum', array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:1/dmnh:0/')).'</p>'; 
-	if($treasure['Treasure']['collection']=='CFM')
-		echo $this->Html->link('Cody Firearms Museum', array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:1/pim:0/dmnh:0/')).'</p>'; 
-	if($treasure['Treasure']['collection']=='DMNH')
-		echo $this->Html->link('Draper Natural History Museum', array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:0/dmnh:1/')).'</p>'; 								
-}
-
-if(!empty($treasure['Treasure']['location']))
-{
-	$arr = explode(".", $treasure['Treasure']['location'], 2);
-	if($arr[0]=='PIM')
-		echo '<p><span class="field-name">Location: </span>'.$this->Html->link('Plains Indian Museum', array('action' => 'index', 'loc:'.$arr[0])).'</p>';
-	if($arr[0]=='DMNH')
-		echo '<p><span class="field-name">Location: </span>'.$this->Html->link('Draper Natural History Museum', array('action' => 'index', 'loc:'.$arr[0])).'</p>';
-	if($arr[0]=='CFM')
-		echo '<p><span class="field-name">Location: </span>'.$this->Html->link('Cody Firearms Museum', array('action' => 'index', 'loc:'.$arr[0])).'</p>';
-	if($arr[0]=='BBM')
-		echo '<p><span class="field-name">Location: </span>'.$this->Html->link('Buffalo Bill Museum', array('action' => 'index', 'loc:'.$arr[0])).'</p>';
-	if($arr[0]=='WG')
-		echo '<p><span class="field-name">Location: </span>'.$this->Html->link('Whitney Western Art Museum', array('action' => 'index', 'loc:'.$arr[0])).'</p>';	
-}
 
 
 if(!empty($treasure['Treasure']['commonname']))echo '<p><span class="field-name">Common Name: </span>'.$treasure['Treasure']['commonname'].'</p>';
@@ -198,105 +266,77 @@ if(!empty($treasure['Treasure']['synopsis']))echo '<p><span class="field-name">S
 
 ?>
 
-</div><!-- /data -->
-<div class="col-md-4">
-<style>
-.badge{
-	
-}
-
-
-</style>
-<?
-if (!empty($treasure['Maker'])):?>
-<h3>Made by</h3>
-<p>
-<?
-	$numItems = count($treasure['Maker']);
-	$i = 0;
-	foreach ($treasure['Maker'] as $artist) 
-	{
-	if ($artist['num']>1){
-		$mk = preg_replace("/[^ \w]+/", "", $artist['name']);
-		$badge=' <span class="badge">'.$artist['num'].'</span>';
-		echo $this->Html->link($artist['name'].$badge, array('controller' => 'treasures', 'action' => 'index', 'makers'=>$artist['slug']),array('class'=>'badge-hov','onclick'=>'makerCook(\''.$mk.'\')','escape'=>false));
-	}
-	else echo $artist['name'];
-	if(++$i != $numItems) echo ' <br /> ';
-	}?>
-</p>
-<?
-endif;
-
-if (!empty($treasure['Medvalue'])):?>
-	<h3>Medium</h3>
-	<p>
-<?
-	$numItems = count($treasure['Medvalue']);
-	$i = 0;
-
-	foreach ($treasure['Medvalue'] as $tag)
-	{
-	if ($tag['num']>1){
-		$mk = preg_replace("/[^ \w]+/", "", $tag['name']);
-		echo $this->Html->link($tag['name'], array('controller' => 'treasures', 'action' => 'index', 'medvalues'=>$tag['slug']),array('onclick'=>'medvalCook(\''.$mk.'\')'));
-	}
-	else echo $tag['name'];
-	if(++$i != $numItems) echo' | ';
-	}
-	?>
-</p>
-<?
-endif;
-	
-if (!empty($treasure['Tag'])):?>
+<?if (!empty($treasure['Tag'])):?>
 <h3>Tags</h3>
 <p>
 <?
 	$numItems = count($treasure['Tag']);
 	$i = 0;
 
-	foreach ($treasure['Tag'] as $tag)
-	{
-		echo $this->Html->link($tag['name'], array('controller' => 'treasures', 'action' => 'index', 'tags:'.$tag['name']));
+	foreach ($treasure['Tag'] as $tag):?>
+	<div class="badge-hov">
+	<?
+		$badge=' <span class="badge">'.$tag['tag_count'].'</span>';
+		echo $this->Html->link($tag['name'].$badge, array('controller' => 'treasures', 'action' => 'index', 'tags:'.$tag['name']),array('escape'=>false));
 		if(++$i != $numItems)
-			echo' | ';
-	}
+			echo' - ';?>
+	</div>
+			<?
+	endforeach;
 	?>
 </p>
-<?
-endif;
-?>
-</div>
+</div><!-- /data and tags -->
+<?endif?>
+
 </div><!-- /row -->
+<br />
+<div class="row">
 
 <?
-
-/*Related Relations Section*/
 if(!empty($treasure['Relation'])):?>
-<span>
+<div class="col-sm-8">
 <h3 style="margin:5px 0px 10px 0px;">Related Articles</h3>
 	<?foreach ($treasure['Relation'] as $article):
-		$strJson = @file_get_contents('http://centerofthewest.org/wp-json/posts/'.$article['blogid'].'/');
-		$arrJson = json_decode($strJson,true);
-		if(!empty($arrJson['featured_image']['source'])):?>
+	$strJson = @file_get_contents('http://centerofthewest.org/wp-json/posts/'.$article['blogid'].'/');
+	$arrJson = json_decode($strJson,true);
+	$tn=$arrJson['featured_image']['attachment_meta']['sizes']['thumbnail']['url'];
+	//debug($arrJson['featured_image']['attachment_meta']['sizes']['thumbnail']['url']);
+	if(!empty($arrJson['featured_image']['source'])):?>
+	<div class="row">
+	<div class="col-xs-4">
+	
+	<?=$this->Html->link($this->Html->image($tn,array('class'=>'img-responsive img-thumbnail','alt'=>$arrJson['title'])),$arrJson['link'],array('escape'=>false))?>
+	</div>
+	<div class="col-xs-8">
 		<p style="text-align:justify;"><a href="<?=$arrJson['link']?>"><?=$arrJson['title']?></a>
 		<br/><span style="font-style: italic; font-size:90%"> By <?=$arrJson['author']['name']?></span><br />
 		<?=strip_tags(substr($arrJson['content'],0,100)).'...<br><a href="'.$arrJson['link'].'" class="">&#x25ba; Read More</a>';	
-		endif;?>
+		?>
 		
 		</p>
 		<hr />
-	<?endforeach;?>
-</span>
-<?endif;
+	</div>
+	</div>
+	<br />
+	<?endif;
+	endforeach;?>
+</div>
+<?endif?>
+<?
 if(!empty($treasure['Usergal'])):?>
-<span>
+<div class="col-sm-8">
 <h3 style="margin:5px 0px 10px 0px;">Virtual Galleries</h3>
-<p>
 	<?foreach ($treasure['Usergal'] as $gal):
+	$img_link='http://collections.centerofthewest.org/zoomify/1/'.str_replace(' ','_',str_replace('#','',$gal['img'])).'/TileGroup0/0-0-0.jpg';
+	?>
+	<div class="row">
+	<div class="col-xs-4">
+	<?=$this->Html->link($this->Html->image($img_link,array('class'=>'img-responsive img-thumbnail','alt'=>$arrJson['title'])),$arrJson['link'],array('escape'=>false))?>
+	</div>
+	<div class="col-xs-8">
+	<?
 	
-		$img_link='http://collections.centerofthewest.org/zoomify/1/'.str_replace(' ','_',str_replace('#','',$gal['img'])).'/TileGroup0/0-0-0.jpg';?>
+		?>
 
 			<?
 			echo $this->Html->link($gal['name'],array('controller' => 'usergals','action' => 'view', $gal['id'])).'<span style="font-style: italic; font-size:90%"> - Curated by '.$gal['creator'].'</span>';
@@ -308,13 +348,20 @@ if(!empty($treasure['Usergal'])):?>
 	
 			echo $gal['TreasuresUsergal']['comments'].'<br />';		
 		}
-		//echo '<hr style="clear:both;">';
-	endforeach;?>
+		?>
+	</div>
+	</div>
+	<br />
+	<?endforeach;?>
 	
-	</p>
-	</span>
-<?endif;
+	
+</div>
+<?endif?>
+<br />
 
+
+</div><!-- /row -->
+<?
 //this was for the beginning of an AJAX login. It worked sort of but kept redirecting so I commented out
 //echo ' <button id="login-button">Login</button>';
 
