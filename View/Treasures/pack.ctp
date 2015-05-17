@@ -4,167 +4,149 @@ $(function() {
     $('.ignore').click(function() {setConfirmUnload(false);});
 }) 
 </script>
-
-<div class="pagging" style="float:left">	
-<?php 
-
-		echo $this->Paginator->prev('< ' . __('previous '), array(), null, array('class' => 'prev disabled'));
-		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
-
-?>
-<?php echo $this->Paginator->counter(array('format' => __('Showing {:current} records out of {:count}')));?>		
-</div>       
-    <div style="float:right;">
-	    <?php echo $this->Html->link('Edit your Virtual Exhibit', array('controller'=>'usergals','action' => 'load'));?>
-    </div>
-<div class="clear"></div>
-<div class="treasure-search" style="width:100%;margin-top:5px;">
-	<?php
-echo $this->Form->create('Treasure',array('div'=>true));
-//add 'default'=>false for AJAX submit
-
-//add AYAH and make it work with SecutiyComponent, comment out to disable
-
-if(!$this->Session->read('Auth.User')){
-	if(!isset($edit)){
-		//AYAH is disabled because it stopped working for some reason. Furthermore, I'd like to move to a simple MathCaptcha
-		//echo $ayah;
-	}
+<style>
+.input-group{
+	width:100%;
 }
-$this->Form->unlockField('session_secret');
-$opts=array();
-foreach ($treasures as $tr) $opts[$tr['Treasure']['img']]=$tr['Treasure']['accnum'];
+</style>
+<?
+$words='Build your exhibit <span style="font-size: .5em">[ '.$this->Html->link('Load existing', array('controller'=>'usergals','action' => 'load')).' ]</span>';
 if(isset($edit)){
 echo '<span id="flashMessage">You are editing an existing Virtual Exhibit.
 <a onclick="dropCookie(\'editflag\')" href="" >Click here</a> to start a new exhibit with these objects.<br>
 '.$this->Html->link('Click Here', array('controller'=>'treasures','action' => 'index'),array('onclick'=>'dropCookie("both");')).' to start a new Exhibit</span>';
+$words='Edit your exhibit';
+}?>
+
+<h1><?=$words?>
+</h1>
+
+<h4 class="badge-orange">
+<span style="font-size:1em" class="badge"><?=$this->Paginator->counter(array('format' => __('{:current} \ '.$limit.' possible')))?></span> <br /> 
+Drag items to sort</h4>
+<?
+echo $this->Form->create('Treasure',array('div'=>true));
+echo $this->Form->input('Usergal.id');
+echo $this->Form->input('Usergal.editcode',array('type'=>'hidden'));
+$this->Js->get('.search-results');
+$this->Js->sortable(array('placeholder'=>'ui-state-highlight','cursor'=>'move','tolerance'=>'pointer','update'=>'$("input.currentposition").each(function(idx){$(this).val(idx);});'));?>
+<script type="text/javascript">$(function() {$( ".search-results" ).disableSelection();});</script>
+<? 
+echo $this->Js->writeBuffer();		
+
+//echo $this->Html->script('sj_autocp1');
+?>
+<div class="row">
+<div class="col-xs-12">
+<div class="row search-results">
+<?	foreach ($treasures as $key=>$treasure): ?>
 
 
-echo '<div style="clear:both;margin:10 10px;"><br></div>';
- }
+<div class="the-objects col-xs-4" style="margin-bottom: 72px; padding-top:27px" id="obj_'<?=$treasure['Treasure']['id']?>">
 
+<?=$this->Form->input('Usergal.sortord.'.$treasure['Treasure']['id'],array('type'=>'hidden','class'=>'currentposition','value'=>$key,'id'=>'UsergalComments_'.$treasure['Treasure']['id']))?>
+	
+		<div  class="img-block" style="background-image: url('http://collections.centerofthewest.org/zoomify/1/<?=str_replace(' ','_',str_replace('#','',$treasure['Treasure']['img']))?>/TileGroup0/0-0-0.jpg');">
 		
+		<?=$this->Form->input('Usergal.comments.'.$treasure['Treasure']['id'],array('label'=>false,'type'=>'textarea','cols'=>'14','rows'=>'3','div'=>false,'placeholder'=>'Object Comment'))?>
 		
-		echo '<div class="left">';
-		echo $this->Form->input('Usergal.name',array('div'=>false,'required'=>true,'placeholder'=>'Title of your Exhibit','label'=>''));
-		echo'</div>';
+         <div class="clear">&nbsp;</div>
+    	<div class="caption-pack">
+			<div class="txt"><?=$this->Html->link($treasure['Treasure']['accnum'],array('controller' => 'treasures', 'action' => 'view', $treasure['Treasure']['slug']))?>
+			</div>
+         	<div class="gal">
+			<a id="gone" onclick="deleteCookie('<?=$treasure['Treasure']['id']?>')"><?=$this->Html->image('x.png')?></a>					
+			</div>
+		</div>	
+       </div>
+ 
 
-		echo '<div class="right">';
-		echo $this->Form->input('Usergal.email',array('required'=>true,'div'=>false,'placeholder'=>'E-mail','label'=>''));
-		echo'</div>';
-		
-		
-		echo '<div style="clear:both;margin:10 10px;"><br></div>';
-		echo '<div class="left">';
-		echo $this->Form->input('Usergal.creator',array('required'=>true,'placeholder'=>'Your Name','label'=>''));
-		echo'</div>';
+</div>
 
-		echo '<div class="right">';
-		echo $this->Form->input('Usergal.gloss',array('placeholder'=>'Describe your Virtual Exhibit (Gloss)','label'=>'','type'=>'textarea'));
-		echo '</div>';
-		echo $this->Form->input('Usergal.id');
-		echo $this->Form->input('Usergal.editcode',array('type'=>'hidden'));
-?>		<div class="clear"></div>		<?
-		echo '<div class="left">';
-		echo '<style media="screen" type="text/css">';
-		echo '.select2-results {
-					max-height: 350px;
-				}';
-		echo '</style>';
-		echo $this->Form->input('Usergal.img',array('options'=>$opts,'label'=>'Pick a featured object'));
-		echo '</div>';
-		echo '<div class="right">';
-		$tosLink = $this->Html->link('Terms of Service', array('controller' => 'pages', 'action' => 'tos'));
+    <?php endforeach; 
+    
+    
+    ?>
+	</div>
+</div>
+</div>
+<br />
+<div class="row">
+<div class="col-sm-6">
+<div class="panel panel-default">
+  <div class="panel-heading"><h1 class="panel-title">Curator details</h1></div>
+  <div class="panel-body">
+    <div class="row">
+	<div class="col-xs-12">
+	<div class="input-group">
+	<?=$this->Form->input('Usergal.email',array('required'=>true,'div'=>false,'placeholder'=>'(for verification only)','label'=>'Valid e-mail, will not be shared','class'=>'form-control'))?>
+	</div>
+	</div>
+	<br />
+	<br />
+	<br />
+	<div class="col-xs-12">
+	<div class="input-group input-group-lg">
+	<?=$this->Form->input('Usergal.creator',array('required'=>true,'placeholder'=>'(as you\'d like it displayed)','label'=>'Your name','class'=>'form-control'))?>
+	</div>
+	</div>
+	</div>
+  </div>
+</div>
+</div>
+<div class="col-sm-6">
+<div class="panel panel-default">
+  <div class="panel-heading"><h1 class="panel-title">Exhibit information</h1></div>
+  <div class="panel-body">
+    <div class="row">
+	<div class="col-xs-12">
+	<div class="input-group">
+
+	<?=$this->Form->input('Usergal.name',array('div'=>false,'required'=>true,'placeholder'=>'(pick something catchy)','label'=>'Title of your exhibit','class'=>'form-control'))?>
+	</div>
+	</div>
+	<div class="col-xs-12">
+	<div class="input-group">
+
+	<?=$this->Form->input('Usergal.gloss',array('placeholder'=>'(optional, but much cooler if filled in)','label'=>'Describe your exhibit','type'=>'textarea','class'=>'form-control'))?>
+	</div>
+	</div>
+	<div class="col-xs-12">
+	<div class="input-group">
+
+	<style media="screen" type="text/css">
+	.select2-results {max-height: 350px;}
+	</style>
+		<?
+		$opts=array();
+		foreach ($treasures as $tr) $opts[$tr['Treasure']['img']]=$tr['Treasure']['accnum'];
+		echo '<br />Thumbnail: '.$this->Form->input('Usergal.img',array('options'=>$opts,'label'=>'')).'<br />';
+	$tosLink = $this->Html->link('terms of service', array('controller' => 'pages', 'action' => 'tos'));
 		if(isset($edit)) {
 			//they already agreed so check the box for them
-			echo $this->Form->input(' ',array('label'=>'I agree to ' .$tosLink.'<br>','type'=>'checkbox','required'=>true,'checked'=>'checked'));
+			echo $this->Form->input(' ',array('label'=>'I agree to the ' .$tosLink.'<br>','type'=>'checkbox','required'=>true,'checked'=>'checked'));
 			echo $this->Form->submit(__('Submit Changes'), array('div' => false,'class'=>'ignore'));
 		}
 		else {
 			//benefit of the doubt on new exhibits, if it becomes a problem we'll have to make this zero (or do something on the Model)
 			echo $this->Form->input('Usergal.listed',array('type'=>'hidden','value'=>1));
-			echo $this->Form->input(' ',array('label'=>'I agree to ' .$tosLink.'<br>','type'=>'checkbox','required'=>true));
+			//echo $this->Form->input(' ',array('label'=>'I agree to ' .$tosLink.'<br>','type'=>'checkbox','required'=>true));
+			echo $this->Form->checkbox('tos',array('required'=>true,'div'=>'false','class'=>'regular-checkbox')).' I agree to '.$tosLink.'<br />';
 			echo $this->Form->submit('Submit', array('div' => false,'class'=>'mag','class'=>'ignore'));	
-		}
-		echo'</div>';		
-		$this->Js->get('.search-results');
-		$this->Js->sortable(array('placeholder'=>'ui-state-highlight','cursor'=>'move','tolerance'=>'pointer','update'=>'$("input.currentposition").each(function(idx){$(this).val(idx);});'));?>
-        <script type="text/javascript">$(function() {$( ".search-results" ).disableSelection();});</script>
-        <? 	echo $this->Js->writeBuffer();
-		echo $this->Html->script('sj_autocp1');?>
-<div class="clear"></div>
-<? echo '<div class="left">';
+		}?>
+	</div>
+	</div>
+	</div>
+  </div>
+</div>
+</div>
+<div class="col-sm12">
+<?
 if (!empty($edit))  echo $this->Html->link(__('Delete this Exhibit'), array('action' => 'dopack','d:all'),
  null, __('Are you sure you want to delete your Virtual Exhibit?')).'<br>';
-echo $this->Html->link('Start Over', array('controller'=>'treasures','action' => 'index'),array('onclick'=>'dropCookie("both");')).'<br>';
-echo '<div class="right">'.$this->Html->link('Add More Objects', array('controller'=>'treasures','action' => 'index')).'</div>';?>
+echo $this->Html->link('Start Over', array('controller'=>'treasures','action' => 'dopack','?'=>array('c'=>'true')),array(''), __('Are you sure you want to remove everything and start over?'))?>
+
+<?=$this->Form->end(); ?>
 </div>
-<div>
 </div>
-
-<div class="search-results" style="clear:both">
-<p>Drag and drop items to sort</p>
-	<?php 
-	   //  pr($treasures);
-
-	foreach ($treasures as $key=>$treasure): 
-	echo '<div class="the-objects" style="margin-bottom: 72px;" id="obj_'.$treasure['Treasure']['id'].'">';
-	echo $this->Form->input('Usergal.sortord.'.$treasure['Treasure']['id'],array('type'=>'hidden','class'=>'currentposition','value'=>$key,'id'=>'UsergalComments_'.$treasure['Treasure']['id']));
-		echo'<div class="img-block" style="background-image: url(\'http://collections.centerofthewest.org/zoomify/1/'.str_replace(' ','_',str_replace('#','',$treasure['Treasure']['img'])).'/TileGroup0/0-0-0.jpg\');">';
-        echo $this->Form->input('Usergal.comments.'.$treasure['Treasure']['id'],array('label'=>false,'type'=>'textarea','cols'=>'14','rows'=>'3','div'=>false,'placeholder'=>'Object Comment'));		
-         			echo '<div class="clear">&nbsp;</div>';	
-    		echo '<div class="caption-pack">';	
-			       echo '<div class="txt">'.$this->Html->link($treasure['Treasure']['accnum'],array('controller' => 'treasures', 'action' => 'view', $treasure['Treasure']['slug'])).'</div>';
-         			echo '<div class="gal">';
-						echo '<a id="gone" onclick="deleteCookie(\''.$treasure['Treasure']['id'].'\')"><img src="/img/x.png"></a>';					
-					echo '</div>';
-				echo'</div>';	
-       echo '</div>';
-        
-        ?>
-    
-        
-    
-        <?php
-        echo '</div>';
-		//seth added q&d spacing for testing, otherwise draggin is maddening
-
-        ?>
-    
-    <?php endforeach; 
-    
-    
-    ?>
-    
-    <div style="margin-top:20px;">&nbsp;</div>
-</div>
-
-<div class="btm-pagging">
-<?php
-		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
-		echo $this->Paginator->numbers(array('separator' => ''));
-		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
-?>
-
-</div>
-
-<div style="margin-top:20px;">&nbsp;</div>
-<?php 
-/*
-$data = $this->Js->get('#TreasurePackForm')->serializeForm(array('isForm' => true, 'inline' => true));
-$this->Js->get('#TreasurePackForm')->event(
-   'submit',
-   $this->Js->request(
-    array('action' => 'pack', 'controller' => 'treasures'),
-    array(
-       // 'update' => '#contactStatus',
-        'data' => $data,
-        'async' => true,    
-        'dataExpression'=>true,
-        'method' => 'POST'
-    )
-  )
-);
-echo $this->Js->writeBuffer();
-*/
-echo $this->Form->end(); ?>
+			     

@@ -265,7 +265,11 @@ class TreasuresController extends AppController {
 		
 		//used as a flag for the Colorbox ajax calls
 		if ($this->request->is('ajax')){
-			$this->set('ajax',true);
+			//grab comments so they can be displayed
+			foreach ($treasure['Usergal'] as $val){
+				if ($val['id']==$this->request->query['vgal'][0]) $ajax=$val;
+			}
+			$this->set('ajax',$ajax);
 		}
 		
 		//begin Lloyd SEO stuff
@@ -370,12 +374,11 @@ class TreasuresController extends AppController {
 	
 		$this->loadModel('Usergal');
 		$this->loadModel('TreasuresUsergal');
-		$this->Components->load('Security');
 		$cquery=array();
 		//AYAH stuff
-		require_once("ayah.php");
-		$ayah = new AYAH();
-		$this->set('ayah',$ayah->getPublisherHTML());
+		//require_once("ayah.php");
+		//$ayah = new AYAH();
+		//$this->set('ayah',$ayah->getPublisherHTML());
 		$editcook=$this->Cookie->read('editflag');
 		$jids=explode(" ",$this->Cookie->read('vgal'));
 		//assign a key=>value matching pair from JS cookie 'vgal'
@@ -508,6 +511,12 @@ class TreasuresController extends AppController {
 		$this->autoRender=false;
 		$yum=$this->Cookie->read('Treasure');
 		$this->Treasure->recursive = 0;
+		if (!empty($this->request->query['c'])){
+			$this->Cookie->delete('editflag');
+			$this->Cookie->delete('vgal');
+			$this->Session->setFlash(__('Exhibit emptied', true));
+			return $this->redirect(array('action'=>'index','controller'=>'treasures'));
+		}
 		if (!empty($this->params['named']['d'])&&$this->Cookie->read('editflag')){
 			$edit=$this->Cookie->read('editflag');
 			$this->loadModel('Usergal');
@@ -526,5 +535,9 @@ class TreasuresController extends AppController {
 		}
 		//send back from whence they came
 		return $this->redirect($this->referer());
+	}
+	
+	public function google_search_page(){
+		//$this->layout=false;
 	}
 }

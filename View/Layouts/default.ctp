@@ -82,8 +82,10 @@
 
 	echo $this->Html->script('select2_fields');
 	echo $this->Html->script('jquery.jpanelmenu');
-	echo $this->Html->script('jquery.colorbox');
+	//colorbox CSS must be before JS is loaded
 	echo $this->Html->css('colorbox');
+	echo $this->Html->script('jquery.colorbox');
+	
 	echo $this->Html->script('bootstrap.min');
 	echo $this->Html->css('bootstrap.min');
 //	echo $this->Html->css('bootstrap-theme.min');
@@ -195,9 +197,9 @@ s.parentNode.insertBefore(ga, s);
 		<li class="menu-item"><?php echo $this->Html->link(__('Virtual Exhibits'), array('plugin'=>'','controller' => 'usergals', 'action' => 'index')); ?></li>      				
 <? if( $this->Session->read('Auth.User')) echo '<li class="menu-item">'.$this->Html->link('My Virtual Exhibits',array('plugin'=>'','controller'=>'usergals','action'=>'mine')).'</li>';?>                        
 
-		<li class="menu-item exhibit"><?php 
+		<li class="menu-item exhibit badge-orange"><?php 
 		//$ct from the AppController
-		echo $this->Html->link('My Exhibit<span id="excount"> (<span id="ExNum"></span>)</span>',array('plugin'=>'','controller' => 'treasures', 'action' => 'pack'),array('id'=>'myx','escape'=>false));?></li>
+		echo $this->Html->link('My Exhibit<span id="excount"> <span id="ExNum" class="badge badge-hov"></span></span>',array('plugin'=>'','controller' => 'treasures', 'action' => 'pack'),array('id'=>'myx','escape'=>false));?></li>
         		<?php	
 		if(!$this->Session->read('Auth.User'))
 			echo '<li class="menu-item">'.$this->Html->link('Log In', array('plugin'=>'users','controller'=>'users','action'=>'login')).'</li>';

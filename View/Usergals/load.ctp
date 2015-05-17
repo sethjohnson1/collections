@@ -1,7 +1,7 @@
 <script type="text/javascript">
 $(function() {	   
 	$("a#btn").click(function(){
-		$('.hidden').toggle();
+		$('.email_form').toggle();
 		$('.tog').toggle();
 	
 	 });
@@ -12,21 +12,33 @@ $(function() {
 if(!empty($scr)) echo $scr;
 				
 echo $this->Form->create('Load');
-if(!$this->Session->read('Auth.User'))
+//if(!$this->Session->read('Auth.User'))
+?>
 
-echo '<div class="tog">';
-echo 'Enter the code to edit your Virtual Gallery. This code was e-mailed to you when you created your gallery.';
-echo $this->Form->input('editcode',array('label'=>'Edit Code Emailed to you: '));
-echo '<a href="#" id="btn">Lost your edit code?</a>';
-echo '</div>';
+<div class="row tog">
+<div class="col-xs-12">
+<h4>Enter the code e-mailed to you when you created your gallery</h4>
+<?=$this->Form->input('editcode',array('placeholder'=>'Enter code','label'=>false,'class'=>'form-control'))?>
+<?=$this->Form->submit('Submit',array('div' => true))?>
+<a href="#" id="btn">Lost your edit code?</a>
+</div>
+</div>
 
 
 
-echo '<div class="hidden">';
-echo 'Enter your e-mail and we will try to email you your edit code ';
-echo $this->Form->input('email',array('label'=>'Email: '));
-echo '<a href="#" id="btn">Load your Exhibit?</a>';
-echo '</div>';
-echo $this->Form->submit('Submit',array('div' => true));	
+<div class="row email_form" style="display:none">
+<div class="col-xs-12">
+<h4>Enter your e-mail and we will try to email you your edit code</h4>
+<?=$this->Form->input('email',array('label'=>false,'placeholder'=>'Your email','class'=>'form-control'))?>
+<?=$this->Form->submit('Submit',array('div' => true))?>
+<a href="#" id="btn">Load your Exhibit?</a>
+</div>
+</div>
+
+<div class="row">
+<div class="col-xs-12">
+<?	
 echo $this->Form->end();
 ?>
+</div>
+</div>

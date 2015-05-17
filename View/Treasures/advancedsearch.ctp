@@ -1,3 +1,5 @@
+<div class="row">
+<div class="col-xs-12">
 <script>
 	// To test the @id toggling on password inputs in browsers that don’t support changing an input’s @type dynamically (e.g. Firefox 3.6 or IE), uncomment this:
 //	 $.fn.hide = function() { return this; }
@@ -9,43 +11,70 @@
 	});
 </script>
 
-<div class="treasure-search">
+<div class="">
+<style>
+.form-control{
+display:inline;
+}
+</style>
 	<?php
 
 		echo $this->Form->create('Treasure');
 		echo $this->Html->link('Clear',array('action'=>'advancedsearch')).'<br />';
 		//echo 'We are still working on the style for this page <br />';
 		echo $this->Form->input('rdflag',array('type'=>'hidden','value'=>1));
-		echo $this->Form->input('synopsis', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Synopsis','type'=>'text'));	 		
-		echo $this->Form->input('remarks', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Remarks','type'=>'text'));	 				
-		echo $this->Form->input('creditline', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Credit Line','type'=>'text'));	 		
-		echo $this->Form->input('commonname', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Common Name','type'=>'text'));	 		
-		echo $this->Form->input('genus', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Genus species','type'=>'text'));	
-		echo $this->Form->input('taxonomic', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Taxonomic','type'=>'text'));			
-		echo $this->Form->input('dimensions', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Dimensions','type'=>'text'));	 		
-		echo $this->Form->input('daterange', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Date','type'=>'text'));
-		echo $this->Form->input('objtitle', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Object Title','type'=>'text'));	 		
-		echo $this->Form->input('gloss', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Gloss','type'=>'text'));	 		
-		echo $this->Form->input('inscription', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Inscription','type'=>'text'));	 		
-		echo $this->Form->input('accnum', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Accession Number'));	 		
-		echo '<div class="the-boxs" id="boxs">';
-		if(empty($this->params['named'])){
-			echo $this->Form->checkbox('bbm',array('div'=>false, 'class'=>'chkxbox','checked'=>1)).'Buffalo Bill Museum    ';
-			echo $this->Form->checkbox('cfm',array('div'=>false, 'class'=>'chkxbox','checked'=>1)).'Cody Firearms Museum ';
-			echo $this->Form->checkbox('dmnh',array('div'=>false, 'class'=>'chkxbox','checked'=>1)).'Draper Natural History Museum<br>';
-			echo $this->Form->checkbox('wg',array('div'=>false, 'class'=>'chkxbox','checked'=>1)).'Whitney Western Art Museum';
-			echo $this->Form->checkbox('pim',array('div'=>false, 'class'=>'chkxbox','checked'=>1)).'Plains Indian Museum';
-		}
-		else{
-			echo $this->Form->checkbox('bbm',array('div'=>false, 'class'=>'chkxbox')).'Buffalo Bill Museum    ';
-			echo $this->Form->checkbox('cfm',array('div'=>false, 'class'=>'chkxbox')).'Cody Firearms Museum ';
-			echo $this->Form->checkbox('dmnh',array('div'=>false, 'class'=>'chkxbox')).'Draper Museum of Natural History <br>';
-			echo $this->Form->checkbox('wg',array('div'=>false, 'class'=>'chkxbox')).'Whitney Gallery of Western Art';
-			echo $this->Form->checkbox('pim',array('div'=>false, 'class'=>'chkxbox')).'Plains Indian Museum';
-		}
+		echo $this->Form->input('synopsis', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Synopsis','type'=>'text','class'=>'form-control'));	 		
+		echo $this->Form->input('remarks', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Remarks','type'=>'text','class'=>'form-control'));	 				
+		echo $this->Form->input('creditline', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Credit Line','type'=>'text','class'=>'form-control'));	 		
+		echo $this->Form->input('commonname', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Common Name','type'=>'text','class'=>'form-control'));	 		
+		echo $this->Form->input('genus', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Genus species','type'=>'text','class'=>'form-control'));	
+		echo $this->Form->input('taxonomic', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Taxonomic','type'=>'text','class'=>'form-control'));			
+		echo $this->Form->input('dimensions', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Dimensions','type'=>'text','class'=>'form-control'));	 		
+		echo $this->Form->input('daterange', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Date','type'=>'text','class'=>'form-control'));
+		echo $this->Form->input('objtitle', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Object Title','type'=>'text','class'=>'form-control'));	 		
+		echo $this->Form->input('gloss', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Gloss','type'=>'text','class'=>'form-control'));	 		
+		echo $this->Form->input('inscription', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Inscription','type'=>'text','class'=>'form-control'));	 		
+		echo $this->Form->input('accnum', array('div' => true,'empty'=>true,'label'=>'','placeholder'=>'Accession Number','class'=>'form-control'));	 		
+?>
+<div class="row checkbox-label">
+<?
+$boxoptions=array('div'=>false,'class'=>'regular-checkbox');
+if(empty($this->params['named']['bbm'])) $boxoptions['checked']=1;
+?>
+<div class="col-sm-4 col-xs-6">
+<?
+echo $this->Form->checkbox('bbm',$boxoptions).' Buffalo Bill';
+?>
+</div>
+<div class="col-sm-4 col-xs-6">
+<?
+echo $this->Form->checkbox('wg',$boxoptions).' Western Art';?>
+</div>
+<div class="col-sm-4 col-xs-6">
+<?
+echo $this->Form->checkbox('cfm',$boxoptions).' Firearms';
+?>
+</div>
 
-		echo $this->Form->checkbox('d',array('div'=>false, 'class'=>'chkxbox')).'Show only items on display<br />';
-		echo '</div>';		
+<div class="col-sm-4 col-xs-6">
+<?
+echo $this->Form->checkbox('pim',$boxoptions).' Plains Indian';
+?>
+</div>
+<div class="col-sm-4 col-xs-12">
+<?
+echo $this->Form->checkbox('dmnh',$boxoptions).' Natural History';
+?>
+</div>
+<div class="col-sm-4 col-xs-12">
+<?
+echo $this->Form->checkbox('d',array('div'=>false,'class'=>'regular-checkbox')).' on display';
+?>
+</div>
+     
+</div>		
+
+<?	
 
 
 	    echo $this->Form->submit('Search', array('div' => true));	
@@ -55,8 +84,17 @@
 	?>
 
 <h2>Some tips for using "Advanced Search"</h2>
-	<p>Here's how advanced search can be manipulated:</p>
+<h3>
+NOTE: <small>You can try Google Custom Search too:</small>
+</h3>
+<div class="row">
+<div class="col-xs-8">
+<?=$this->element('google_search')?>
+</div>
+</div>
+	<h4>Here's how advanced search can be manipulated:</h4>
 	<ul>
+	<li>You can return to this page from the main search and it should retain your entries</li>
 	<li>Terms separated by space queries using AND operator. <a href="http://oc.bbhclan.org/treasures/advancedsearch/accnum:/daterange:/dimensions:/synopsis:silver%20necklace/objtitle:/creditline:/gloss:/inscription:/remarks:/commonname:/genus:/bbm:1/cfm:1/dmnh:1/wg:1/pim:1/d:0">Example, silver necklace finds everything with "silver" AND "necklace"</a></li>
 	<li>Precede items with a MINUS SIGN to omit them. Example, <a href="http://oc.bbhclan.org/treasures/advancedsearch/accnum:/daterange:/dimensions:/synopsis:silver%20-necklace/objtitle:/creditline:/gloss:/inscription:/remarks:/commonname:/genus:/bbm:1/cfm:1/dmnh:1/wg:1/pim:1/d:0">everything silver without the term necklace</a></li>
 	<li>Terms in quotes will be searched as a single entity. <a href="http://oc.bbhclan.org/treasures/advancedsearch/accnum:/daterange:/dimensions:/synopsis:blossom%20necklace/objtitle:/creditline:/gloss:/inscription:/remarks:/commonname:/genus:/bbm:1/cfm:1/dmnh:1/wg:1/pim:1/d:0">Example everything with "blossom necklace" in synopsis</a></li>
@@ -94,3 +132,5 @@ Insider information
 </ul>
 	
 </div>
+</div>
+</div><!-- /row -->

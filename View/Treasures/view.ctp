@@ -1,7 +1,13 @@
 <?//make link to self if Ajax
-if (isset($ajax)):
+if (isset($ajax)):?>
+<div style="padding: 0 10px">
+<?
+if (!empty($ajax['TreasuresUsergal']['comments'])) echo '<h4>"'.$ajax['TreasuresUsergal']['comments'].'"</h4>';
 echo $this->Html->link('Visit record &raquo;',array(),array('escape'=>false)).'<br />';
 //also skip a lot if Ajax is set...
+?>
+</div>
+<?
 else:
 ?>
 <div class="backto">

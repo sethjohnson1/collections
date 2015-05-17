@@ -1,4 +1,22 @@
-
+<script>
+$(document).ready(function(){
+//set defaults
+cbw="100%";
+cbh="75%";
+//override if screen wider than tall
+if ($( window ).width()>=$( window ).height()){
+	cbw="80%";
+	cbh="90%";
+}
+	var $gallery=$(".ajax").colorbox({rel:'ajax',width:cbw,height:cbh,opacity:0.75,current:"Viewing object {current} of {total}"});
+	
+	//allows external link to open gallery
+$("a#openGallery").click(function(e){
+    e.preventDefault();
+    $gallery.eq(0).click();
+});
+});
+</script>
 <div class="row">
 <div class="col-md-12">
 <?
@@ -9,6 +27,7 @@
 
 		if(!empty($usergal['Usergal']['creator']))
 			echo '<br /><span class="allcaps">Curated by '.$usergal['Usergal']['creator'].'</span>';
+		echo '<h3>'.$this->Html->link('Begin tour &raquo;','#',array('id'=>'openGallery','escape'=>false,'class'=>'gallery')).'</h3>';
 			?>
 
 <!-- div class="share-links">
@@ -24,22 +43,13 @@
  </div>
 </div><!-- /row -->
 <hr />
-<script>
-$(document).ready(function(){
-//set defaults
-cbw="100%";
-cbh="75%";
-//override if screen wider than tall
-if ($( window ).width()>=$( window ).height()){
-	cbw="80%";
-	cbh="100%";
-}
-	$(".ajax").colorbox({rel:'ajax',width:cbw,height:cbh,opacity:0.75,current:"Viewing object {current} of {total}"});
-});
-</script>
+
 <style>
 .img-responsive{
 	//max-width:75%;
+	margin: 0 auto;
+}
+.info-container .row{
 	margin: 0 auto;
 }
 </style>
@@ -54,7 +64,7 @@ else $css_img='img/non.jpg';
 ?>
 <div class="img-block" style="background-image: url('//collections.centerofthewest.org/<?=$css_img?>');">
 <div class="link">
-<?=$this->Html->link($this->Html->image('transparent.png'),array('controller'=>'treasures','action' =>'view', $treasure['Treasure']['slug']),array('escape'=>false,'class'=>'ajax cboxElement'))?>
+<?=$this->Html->link($this->Html->image('transparent.png'),array('controller'=>'treasures','action' =>'view', $treasure['Treasure']['slug'],'?'=>array('vgal'=>$this->params['pass'])),array('escape'=>false,'class'=>'ajax cboxElement'))?>
 <? //=$this->Html->link($this->Html->image('transparent.png'),'#mode',array('escape'=>false,'data-toggle'=>'modal', 'data-target'=>'.bs-example-modal-lg'))?>
 <? //=$this->Html->image('transparent.png',array('url'=>array('controller'=>'treasures','action' =>'view', $treasure['Treasure']['slug'])))?>
 </div>
@@ -75,21 +85,18 @@ else $comment=$this->Text->truncate($treasure['Treasure']['synopsis'],160,array(
 <p>
 <?=$comment?>
 <br />
-<?=$this->Html->link('Visit record &raquo;',array('controller'=>'treasures','action' =>'view', $treasure['Treasure']['slug']),array('escape'=>false))?>
+<?=$this->Html->link('View record &raquo;',array('controller'=>'treasures','action' =>'view', $treasure['Treasure']['slug']),array('escape'=>false))?>
 </p>
 </div>
 </div><!-- /row -->
 
 <?php endforeach; ?>
-
+<br />
 <div class="flag">
 <?
-		//echo $this->Form->postLink('Flag as Inappropriate', array('action' => 'dousergal','x:'.$usergal['Usergal']['id']));
+		//this looks like it does nothing, but it's posting to itself
 		echo $this->Form->postLink('Flag as Inappropriate', array(), null, __('Are you sure you want to flag this?'));
-		echo'<br>';
-		echo $this->Html->link('Load an Exhibit', array('controller'=>'usergals','action' => 'load'));
-		echo'<br>';
-		echo $this->Html->link('Add to your Exhibit', array('controller'=>'treasures','action' => 'index'));		
+			
 ?>
 </div>
 <?=$this->element('paging')?>

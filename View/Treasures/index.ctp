@@ -1,3 +1,18 @@
+<script>
+$(document).ready(function(){
+/* just going to page now 
+//set defaults
+cbw="100%";
+cbh="75%";
+//override if screen wider than tall
+if ($( window ).width()>=$( window ).height()){
+	cbw="80%";
+	cbh="90%";
+}
+	var $gallery=$(".site-search").colorbox({rel:'site-search',width:cbw,height:cbh,opacity:0.75,current:"Viewing object {current} of {total}"});
+	*/
+});
+</script>
 <div class="treasure-search allcaps">
 <div class="row">
 <div class="col-sm-9 col-xs-12">
@@ -58,23 +73,33 @@ echo $this->Form->input('searchall', array('div' => FALSE,'empty'=>true,'label'=
 echo $this->Form->submit('/img/glass.png', array('div' => false,'class'=>'search-btn'));
 ?>
 </div>
-
-<div class="col-sm-3 hidden-xs">
-<div class="fb-like hidden-xs" data-href="https://www.facebook.com/centerofthewest" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>	
+<div class="col-sm-3 col-xs-12" style="padding-top: 10px">
+<div class="row">
+<div class="hidden-xs">
+<div class="col-sm-12 hidden-xs" style="padding-bottom:27px">
+<div class="fb-like"  data-href="https://www.facebook.com/centerofthewest" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>	
+</div>
+</div>
+<div class="col-sm-12 col-xs-6">
 <?
 $adv=$this->params['named'];
 $adv['action']='advancedsearch';
-echo $this->Html->link('Advanced Search',$adv,array('class'=>'search-help')).'<br />';
-
-$boxoptions=array('div'=>false,'class'=>'regular-checkbox');
-
-if(empty($this->params['named']['bbm'])) $boxoptions['checked']=1;
-
+echo $this->Html->link('Advanced Search',$adv,array('class'=>'')).'<br />';?>
+</div>
+<div class="col-sm-12 col-xs-6">
+<?
+echo $this->Html->link('Site Search',array('action'=>'google_search_page','controller'=>'treasures'),array('class'=>'site-search')).'<br />';
 ?>
+</div>
+</div>
 </div>
 </div>
 <br />
 <div class="row checkbox-label">
+<?
+$boxoptions=array('div'=>false,'class'=>'regular-checkbox');
+if(empty($this->params['named']['bbm'])) $boxoptions['checked']=1;
+?>
 <div class="col-sm-4 col-xs-6">
 <?
 echo $this->Form->checkbox('bbm',$boxoptions).' Buffalo Bill';
@@ -114,24 +139,6 @@ echo $this->Form->checkbox('d',array('div'=>false,'class'=>'regular-checkbox')).
 		echo $this->Js->writeBuffer();
 ?>
 </div><!-- /treasure-search -->
-
-<? /*
-<div class="share-links-index">
-    <div id="fb-root"></div>
-    <div class="fb-like" data-href="https://www.facebook.com/centerofthewest" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>	
-
-    <div class="fb-share-button" data-href="<? echo 'http://collections.centerofthewest.org'.$this->here.'?utm_source=facebook&utm_campaign=onlinecollections' ?>" data-type="button_count"></div>
-
-    <div class="g-plusone" data-href="<? echo 'http://collections.centerofthewest.org'.$this->here.'?utm_source=googleplus&utm_campaign=onlinecollections'?>"></div>
-
-    <!--div style="display: inline-block;">
-	<a href="https://twitter.com/share" class="twitter-share-button" data-via="centerofthewest" data-hashtags="OnlineCollections" data-url="<? echo $TWshorturl;?>">Tweet</a>
-	<script type="text/javascript" src="//www.reddit.com/static/button/button1.js"></script>
-	</div -->
-	
-
-</div> */
-?>
 <?
 
 if(empty($this->params['named']['bbm']))
@@ -161,18 +168,19 @@ if(empty($this->params['named']['bbm']))
 
 <div class="search-results" style="clear:both">
 <?php 
-if(empty($treasures)){
-echo 'No results found. Try Google Custom search instead!
-<div style="background-color:border: 1px solid #ddd;width:1002px;">
-<form method="get" action="http://www.google.com/search"> 
-<input type="text" name="q" size="70" maxlength="255" value="" placeholder="Google Search"> 
-<input type="submit" value="Search"><br>
-<input type="checkbox" checked name="sitesearch" value="collections.centerofthewest.org">search only Online Collections Center of the West
-</form>
+if(empty($treasures)):?>
+<br />
+<br />
+<br />
+<div class="row">
+<div class="col-xs-12">
+<h4>No results found. Try using <?=$this->Html->link('Advanced Search',$adv,array())?>, or the box below for Google Site Search.</h4>
+<?=$this->element('google_search')?>
+</div>
 </div>
 
-';
-}
+<?
+endif;
 //featured Galleries
 if ($usergals && empty($this->request->params['named'])) :?>
 <br />
