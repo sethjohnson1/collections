@@ -28,4 +28,6 @@ input.gsc-search-button, input.gsc-search-button:hover, input.gsc-search-button:
     filter: none;
 }
 </style>
-<gcse:search></gcse:search>
+<gcse:searchbox></gcse:searchbox>
+
+<gcse:searchresults></gcse:searchresults>

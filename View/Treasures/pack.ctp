@@ -128,7 +128,7 @@ echo $this->Js->writeBuffer();
   <div class="panel-body">
     <div class="row">
 	<div class="col-xs-12">
-	<h4>Relax, your Virtual Exhibit can easily be edited once saved</h4>
+	<h4>Relax, your exhibit can easily be edited once saved</h4>
 	<div class="input-group">
 	<?=$this->Form->input('Usergal.email',array('required'=>true,'div'=>false,'placeholder'=>'(for verification only)','label'=>'Valid e-mail, will not be shared','class'=>'form-control'))?>
 	</div>
@@ -187,7 +187,7 @@ echo $this->Js->writeBuffer();
 		</div>
 		<div class="col-xs-6">
 			<?
-			echo $this->Form->submit('Save Progress', array('div' => false,'class'=>'ignore btn btn-danger btn-lg"'));	
+			echo $this->Form->submit('Save exhibit', array('div' => false,'class'=>'ignore btn btn-danger btn-lg"'));	
 			?>
 		</div>
 		<?endif;

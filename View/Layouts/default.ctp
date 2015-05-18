@@ -149,7 +149,16 @@ s.parentNode.insertBefore(ga, s);
 })();
 </script>
 </head>
-<body class="page page-id-10546 page-template-default logged-in admin-bar no-customize-support header-image altsidebar-content" itemscope="itemscope" itemtype="http://schema.org/WebPage"><div class="site-container"><header class="site-header" role="banner" itemscope="itemscope" itemtype="http://schema.org/WPHeader"><div class="wrap"><div class="title-area"><p class="site-title" itemprop="headline"><a href="http://centerofthewest.org/" title="Buffalo Bill Center of the West" >Buffalo Bill Center of the West</a></p></div><aside class="widget-area header-widget-area"></aside>
+<body class="page page-id-10546 page-template-default logged-in admin-bar no-customize-support header-image altsidebar-content" itemscope="itemscope" itemtype="http://schema.org/WebPage">
+
+<div class="site-container">
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+  Launch demo modal
+</button>
+
+
+<header class="site-header" role="banner" itemscope="itemscope" itemtype="http://schema.org/WPHeader"><div class="wrap"><div class="title-area"><p class="site-title" itemprop="headline"><a href="http://centerofthewest.org/" title="Buffalo Bill Center of the West" >Buffalo Bill Center of the West</a></p></div><aside class="widget-area header-widget-area"></aside>
 
 <nav class="nav-primary" role="navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement"><ul id="menu-top-menu" class="menu genesis-nav-menu menu-primary"><li id="menu-item-8279" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-8279"><a href="http://centerofthewest.org/visit/">Visit<small class="nav-desc"> </small></a>
 </li>
@@ -328,5 +337,63 @@ var jPM = $.jPanelMenu({
 });
 jPM.on();
 
-</script> 
+</script>
+<style>
+.btn-social{
+	width:100%;
+	color: white !important;
+	margin:0 0 10px 0;
+}
+
+.btn-facebook{
+	background-color: #415e9b;
+}
+.btn-gplus{
+	background-color: #d73d32;
+}
+.btn-twitter{
+	background-color: #54abed;
+}
+.btn-email{
+	background-color: #bd4f19;
+}
+.btn-icons{
+	//padding-right:20px;
+	float: right;
+	position: relative;
+}
+</style>
+<!-- Social login modal -->
+<div class="modal fade" id="myModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button style="color:red" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<h3 style="text-align:center">Super-easy Login</h3>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+		<div class="col-xs-12">
+		<?
+		$fb=$this->Html->image('white-facebook.svg',array('class'=>'btn-icons'));
+		$gp=$this->Html->image('white-googleplus.svg',array('class'=>'btn-icons'));
+		$tw=$this->Html->image('white-twitter.svg',array('class'=>'btn-icons'));
+		
+		?>
+		
+		<?=$this->Html->link($fb.'Facebook',array(),array('class'=>'btn btn-social btn-facebook btn-lg','role'=>'button','escape'=>false))?>
+		<?=$this->Html->link($gp.'Google',array(),array('class'=>'btn btn-social btn-gplus btn-lg','role'=>'button','escape'=>false))?>
+		<?=$this->Html->link($tw.'Twitter',array(),array('class'=>'btn btn-social btn-twitter btn-lg','role'=>'button','escape'=>false))?>
+		<p style="text-align: center;"> - OR - </p>
+		<?=$this->Html->link('<span class="glyphicon glyphicon-envelope" aria-hidden="true" style="float: right"></span> Email',array(),array('class'=>'btn btn-social btn-email btn-lg','role'=>'button','escape'=>false))?>
+		</div>
+		</div>
+      </div>
+      <!--div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div-->
+    </div>
+  </div>
+</div> 
   </body>
