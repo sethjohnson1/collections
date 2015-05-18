@@ -9,10 +9,11 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 ?>
-<div class="users index">
-	<h2><?php echo __d('users', 'Login'); ?></h2>
+<div class="users index row">
+<div class="col-xs-12">
+	<h2><?php echo __d('users', 'Login with email'); ?></h2>
 	<?php echo $this->Session->flash('auth');
-	echo '<h3>If you need to create an account, <a href="http://collections.centerofthewest.org/users/users/add">register now</a> - it\'s fast and free!</h3>';
+
 	?>
 	<fieldset>
 		<?php
@@ -25,11 +26,11 @@
 				//'_redirect'=>false
 				));
 			echo $this->Form->input('email', array(
-				'label' => __d('users', 'Email')));
+				'label' =>false,'class'=>'form-control','placeholder'=>'Email address'));
 			echo $this->Form->input('password',  array(
-				'label' => __d('users', 'Password')));
+				'label' => false,'class'=>'form-control','placeholder'=>'Password'));
 
-			echo '<p>' . $this->Form->input('remember_me', array('type' => 'checkbox', 'label' =>  __d('users', 'Remember Me'))) . '</p>';
+			echo '<p>' . $this->Form->input('remember_me', array('class'=>'regular-checkbox','type' => 'checkbox', 'label' => false,'div'=>false)) . ' Remember me</p>';
 			echo '<p>' . $this->Html->link(__d('users', 'I forgot my password'), array('action' => 'reset_password')) . '</p>';
 
 			echo $this->Form->hidden('User.return_to', array(
@@ -37,4 +38,5 @@
 			echo $this->Form->end(__d('users', 'Submit'));
 		?>
 	</fieldset>
+	</div>
 </div>

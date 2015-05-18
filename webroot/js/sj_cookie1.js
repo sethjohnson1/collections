@@ -65,11 +65,11 @@ var isDirty = false
 $('.img-block').hover(
 		function(){
 			$(this).find('.caption').fadeIn(250);
-			$(this).find('.caption-pack').fadeIn(250);
+			//$(this).find('.caption-pack').fadeIn(250);
 		},
 		function(){
 			$(this).find('.caption').fadeOut(100);
-			$(this).find('.caption-pack').fadeOut(100);			
+			//$(this).find('.caption-pack').fadeOut(100);			
 		}
 	);	
 //hover for image block on all pages
@@ -115,9 +115,9 @@ $('.img-block').hover(
 	
 //Start	Set Virutal Gallery # on Page Load
 	if(getCookie("CakeCookie[vgal]")=="")
-		{$("#ExNum").text('None');}
+		{$(".ExNum").text('None');}
 	else
-		{$("#ExNum").fadeOut(500,function(){$(this).text(getCookie("CakeCookie[vgal]").split(" ").length).fadeIn(500);});}
+		{$(".ExNum").fadeOut(500,function(){$(this).text(getCookie("CakeCookie[vgal]").split(" ").length).fadeIn(500);});}
 //End	Set Virutal Gallery # on Page Load		
 });
 function emptyvexhibit(){
@@ -176,10 +176,10 @@ function setCookie(cval)
 		document.cookie = "CakeCookie[vgal]=" + vgal + "; path=/";
 		
 		if(getCookie("CakeCookie[vgal]")=="")
-			{$("#ExNum").text('None');}
+			{$(".ExNum").text('None');}
 		else
 			{
-				$("#ExNum").fadeOut(500,function(){$(this).text(getCookie("CakeCookie[vgal]").split(" ").length).fadeIn(500);});
+				$(".ExNum").fadeOut(500,function(){$(this).text(getCookie("CakeCookie[vgal]").split(" ").length).fadeIn(500);});
 				
 			
 			}
@@ -244,9 +244,9 @@ function deleteCookie(dcname)
 	
 	
 		if(getCookie("CakeCookie[vgal]")=="")
-			{$("#ExNum").text('None');}
+			{$(".ExNum").text('None');}
 		else
-			{$("#ExNum").fadeOut(500,function(){$(this).text(getCookie("CakeCookie[vgal]").split(" ").length).fadeIn(500);});}
+			{$(".ExNum").fadeOut(500,function(){$(this).text(getCookie("CakeCookie[vgal]").split(" ").length).fadeIn(500);});}
 }
 //this function either sets the unload message to the other function (unloadMessage), but if you pass off/false it then unregisters it.
 function setConfirmUnload(on) {      

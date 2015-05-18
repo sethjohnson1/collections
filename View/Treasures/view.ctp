@@ -132,15 +132,6 @@ $img='http://collectionimages.s3-website-us-west-1.amazonaws.com/1/'.urlencode(s
 </div>
 </div> <!-- /mobileview -->
 
-<!--div class="share-links">
-    <div id="fb-root"></div>
-    <div class="fb-like" data-href="https://www.facebook.com/centerofthewest" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
-
-    <div class="fb-share-button" data-href="<? echo 'http://collections.centerofthewest.org'.$this->here.'?utm_source=facebook&utm_campaign=onlinecollections' ?>" data-type="button_count"></div>
-
-    <div class="g-plusone" data-href="<? echo $GPshorturl;?>"></div>
-
-</div-->
 <div class="clear"></div>
 <div class="info-container">
 <?
@@ -244,6 +235,7 @@ if(!empty($treasure['Treasure']['location'])){
 echo $loctxt;		
 ?>
 </div>
+
 </div><!-- /row (inner) -->
 </div><!-- inner grid -->
 <br />
@@ -291,7 +283,19 @@ if(!empty($treasure['Treasure']['synopsis']))echo '<p><span class="field-name">S
 	endforeach;
 	?>
 </p>
-</div><!-- /data and tags -->
+<br />
+<?if (!isset($ajax)):?>
+<div class="share-links">
+	<div class="g-plusone" data-href="<?='http://'.$_SERVER['HTTP_HOST'].$this->here.'?utm_source=gplus&utm_campaign=onlinecollections'?>"></div>
+
+    <div class="fb-share-button" data-href="<? echo 'http://collections.centerofthewest.org'.$this->here.'?utm_source=facebook&utm_campaign=onlinecollections' ?>" data-type="button_count"></div>
+	<div style="display:inline-block;">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="centerofthewest" data-hashtags="OnlineCollections" data-url="<? echo $TWshorturl;?>"></a>
+	</div>
+</div>
+<?endif?>
+
+</div><!-- /data and tags and social icons -->
 <?endif?>
 
 </div><!-- /row -->
@@ -306,7 +310,6 @@ if(!empty($treasure['Relation'])):?>
 	$strJson = @file_get_contents('http://centerofthewest.org/wp-json/posts/'.$article['blogid'].'/');
 	$arrJson = json_decode($strJson,true);
 	$tn=$arrJson['featured_image']['attachment_meta']['sizes']['thumbnail']['url'];
-	//debug($arrJson['featured_image']['attachment_meta']['sizes']['thumbnail']['url']);
 	if(!empty($arrJson['featured_image']['source'])):?>
 	<div class="row">
 	<div class="col-xs-4">
@@ -337,7 +340,7 @@ if(!empty($treasure['Usergal'])):?>
 	?>
 	<div class="row">
 	<div class="col-xs-4">
-	<?=$this->Html->link($this->Html->image($img_link,array('class'=>'img-responsive img-thumbnail','alt'=>$arrJson['title'])),$arrJson['link'],array('escape'=>false))?>
+	<?=$this->Html->link($this->Html->image($img_link,array('class'=>'img-responsive img-thumbnail','alt'=>$gal['name'])),array('controller' => 'usergals','action' => 'view', $gal['id']),array('escape'=>false))?>
 	</div>
 	<div class="col-xs-8">
 	<?

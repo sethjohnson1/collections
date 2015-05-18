@@ -30,15 +30,7 @@ $("a#openGallery").click(function(e){
 		echo '<h3>'.$this->Html->link('Begin tour &raquo;','#',array('id'=>'openGallery','escape'=>false,'class'=>'gallery')).'</h3>';
 			?>
 
-<!-- div class="share-links">
-    <div id="fb-root"></div>
-    <div class="fb-like" data-href="https://www.facebook.com/centerofthewest" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
-    <div class="fb-share-button" data-href="<? echo 'http://collections.centerofthewest.org'.$this->here.'?utm_source=facebook&utm_campaign=onlinecollections' ?>" data-type="button_count"></div>
 
-    <div class="g-plusone" data-href="<? echo 'http://collections.centerofthewest.org'.$this->here.'?utm_source=googleplus&utm_campaign=onlinecollections'?>"></div>
-    <div style="display: inline-block;"><a href="https://twitter.com/share" class="twitter-share-button" data-via="centerofthewest" data-hashtags="OnlineCollections" data-url="<? echo $TWshorturl;?>">Tweet</a></div>
-	<script type="text/javascript" src="//www.reddit.com/static/button/button1.js"></script>
-</div -->
 <?=$this->element('paging')?>   
  </div>
 </div><!-- /row -->
@@ -80,7 +72,10 @@ else $css_img='img/non.jpg';
 <br />
 <?
 if (!empty($treasure['TreasuresUsergal']['comments'])) '<em>'.$comment=$treasure['TreasuresUsergal']['comments'].'</em>';
-else $comment=$this->Text->truncate($treasure['Treasure']['synopsis'],160,array('exact'=>true));
+else {
+if (isset($treasure['Treasure']['synopsis'])) $comment=$this->Text->truncate($treasure['Treasure']['synopsis'],160,array('exact'=>true));
+else $comment=$treasure['Treasure']['commonname'];
+}
 ?>
 <p>
 <?=$comment?>
@@ -92,23 +87,31 @@ else $comment=$this->Text->truncate($treasure['Treasure']['synopsis'],160,array(
 
 <?php endforeach; ?>
 <br />
+<div class="row">
+<div class="col-sm-8">
+<div class="share-links">
+	<div class="g-plusone" data-href="<?='http://'.$_SERVER['HTTP_HOST'].$this->here.'?utm_source=gplus&utm_campaign=onlinecollections'?>"></div>
+	
+    <div class="fb-share-button" data-href="<? echo 'http://collections.centerofthewest.org'.$this->here.'?utm_source=facebook&utm_campaign=onlinecollections' ?>" data-type="button_count"></div>
+	<div style="display:inline-block;">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="centerofthewest" data-hashtags="OnlineCollections" data-url="<? echo $TWshorturl;?>"></a>
+	</div>
+</div>
+</div>
+<div class="col-sm-4">
 <div class="flag">
 <?
 		//this looks like it does nothing, but it's posting to itself
-		echo $this->Form->postLink('Flag as Inappropriate', array(), null, __('Are you sure you want to flag this?'));
+		echo $this->Form->postLink('Flag as inappropriate', array(), null, __('Are you sure you want to flag this?'));
 			
 ?>
 </div>
+</div>
+
+</div>
+
 <?=$this->element('paging')?>
 <div id="post-comments">
     <?php $this->CommentWidget->options(array('allowAnonymousComment' => false));?>
     <?php echo $this->CommentWidget->display();?>
-</div>
-
-<div id="mode" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      ...
-    </div>
-  </div>
 </div>

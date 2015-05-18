@@ -9,27 +9,45 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 ?>
-<div class="users form">
-	<h2><?php echo __d('users', 'Add User'); ?></h2>
+<div class="row users form">
+<div class="col-xs-12">
+	<h2>Register with email	</h2>
+
+	<p>Email addresses are not displayed publicly or shared</p>
 	<fieldset>
 		<?php
 			echo $this->Form->create($model);
 			echo $this->Form->input('username', array(
-				'label' => __d('users', 'Display name')));
+				'label' => false,
+				'class'=>'form-control',
+				'placeholder'=>'Display name'));
 			echo $this->Form->input('email', array(
-				'label' => __d('users', 'E-mail (used as login)'),
+				'label' => false,
 				'error' => array('isValid' => __d('users', 'Must be a valid email address'),
-				'isUnique' => __d('users', 'An account with that email already exists'))));
+				'isUnique' => __d('users', 'An account with that email already exists'))
+				,'class'=>'form-control',
+				'placeholder'=>'Email address (used as login)'
+				));
 			echo $this->Form->input('password', array(
-				'label' => __d('users', 'Password'),
-				'type' => 'password'));
+				'label' => false,
+				'type' => 'password',
+				'class'=>'form-control',
+				'placeholder'=>'Password'
+				));
 			echo $this->Form->input('temppassword', array(
-				'label' => __d('users', 'Password (confirm)'),
-				'type' => 'password'));
-			$tosLink = $this->Html->link(__d('users', 'Terms of Service'), array('controller' => 'pages', 'action' => 'tos', 'plugin' => null));
+				'label' =>false,
+				'type' => 'password',
+				'class'=>'form-control',
+				'placeholder'=>'Confirm password'
+				));
+			$tosLink = $this->Html->link(__d('users', 'terms of service'), array('controller' => 'pages', 'action' => 'tos', 'plugin' => null));
 			echo $this->Form->input('tos', array(
-				'label' => __d('users', 'I have read and agreed to ') . $tosLink));
+				'label' => false,
+				'div'=>false,
+				'class'=>'regular-checkbox'
+				)).' I agree to the '.$tosLink;
 			echo $this->Form->end(__d('users', 'Submit'));
 		?>
 	</fieldset>
+</div>
 </div>

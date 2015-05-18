@@ -77,6 +77,7 @@ echo $this->Form->submit('/img/glass.png', array('div' => false,'class'=>'search
 <div class="row">
 <div class="hidden-xs">
 <div class="col-sm-12 hidden-xs" style="padding-bottom:27px">
+<div id="fb-root"></div>
 <div class="fb-like"  data-href="https://www.facebook.com/centerofthewest" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>	
 </div>
 </div>

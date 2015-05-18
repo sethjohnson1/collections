@@ -199,7 +199,7 @@ s.parentNode.insertBefore(ga, s);
 
 		<li class="menu-item exhibit badge-orange"><?php 
 		//$ct from the AppController
-		echo $this->Html->link('My Exhibit<span id="excount"> <span id="ExNum" class="badge badge-hov"></span></span>',array('plugin'=>'','controller' => 'treasures', 'action' => 'pack'),array('id'=>'myx','escape'=>false));?></li>
+		echo $this->Html->link('My Exhibit<span id="excount"> <span class="ExNum badge badge-hov"></span></span>',array('plugin'=>'','controller' => 'treasures', 'action' => 'pack'),array('id'=>'myx','escape'=>false));?></li>
         		<?php	
 		if(!$this->Session->read('Auth.User'))
 			echo '<li class="menu-item">'.$this->Html->link('Log In', array('plugin'=>'users','controller'=>'users','action'=>'login')).'</li>';

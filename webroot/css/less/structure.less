@@ -678,7 +678,7 @@ div.entry-content
 		float:right;
 	}
 	
-	.share-links-index
+	/*.share-links-index
 	{
 		#twitter-widget-0{position: relative;top: 3px;left: -38px;}
 		#___plusone_0{position: relative;top: 7px;}
@@ -692,7 +692,7 @@ div.entry-content
 		@media @mq-site-width {
 			display: none;
 		}
-	}
+	}*/
 	/*.gallery
 	{
 		.share-links
@@ -819,20 +819,22 @@ div.entry-content
 	}
 	*/
 	.share-links{
-		#twitter-widget-0{position: relative;top: 3px;left: -38px;}
+		#twitter-widget-0{position: relative !important;top: 7px;left: 35px;}
 		#___plusone_0{position: relative;top: 7px;}
 		.bitly,#bitly{display: inline-block;position: relative;left: -30px;}
 		width:100%;
 		border-bottom:1px dashed @warm-gray;
-		text-align:right;		
+		//text-align:right;		
 		padding-bottom: 5px;
 	}
+	/*
 	.btm-pagging{
 		clear:both;
 		.prev{float:left;}
 		span{padding-left:6.5%;}
 		.next{float:right;}
 	}
+	*/
 	
 	.allcaps{
 		font-family:@sans-serif;
@@ -1210,7 +1212,10 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm,form#UsergalSe
  
  
 .search-results{ list-style-type: none; margin: 0; padding: 0; width: 100%; height:100%; 
-.ui-state-highlight {background-color:@warm-gray; height:222px;width:152px;float:left;margin: 3px 3px;}
+.ui-state-highlight {background-color:@warm-gray; height:200px;width:152px;float:left;
+margin-top: 30px;
+//margin: 10px 3px;
+}
 }
 	.the-objects{
 	float:left; 
@@ -1338,20 +1343,23 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm,form#UsergalSe
 		}
 		.caption-pack
 		{
-			display: none;
-			padding-top:51px;
+			//display: none;
+			padding-top:28px; 
 			position:relative;
-			top: 6px;
+			top: 19px;
 			left: 0;
-			background: url(../img/trans-black.png);
+		//	background: url(../img/trans-black.png);
+			opacity: .6;
+			background-color: black;
+			color: @sandstone;
 			width: 100%;
-			height: 34%;
+		//	height: 34%;
 			a, .txt
 			{
 				
 				font-family:verdana;
 				font-size:.9em;
-				color: #ede9e7;					
+				color: @warm-gray;					
 				width:100%;
 				position: absolute;
 				top: 3px;
@@ -1368,7 +1376,7 @@ form#TreasureIndexForm,form#MakerIndexForm,form#MedvalueIndexForm,form#UsergalSe
 				{
 					background:none !important;
 					border:none;					
-					top: -101px;
+					top: -121px;
 					left: 0px;
 
 					
