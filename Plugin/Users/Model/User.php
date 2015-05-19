@@ -161,7 +161,9 @@ class User extends UsersAppModel {
 		$result = $this->find('first', array(
 			'contain' => array(),
 			'conditions' => array(
-				$this->alias . '.email_verified' => null,
+			//sj - had to change this slightly
+				//$this->alias . '.email_verified' => null,
+				$this->alias . '.email_verified' => 0,
 				$this->alias . '.email_token' => $token),
 			'fields' => array(
 				'id', 'email', 'email_token_expires', 'role')

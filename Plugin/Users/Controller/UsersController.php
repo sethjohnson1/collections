@@ -501,7 +501,18 @@ class UsersController extends UsersAppController {
 					else $this->redirect($this->Auth->redirect($data[$this->modelClass]['return_to']));
 				}
 			} else {
-				$this->Session->setFlash('Invalid e-mail / password combination. Please try again','flash_danger');
+				
+				//debug($this->request->data);
+				//sj - added this to check if their account exists but not verified
+				$u=$this->modelClass;
+				$pwd = AuthComponent::password($this->request->data['User']['password']);
+				$user=$this->$u->find('first',array('conditions'=>array($u.'.email'=>$this->request->data[$u]['email'],$u.'.email_verified'=>0,$u.'.password'=>$pwd)));
+				if ($user) {
+					$this->Session->setFlash('Your email must be verified before you can login. <a href="'.Router::url(array('controller'=>'users','plugin'=>'users','action'=>'resend_verification',urlencode($this->request->data[$u]['email']))).'">Click here to resend the verification</a>.','flash_custom');
+				}
+				else {
+					$this->Session->setFlash('Invalid e-mail / password combination. Please try again','flash_danger');
+				}
 			}
 		}
 		if (isset($this->request->params['named']['return_to'])) {
@@ -576,17 +587,16 @@ class UsersController extends UsersAppController {
 		else $this->redirect($this->Auth->logout());
 	}
 
-/**
- * Checks if an email is already verified and if not renews the expiration time
- *
- * @return void
- */
-	public function resend_verification() {
+//sj - updated this 
+	public function resend_verification($email=null) {
+		if (isset($email)){
+			$this->request->data['User']['email']=urldecode($email);
+		}
 		if ($this->request->is('post')) {
 			try {
 				if ($this->{$this->modelClass}->checkEmailVerification($this->request->data)) {
 					$this->_sendVerificationEmail($this->{$this->modelClass}->data);
-					$this->Session->setFlash('The email was resent. Please check your inbox.','flash_success');
+					$this->Session->setFlash('The email was resent. Please check your inbox.','flash_custom');
 					$this->redirect('login');
 				} else {
 					$this->Session->setFlash('The email could not be sent. Please check errors.','flash_danger');
@@ -611,10 +621,11 @@ class UsersController extends UsersAppController {
 		}
 
 		try {
-			/*sj - added Auth-login here to save the trouble of having to log in again
+			/*sj - added Auth-login here to sav
+e the trouble of having to log in again
 			*/
 			$user=$this->User->findByEmail_token($token);
-			//debug($user);
+			debug($user);
 			$this->{$this->modelClass}->verifyEmail($token);
 			//unset all the fields saved in the previous function otherwise it will save the old info back during __doAuthLogin
 			unset($user['User']['active']);
@@ -761,7 +772,7 @@ class UsersController extends UsersAppController {
 
 		$options = array_merge($defaults, $options);
 				//debug();
-
+debug($userData);
 //		$Email = $this->_getMailInstance();
 		$Email = new CakeEmail();
 		$Email->to($userData[$this->modelClass]['email'])

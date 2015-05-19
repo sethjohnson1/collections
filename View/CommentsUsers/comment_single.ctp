@@ -1,6 +1,8 @@
 <?
 //for redrawing a single comment
 //debug($comment);
-echo $this->element('comments_single_comment',$comment,$user);
+//$this->set(compact('comment','user','model','fk'));
+//echo $this->element('comments_single_comment',array($comment,$user,$model,$fk));
+echo $this->element('comments_single_comment');
 
 ?>

@@ -13,7 +13,7 @@ class CommentsUsersController extends AppController {
 	
 	//$id is the id of the Comment
 	//$flag is whether to flag or unflag (1, -1, reveal)
-	public function comment_flag($id = null) {
+	public function comment_flag($id,$model,$fk) {
 		if ($this->request->is('post')){
 			if ($this->Auth->user()){
 				$flag=0;
@@ -79,53 +79,58 @@ class CommentsUsersController extends AppController {
 		
 			$comment=$this->Comment->getComment($id,$user['id']);
 			if ($this->request->data[$id]['pflag']=='reveal') $this->set('reveal',true);
-			$this->set(compact('comment','user'));
+			$this->set(compact('comment','user','model','fk'));
 			$this->render('comment_single','ajax');
 		}
 	}
 	
-	//$id is the id of the Template
-	public function comment_add($id = null, $parentid=null) {
+	//$fk is foreign_key
+	public function comment_add($parentid=null) {
 	/* technically this should be on the Comment controller, as the junc table has nothing to do with add
 	   but it seems better to have all of these in one place
-	FLAW: HTML tags are currently not stripped out, mainly because I plan to use them. The SecurityComponent should prevent anything bad from happening,
+	NOTE: HTML tags are currently not stripped out, mainly because I plan to use them. The SecurityComponent should prevent anything bad from happening,
 	but if not then we'll strip HTML tags too
 	   */
+	   
 	//be sure to turn this on in production
 		//if ($this->request->is('ajax')){
 			if ($this->Auth->user()){
 				$user=$this->Auth->user();
 				//first see if this is an existing comment
+				//need to add logic to see if REPLY but that is down the road...
 				$commentdata=$this->CommentsUser->Comment->find('first',array(
 					'recursive'=>-1,
-					'conditions'=>array('Comment.template_id'=>$this->request->data['sComment']['id'],'Comment.user_id'=>$user['id'])
+					'conditions'=>array('Comment.foreign_key'=>$this->request->data['sComment']['foreign_key'],'Comment.model'=>$this->request->data['sComment']['model'],'Comment.user_id'=>$user['id'])
 				));
 				if (isset($commentdata['Comment']['id'])){
 					$comment['id']=$commentdata['Comment']['id'];
 				}
 				else {
-					$uuid=String::uuid();
-					$comment['id']=$uuid;
+				//	$uuid=String::uuid();
+				//	$comment['id']=$uuid;
 				}
+				
 				$comment['thoughts']=$this->request->data['sComment']['comment'];
 				$comment['rating']=$this->request->data['sComment']['rating'];
 				$comment['user_id']=$this->Auth->user('id');
-				//this would be better passed in hidden field!
-				$comment['template_id']=$this->request->data['sComment']['id'];
+				$fk=$this->request->data['sComment']['foreign_key'];
+				$comment['foreign_key']=$fk;
+				$model=$this->request->data['sComment']['model'];
+				$comment['model']=$model;
 				$comment['hidden']=0;
 				if (isset($parentid)) $comment['parent_id']=$parentid;
 				$this->CommentsUser->Comment->create();
 				if ($this->CommentsUser->Comment->save($comment)){
-						$this->Session->setFlash('Your comment was noted.','flash_custom',array(),'commentFlash');
+						$this->Session->setFlash('Your comment was noted.','flash_custom');
 				}
 			}
 			else {
-				$this->Session->setFlash('You must be logged in to do this','flash_custom',array(),'commentFlash');
+				$this->Session->setFlash('You must be logged in to do this','flash_custom');
 				$user['id']=null;
 			}
 			//Comment component..
-			$comments=$this->Comment->getComments($id,$user['id']);
-			$this->set(compact('comment','comments','user','id'));
+			$comments=$this->Comment->getComments($fk,$model,$user['id']);
+			$this->set(compact('comment','comments','user','model','fk'));
 			$this->render('comment_add','ajax');
 			
 		//}
@@ -133,7 +138,7 @@ class CommentsUsersController extends AppController {
 	
 	//this upvotes and downvotes
 	//$id is the comment id
-	public function comment_up($id = null, $templateid=null, $vote=null) {
+	public function comment_up($id, $vote,$model,$fk) {
 		//if ($this->request->is('ajax')){
 			if ($this->Auth->user()){
 	/*
@@ -246,16 +251,15 @@ class CommentsUsersController extends AppController {
 			}
 			//return only the single comment
 			$comment=$this->Comment->getComment($id,$user['id']);
-			$this->set(compact('comment','user'));
+			//debug($comment);
+			$this->set(compact('comment','user','model','fk'));
 			$this->render('comment_single','ajax');
 		//}
 	
 	}
 	
 	//$id is the id of the comment
-	public function comment_hide($id = null, $parentid=null) {
-	//debug($id);
-	//technically this should be on the Comment controller as well
+	public function comment_hide($id,$model,$fk,$parentid=null) {
 	//be sure to turn this on in production
 		//if ($this->request->is('ajax')){
 			if ($this->Auth->user()){
@@ -273,10 +277,11 @@ class CommentsUsersController extends AppController {
 						$this->Session->setFlash('Comment hidden. Feel free to update and resubmit.','flash_custom',array(),'commentFlash');
 					}
 					else {
-						//debug('went badly');
+						$this->Session->setFlash('Something went very bad.','flash_danger');
 					}
 				}
 				else {
+					$this->Session->setFlash('Another bad thing.','flash_danger');
 					return true;
 				}
 				
@@ -285,8 +290,8 @@ class CommentsUsersController extends AppController {
 				$this->Session->setFlash('account mismatch','flash_custom',array(),'commentFlash');
 				$user['id']=null;
 			}
-			$comments=$this->Comment->getComments($commentdata['Template']['id'],$user['id']);
-			$this->set(compact('comments','user'));
+			$comments=$this->Comment->getComments($fk,$model,$user['id']);
+			$this->set(compact('comments','user','model','fk'));
 			$this->render('comment_add','ajax');
 		//}
 	}	

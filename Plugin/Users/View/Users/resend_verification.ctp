@@ -9,17 +9,19 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 ?>
-<div class="users form">
-	<h2><?php echo __d('users', 'Resend the Email Verification'); ?></h2>
+<div class="users form row">
+<div class="col-xs-12">
+	<h2>Resend the Email Verification</h2>
 	<p><?php echo __d('users', 'Please enter the email you used for registration and you\'ll get an email with further instructions.'); ?></p>
 	<?php
 	echo $this->Form->create($model, array(
 		'url' => array(
 			'admin' => false,
 			'action' => 'resend_verification')));
-	echo $this->Form->input('email', array(
-		'label' => __d('users', 'Your Email')));
+	echo $this->Form->input('email', array('label'=>false,'placeholder'=>'Enter your email','class'=>'form-control'));
+	echo '<br />';
 	echo $this->Form->submit(__d('users', 'Submit'));
 	echo $this->Form->end();
 	?>
+	</div>
 </div>

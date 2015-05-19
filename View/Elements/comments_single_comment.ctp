@@ -294,72 +294,64 @@ $cheight=160;
 
 <? //in theory not all are needed if comment is flagged, but too much to worry about now ?>
 <script type="text/javascript">
-//<![CDATA[
-//$(document).on('pagebeforeshow', function(){ don't need this here, because the page is not reloading when this happen       
-$(document).off('click', '.comment_hide<? echo $comment['Comment']['id']; ?>').on('click', '.comment_hide<? echo $comment['Comment']['id']; ?>',function(e) {
-	//console.log('click');
+      
+$(document).off('click', '.comment_hide<?=$comment['Comment']['id']?>').on('click', '.comment_hide<?=$comment['Comment']['id']?>',function(e) {
 	$.ajax({
 	async:true,
-	data:$(".<? echo $comment['Comment']['id']; ?>CommentAddForm").serialize(),
+	data:$(".<?=$comment['Comment']['id']?>CommentAddForm").serialize(),
 	dataType:"html",
 	success:function (data, textStatus) {
-		$(".comments<? echo $comment['Comment']['template_id']; ?>").fadeOut(0).html(data).trigger('create').fadeIn(500);
+		$(".comments<?=$model.$fk?>").fadeOut(0).html(data).trigger('create').fadeIn(500);
 	},
 	type:"POST",
-	url:"<? echo Configure::read('globalSiteURL'); ?>/commentsUsers/comment_hide/<? echo $comment['Comment']['id']; ?>"});
+	url:"<?='http://'.$_SERVER['HTTP_HOST'].Router::url(array('controller'=>'commentsUsers','action'=>'comment_hide',$comment['Comment']['id'],$model,$fk))?>"});
 	return false;
 }); 
 
-$(document).off('click', '.comment_up<? echo $comment['Comment']['id']; ?>').on('click', '.comment_up<? echo $comment['Comment']['id']; ?>',function(e) {
+$(document).off('click', '.comment_up<?=$comment['Comment']['id']?>').on('click', '.comment_up<?=$comment['Comment']['id']?>',function(e) {
 	$.ajax({
 	async:true,
-	data:$(".<? echo $comment['Comment']['id']; ?>CommentAddForm").serialize(),
+	data:$(".<?=$comment['Comment']['id']?>CommentAddForm").serialize(),
 	dataType:"html",
 	success:function (data, textStatus) {
-		$(".container<? echo $comment['Comment']['id']  ?>").fadeOut(0).html(data).trigger('create').fadeIn(500);
+		$(".container<?=$comment['Comment']['id'] ?>").fadeOut(0).html(data).trigger('create').fadeIn(500);
 	},
 	type:"POST",
-	url:"<? echo Configure::read('globalSiteURL'); ?>/commentsUsers/comment_up/<? echo $comment['Comment']['id']; ?>/<? echo $comment['Comment']['template_id']; ?>/1"});
+	url:"<?='http://'.$_SERVER['HTTP_HOST'].Router::url(array('controller'=>'commentsUsers','action'=>'comment_up',$comment['Comment']['id'],1,$model,$fk))?>"});
 	return false;
 });
 
-$(document).off('click', '.comment_down<? echo $comment['Comment']['id']; ?>').on('click', '.comment_down<? echo $comment['Comment']['id']; ?>',function(e) {
+$(document).off('click', '.comment_down<?=$comment['Comment']['id']?>').on('click', '.comment_down<?=$comment['Comment']['id']?>',function(e) {
 	$.ajax({
 	async:true,
-	data:$(".<? echo $comment['Comment']['id']; ?>CommentAddForm").serialize(),
+	data:$(".<?=$comment['Comment']['id']?>CommentAddForm").serialize(),
 	dataType:"html",
 	success:function (data, textStatus) {
-		$(".container<? echo $comment['Comment']['id'] ?>").fadeOut(0).html(data).trigger('create').fadeIn(500);
+		$(".container<?=$comment['Comment']['id']?>").fadeOut(0).html(data).trigger('create').fadeIn(500);
 	},
 	type:"POST",
-	url:"<? echo Configure::read('globalSiteURL'); ?>/commentsUsers/comment_up/<? echo $comment['Comment']['id']; ?>/<? echo $comment['Comment']['template_id']; ?>/-1"});
+	url:"<?='http://'.$_SERVER['HTTP_HOST'].Router::url(array('controller'=>'commentsUsers','action'=>'comment_up',$comment['Comment']['id'],'-1',$model,$fk))?>"});
 	return false;
 });
 
 <?
-//redraw the entire comment box if flagged and there is no logged in user, otherwise just the comment itself
-//if (isset($user['id'])) 
+
 $flagclass='.container'.$comment['Comment']['id'];
-//else 
-//$flagclass='.comments'.$comment['Comment']['template_id'];
+
 ?>
 
-//$(document).on('updatelayout', function(){
-$(document).off('click', '.comment_flag<? echo $comment['Comment']['id']; ?>').on('click', '.comment_flag<? echo $comment['Comment']['id']; ?>',function(e) {
+$(document).off('click', '.comment_flag<?=$comment['Comment']['id']?>').on('click', '.comment_flag<?=$comment['Comment']['id']?>',function(e) {
 	$.ajax({
 	async:true,
-	data:$(".comment<? echo $comment['Comment']['id']; ?>").serialize(),
+	data:$(".comment<?=$comment['Comment']['id']?>").serialize(),
 	dataType:"html",
 	success:function (data, textStatus) {
-		$("<? echo $flagclass; ?>").fadeOut(0).html(data).trigger('create').fadeIn(500);
+		$("<?=$flagclass?>").fadeOut(0).html(data).trigger('create').fadeIn(500);
 	},
 	type:"POST",
-	url:"<? echo Configure::read('globalSiteURL'); ?>/commentsUsers/comment_flag/<?=$comment['Comment']['id']?>"});
+	url:"<?='http://'.$_SERVER['HTTP_HOST'].Router::url(array('controller'=>'commentsUsers','action'=>'comment_flag',$comment['Comment']['id'],$model,$fk))?>"});
 	return false;
 });
-//});
 
-//});
-//]]>
 </script>
 </div><!-- /comment_container -->

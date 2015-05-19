@@ -62,6 +62,8 @@ class AppController extends Controller {
 		//$this->set('BTshorturl',substr($this->UrlShortener->get_bitly_short_url('http://collections.centerofthewest.org'.$this->here.'?utm_source=bitly&utm_campaign=onlinecollections'),0,-1));							
 		
 		//$this->RememberMe->restoreLoginFromCookie();
+		
+		$this->set('login_link','#');
 		}
 
 public function blackhole($type) {

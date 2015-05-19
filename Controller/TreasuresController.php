@@ -271,9 +271,9 @@ class TreasuresController extends AppController {
 		//user Comments component to load up view variables
 		$comments=$this->Comment->getComments($treasure['Treasure']['id'],'Treasure',$user['id']);
 		$usercomment=$this->Comment->userComment($treasure['Treasure']['id'],'Treasure',$user['id']);
-		$id=$treasure['Treasure']['id'];
+		$fk=$treasure['Treasure']['id'];
 		$model='Treasure';
-		$this->set(compact('treasure','comments','usercomment','slug','user','id','model'));
+		$this->set(compact('treasure','comments','usercomment','slug','user','fk','model'));
 		$this->set('_serialize', array('treasure'));
 		
 		//used as a flag for the Colorbox ajax calls
