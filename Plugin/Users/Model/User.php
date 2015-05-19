@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -14,135 +14,100 @@ App::uses('UsersAppModel', 'Users.Model');
 App::uses('SearchableBehavior', 'Search.Model/Behavior');
 App::uses('SluggableBehavior', 'Utils.Model/Behavior');
 
-/**
- * Users Plugin User Model
- *
- * @package User
- * @subpackage User.Model
- */
+
 class User extends UsersAppModel {
 
-/**
- * Name
- *
- * @var string
- */
 	public $name = 'User';
+	
+	public $virtualFields = array(
+		'comment_count' => 'SELECT COUNT(*) FROM comments as Comment where Comment.user_id = User.id'
+	);
 
-/**
- * Additional Find methods
- *
- * @var array
- */
+
 	public $findMethods = array(
 		'search' => true
 	);
 
-/**
- * All search fields need to be configured in the Model::filterArgs array.
- *
- * @var array
- * @link https://github.com/CakeDC/search
- */
 	public $filterArgs = array(
 		'username' => array('type' => 'like'),
 		'email' => array('type' => 'value')
 	);
 
-/**
- * Displayfield
- *
- * @var string $displayField
- */
+
 	public $displayField = 'username';
 
-/**
- * Time the email verification token is valid in seconds
- *
- * @var integer
- */
 	public $emailTokenExpirationTime = 86400;
 
-/**
- * Validation domain for translations 
- *
- * @var string
- */
 	public $validationDomain = 'users';
 
-/**
- * Validation parameters
- *
- * @var array
- */
 	public $validate = array(
 		'username' => array(
 			'required' => array(
 				'rule' => array('notEmpty'),
 				'required' => true, 'allowEmpty' => false,
-				'message' => 'Please enter a username.'),
+				'message' => 'Please enter a username.'
+			)
+			/*,
 			'alpha' => array(
 				'rule' => array('alphaNumeric'),
-				'message' => 'The username must be alphanumeric.'),
+				'message' => 'The username must be alphanumeric.'
+			),
 			'unique_username' => array(
 				'rule' => array('isUnique', 'username'),
-				'message' => 'This username is already in use.'),
+				'message' => 'This username is already in use.'
+			),
 			'username_min' => array(
 				'rule' => array('minLength', '3'),
-				'message' => 'The username must have at least 3 characters.')),
+				'message' => 'The username must have at least 3 characters.'
+			) */
+		),
 		'email' => array(
 			'isValid' => array(
 				'rule' => 'email',
 				'required' => true,
-				'message' => 'Please enter a valid email address.'),
+				'message' => 'Please enter a valid email address.'
+			),
 			'isUnique' => array(
 				'rule' => array('isUnique', 'email'),
-				'message' => 'This email is already in use.')),
+				'message' => 'This email is already in use.'
+			)
+		),
 		'password' => array(
 			'too_short' => array(
 				'rule' => array('minLength', '6'),
-				'message' => 'The password must have at least 6 characters.'),
+				'message' => 'The password must have at least 6 characters.'
+			),
 			'required' => array(
 				'rule' => 'notEmpty',
-				'message' => 'Please enter a password.')),
+				'message' => 'Please enter a password.'
+			)
+		),
 		'temppassword' => array(
 			'rule' => 'confirmPassword',
-			'message' => 'The passwords are not equal, please try again.'),
+			'message' => 'The passwords are not equal, please try again.'
+		),
 		'tos' => array(
 			'rule' => array('custom','[1]'),
-			'message' => 'You must agree to the terms of use.'));
+			'message' => 'You must agree to the terms of use.'
+		)
+	);
 
-/**
- * Constructor
- *
- * @param bool|string $id ID
- * @param string $table Table
- * @param string $ds Datasource
- */
 	public function __construct($id = false, $table = null, $ds = null) {
 		$this->_setupBehaviors();
 		$this->_setupValidation();
 		parent::__construct($id, $table, $ds);
 	}
 
-/**
- * Setup available plugins
- *
- * This checks for the existence of certain plugins, and if available, uses them.
- *
- * @return void
- * @link https://github.com/CakeDC/search
- * @link https://github.com/CakeDC/utils
- */
 	protected function _setupBehaviors() {
-		if (class_exists('SearchableBehavior')) {
+		if (CakePlugin::loaded('Search') && class_exists('SearchableBehavior')) {
 			$this->actsAs[] = 'Search.Searchable';
 		}
 
-		if (class_exists('SluggableBehavior') && Configure::read('Users.disableSlugs') !== true) {
+		if (CakePlugin::loaded('Utils') && class_exists('SluggableBehavior') && Configure::read('Users.disableSlugs') !== true) {
 			$this->actsAs['Utils.Sluggable'] = array(
 				'label' => 'username',
-				'method' => 'multibyteSlug');
+				'method' => 'multibyteSlug'
+			);
 		}
 	}
 
@@ -157,31 +122,17 @@ class User extends UsersAppModel {
 			'confirm_password' => array(
 				'required' => array('rule' => array('compareFields', 'new_password', 'confirm_password'), 'required' => true, 'message' => __d('users', 'The passwords are not equal.'))),
 			'old_password' => array(
-				'to_short' => array('rule' => 'validateOldPassword', 'required' => true, 'message' => __d('users', 'Invalid password.'))));
+				'to_short' => array('rule' => 'validateOldPassword', 'required' => true, 'message' => __d('users', 'Invalid password.'))
+			)
+		);
 	}
 
-/**
- * Create a hash from string using given method.
- * Fallback on next available method.
- *
- * Override this method to use a different hashing method
- *
- * @param string $string String to hash
- * @param string $type Method to use (sha1/sha256/md5)
- * @param boolean $salt If true, automatically appends the application's salt
- *	 value to $string (Security.salt)
- * @return string Hash
- */
+
 	public function hash($string, $type = null, $salt = false) {
 		return Security::hash($string, $type, $salt);
 	}
 
-/**
- * Custom validation method to ensure that the two entered passwords match
- *
- * @param string $password Password
- * @return boolean Success
- */
+
 	public function confirmPassword($password = null) {
 		if ((isset($this->data[$this->alias]['password']) && isset($password['temppassword']))
 			&& !empty($password['temppassword'])
@@ -191,12 +142,6 @@ class User extends UsersAppModel {
 		return false;
 	}
 
-/**
- * Compares the email confirmation
- *
- * @param array $email Email data
- * @return boolean
- */
 	public function confirmEmail($email = null) {
 		if ((isset($this->data[$this->alias]['email']) && isset($email['confirm_email']))
 			&& !empty($email['confirm_email'])
@@ -216,10 +161,12 @@ class User extends UsersAppModel {
 		$result = $this->find('first', array(
 			'contain' => array(),
 			'conditions' => array(
-				$this->alias . '.email_verified' => 0,
+				$this->alias . '.email_verified' => null,
 				$this->alias . '.email_token' => $token),
 			'fields' => array(
-				'id', 'email', 'email_token_expires', 'role')));
+				'id', 'email', 'email_token_expires', 'role')
+			)
+		);
 
 		if (empty($result)) {
 			return false;
@@ -254,7 +201,8 @@ class User extends UsersAppModel {
 
 		$user = $this->save($user, array(
 			'validate' => false,
-			'callbacks' => false));
+			'callbacks' => false
+		));
 		$this->data = $user;
 		return $user;
 	}
@@ -298,7 +246,9 @@ class User extends UsersAppModel {
 			$this->data = $user;
 			return $user;
 		} elseif (!empty($user) && $user[$this->alias]['email_verified'] == 0) {
-			$this->invalidate('email', __d('users', 'This Email Address exists but was never validated.'));
+			//$this->invalidate('email', __d('users', 'This Email Address exists but was never validated.'));
+			$this->data = $user;
+			return $user;
 		} else {
 			$this->invalidate('email', __d('users', 'This Email Address does not exist in the system.'));
 		}
@@ -308,7 +258,7 @@ class User extends UsersAppModel {
 
 /**
  * Checks the token for a password change
- * 
+ *
  * @param string $token Token
  * @return mixed False or user data as array
  */
@@ -336,20 +286,23 @@ class User extends UsersAppModel {
 			'confirm_password' => array(
 				'required' => array(
 					'rule' => array('compareFields', 'new_password', 'confirm_password'),
-					'message' => __d('users', 'The passwords are not equal.'))));
+					'message' => __d('users', 'The passwords are not equal.')
+				)
+			)
+		);
 	}
 
 /**
  * Resets the password
- * 
+ *
  * @param array $postData Post data from controller
  * @return boolean True on success
  */
 	public function resetPassword($postData = array()) {
 		$result = false;
 
-		//$tmp = $this->validate;
-		//$this->validate = $this->setUpResetPasswordValidationRules();
+		$tmp = $this->validate;
+		$this->validate = $this->setUpResetPasswordValidationRules();
 
 		$this->set($postData);
 		if ($this->validates()) {
@@ -357,10 +310,11 @@ class User extends UsersAppModel {
 			$this->data[$this->alias]['password_token'] = null;
 			$result = $this->save($this->data, array(
 				'validate' => false,
-				'callbacks' => false));
+				'callbacks' => false)
+			);
 		}
 
-		//$this->validate = $tmp;
+		$this->validate = $tmp;
 		return $result;
 	}
 
@@ -593,7 +547,7 @@ class User extends UsersAppModel {
 		}
 
 		if ($user[$this->alias]['email_verified'] == 1) {
-			$this->invalidate('email', __d('users', 'Your account is already authenticaed.'));
+			$this->invalidate('email', __d('users', 'Your account is already authenticated.'));
 			return false;
 		}
 
@@ -710,17 +664,17 @@ class User extends UsersAppModel {
 
 			switch ($by) {
 				case 'username':
-					$results['conditions'] = Set::merge(
+					$results['conditions'] = Hash::merge(
 						$query['conditions'],
 						array($this->alias . '.username LIKE' => $like));
 					break;
 				case 'email':
-					$results['conditions'] = Set::merge(
+					$results['conditions'] = Hash::merge(
 						$query['conditions'],
 						array($this->alias . '.email LIKE' => $like));
 					break;
 				case 'any':
-					$results['conditions'] = Set::merge(
+					$results['conditions'] = Hash::merge(
 						$query['conditions'],
 						array('OR' => array(
 							array($this->alias . '.username LIKE' => $like),
@@ -730,7 +684,7 @@ class User extends UsersAppModel {
 					$results['conditions'] = $query['conditions'];
 					break;
 				default :
-					$results['conditions'] = Set::merge(
+					$results['conditions'] = Hash::merge(
 						$query['conditions'],
 						array($this->alias . '.username LIKE' => $like));
 					break;
@@ -817,6 +771,8 @@ class User extends UsersAppModel {
 /**
  * Edits an existing user
  *
+ * When saving a password it get hashed if the field is present AND not empty
+ *
  * @param string $userId User ID
  * @param array $postData controller post data usually $this->data
  * @throws NotFoundException
@@ -825,16 +781,17 @@ class User extends UsersAppModel {
 	public function edit($userId = null, $postData = null) {
 		$user = $this->getUserForEditing($userId);
 		$this->set($user);
-		if (empty($user)) {
-			throw new NotFoundException(__d('users', 'Invalid User'));
-		}
-
 		if (!empty($postData)) {
 			$this->set($postData);
-			$result = $this->save(null, true);
-			if ($result) {
-				$this->data = $result;
-				return true;
+			if ($this->validates()) {
+				if (!empty($this->data[$this->alias]['password'])) {
+					$this->data[$this->alias]['password'] = $this->hash($this->data[$this->alias]['password'], 'sha1', true);
+				}
+				$result = $this->save(null, false);
+				if ($result) {
+					$this->data = $result;
+					return true;
+				}
 			} else {
 				return $postData;
 			}
@@ -845,12 +802,20 @@ class User extends UsersAppModel {
  * Gets the user data that needs to be edited
  *
  * Override this method and inject the conditions you need
+ *
+ * @var mixed $userId
+ * @var array $options
+ * @return array $user
+ * @throws NotFoundException
  */
 	public function getUserForEditing($userId = null, $options = array()) {
 		$defaults = array(
 			'contain' => array(),
-			'conditions' => array($this->alias . '.id' => $userId));
-		$options = Set::merge($defaults, $options);
+			'conditions' => array(
+				$this->alias . '.id' => $userId
+			)
+		);
+		$options = Hash::merge($defaults, $options);
 
 		$user = $this->find('first', $options);
 
@@ -871,7 +836,69 @@ class User extends UsersAppModel {
 	protected function _removeExpiredRegistrations() {
 		$this->deleteAll(array(
 			$this->alias . '.email_verified' => 0,
-			$this->alias . '.email_token_expires <' => date('Y-m-d H:i:s')));
+			$this->alias . '.email_token_expires <' => date('Y-m-d H:i:s'))
+		);
 	}
 
+/**
+ * Returns a CakeEmail object
+ *
+ * @return object CakeEmail instance
+ * @link http://book.cakephp.org/2.0/en/core-utility-libraries/email.html
+ */
+	public function getMailInstance() {
+		$emailConfig = Configure::read('Users.emailConfig');
+		if ($emailConfig) {
+			return new CakeEmail($emailConfig);
+		}
+		return new CakeEmail('default');
+	}
+	
+	// this is for comments the user makes
+	public $hasMany = array(
+		'Comment' => array(
+			'className' => 'Comment',
+			'foreignKey' => 'user_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'CommentsUser' => array(
+			'className' => 'CommentsUser',
+			'foreignKey' => 'user_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		)
+	);
+
+//and this is for the interaction the user has with comments
+	
+	public $hasAndBelongsToMany = array(
+		'Comment' => array(
+			'className' => 'User',
+			'joinTable' => 'comments_users',
+			'foreignKey' => 'comment_id',
+			'associationForeignKey' => 'user_id',
+			'unique' => 'keepExisting',
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'finderQuery' => '',
+		)
+	);
 }

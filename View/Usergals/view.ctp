@@ -111,7 +111,7 @@ else $comment=$treasure['Treasure']['commonname'];
 </div>
 
 <?=$this->element('paging')?>
-<div id="post-comments">
-    <?php $this->CommentWidget->options(array('allowAnonymousComment' => false));?>
-    <?php echo $this->CommentWidget->display();?>
-</div>
+<!-- OLD COMMENTS div id="post-comments">
+    <?php //$this->CommentWidget->options(array('allowAnonymousComment' => false));?>
+    <?php //echo $this->CommentWidget->display();?>
+</div -->

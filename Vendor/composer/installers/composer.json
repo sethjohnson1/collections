@@ -4,12 +4,50 @@
     "license": "MIT",
     "description": "A multi-framework Composer library installer",
     "keywords": [
-        "installer", "cakephp", "laravel", "kohana",
-        "li3", "lithium", "mako","fuelphp",
-        "codeigniter", "symfony", "phpbb", "ppi",
-        "joomla", "wordpress", "drupal", "zend",
-        "silverstripe", "agl", "TYPO3 Flow", "TYPO3 Neos", "modulework",
-        "TYPO3 CMS", "concrete5"
+        "installer",
+        "Aimeos",
+        "AGL",
+        "AnnotateCms",
+        "Bitrix",
+        "CakePHP",
+        "Chef",
+        "CodeIgniter",
+        "concrete5",
+        "Craft",
+        "Croogo",
+        "DokuWiki",
+        "Dolibarr",
+        "Drupal",
+        "Elgg",
+        "FuelPHP",
+        "Grav",
+        "Hurad",
+        "Joomla",
+        "Kohana",
+        "Laravel",
+        "Lithium",
+        "Magento",
+        "Mako",
+        "MODX Evo",
+        "MediaWiki",
+        "OXID",
+        "MODULEWork",
+        "Moodle",
+        "Piwik",
+        "phpBB",
+        "PPI",
+        "Puppet",
+        "Roundcube",
+        "shopware",
+        "SilverStripe",
+        "SMF",
+        "symfony",
+        "Thelia",
+        "TYPO3",
+        "WolfCMS",
+        "WordPress",
+        "Zend",
+        "Zikula"
     ],
     "homepage": "http://composer.github.com/installers/",
     "authors": [
@@ -29,10 +67,11 @@
         }
     },
     "replace": {
-        "shama/baton": "*"
+        "shama/baton": "*",
+        "roundcube/plugin-installer": "*"
     },
     "require-dev": {
         "composer/composer": "1.0.*@dev",
-        "phpunit/phpunit": "3.7.*"
+        "phpunit/phpunit": "4.1.*"
     }
 }

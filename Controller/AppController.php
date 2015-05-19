@@ -2,7 +2,7 @@
 App::uses('Controller', 'Controller');
 class AppController extends Controller {
 
-	public $components = array('Users.RememberMe','DebugKit.Toolbar','Session','Cookie','UrlShortener','Auth');
+	public $components = array('Users.RememberMe','DebugKit.Toolbar','Session','Cookie','UrlShortener','Auth','Security');
 	public $helpers = array(
 	//'Chosen.Chosen',
 	'Js');
@@ -10,6 +10,7 @@ class AppController extends Controller {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->Auth->allow();
+		$this->Security->blackHoleCallback = 'blackhole';
 	/* begin the Cookie stuff for the overlay, maybe it should reside on its own function 
 		Do not want to use a single array in one cookie because expiration dates need to differ
 	*/
@@ -62,5 +63,9 @@ class AppController extends Controller {
 		
 		//$this->RememberMe->restoreLoginFromCookie();
 		}
+
+public function blackhole($type) {
+    debug($type);
+}
 		
 }

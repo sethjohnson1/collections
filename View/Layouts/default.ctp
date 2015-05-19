@@ -17,53 +17,7 @@
 <link rel="apple-touch-icon" sizes="114x114" href="http://collections.centerofthewest.org/img/truckerhat-114.png">
 <link rel="apple-touch-icon" sizes="144x144" href="http://collections.centerofthewest.org/img/truckerhat-144.png">
 <link rel="apple-touch-startup-image" href="http://collections.centerofthewest.org/img/truckerhat.png" />
-<style type="text/css">
-#mc_embed_signup{clear:left;} 
-#mc_embed_signup h2 {font-weight: bold;padding: 0;margin: 0px 0px;font-size: 1em;} 
 
-#mc_embed_signup form {display:block; position:relative; text-align:left; padding:0px}
-#mc_embed_signup input {border:1px solid #999; -webkit-appearance:none;}
-#mc_embed_signup input[type=checkbox]{-webkit-appearance:checkbox;}
-#mc_embed_signup input[type=radio]{-webkit-appearance:radio;}
-#mc_embed_signup input:focus {border-color:#333;}
-#mc_embed_signup .button {clear:both; background-color: #aaa; border: 0 none; border-radius:4px; color: #FFFFFF; cursor: pointer; display: inline-block; font-size:15px; font-weight: bold; height: 32px; line-height: 32px; margin: 0 5px 10px 0; padding: 0 22px; text-align: center; text-decoration: none; vertical-align: top; white-space: nowrap; width: auto;}
-#mc_embed_signup .button:hover {background-color:#777;}
-#mc_embed_signup .small-meta {font-size: 11px;}
-#mc_embed_signup .nowrap {white-space:nowrap;}
-
-#mc_embed_signup .mc-field-group {clear:left; position:relative; width:96%; padding-bottom:0px; min-height:50px;}
-#mc_embed_signup .size1of2 {clear:none; float:left; display:inline-block; width:46%; margin-right:4%;}
-* html #mc_embed_signup .size1of2 {margin-right:2%; /* Fix for IE6 double margins. */}
-#mc_embed_signup .mc-field-group label {display:block; margin-bottom:0px;}
-#mc_embed_signup .mc-field-group input {display:block; width:100%; padding:8px 0; text-indent:2%;}
-#mc_embed_signup .mc-field-group select {display:inline-block; width:99%; padding:5px 0; margin-bottom:2px;}
-
-#mc_embed_signup .datefield, #mc_embed_signup .phonefield-us{padding:5px 0;}
-#mc_embed_signup .datefield input, #mc_embed_signup .phonefield-us input{display:inline; width:60px; margin:0 2px; letter-spacing:1px; text-align:center; padding:5px 0 2px 0;}
-#mc_embed_signup .phonefield-us .phonearea input, #mc_embed_signup .phonefield-us .phonedetail1 input{width:40px;}
-#mc_embed_signup .datefield .monthfield input, #mc_embed_signup .datefield .dayfield input{width:30px;}
-#mc_embed_signup .datefield label, #mc_embed_signup .phonefield-us label{display:none;}
-
-#mc_embed_signup .indicates-required {text-align:right; font-size:11px; margin-right:4%;}
-#mc_embed_signup .asterisk {color:#c60; font-size:200%;}
-#mc_embed_signup .mc-field-group .asterisk {position:absolute; top:25px; right:10px;}        
-#mc_embed_signup .clear {clear:both;}
-
-#mc_embed_signup .mc-field-group.input-group ul {margin:0; padding:5px 0; list-style:none;}
-#mc_embed_signup .mc-field-group.input-group ul li {display:block; padding:3px 0; margin:0;}
-#mc_embed_signup .mc-field-group.input-group label {display:inline;}
-#mc_embed_signup .mc-field-group.input-group input {display:inline; width:auto; border:none;}
-
-#mc_embed_signup div#mce-responses {float:left; top:-1.4em; padding:0em .5em 0em .5em; overflow:hidden; width:90%;margin: 0 5%; clear: both;}
-#mc_embed_signup div.response {margin:1em 0; padding:1em .5em .5em 0; font-weight:bold; float:left; top:-1.5em; z-index:1; width:80%;}
-#mc_embed_signup #mce-error-response {display:none;}
-#mc_embed_signup #mce-success-response {color:#529214; display:none;}
-#mc_embed_signup label.error {display:block; float:none; width:auto; margin-left:1.05em; text-align:left; padding:.5em 0;}
-
-#mc-embedded-subscribe {clear:both; width:auto; display:block; margin:1em 0 1em 5%;}
-#mc_embed_signup #num-subscribers {font-size:1.1em;}
-#mc_embed_signup #num-subscribers span {padding:.5em; border:1px solid #ccc; margin-right:.5em; font-weight:bold;}	
-</style>
 
 <?php 
 
@@ -103,8 +57,7 @@
 	echo $this->fetch('css');
 	echo $this->fetch('script');
 	echo $this->Html->css('center_of_the_west');
-    //echo $this->Html->script('add2home');
-	//echo $this->Html->css('add2home');	
+	
 ?>
 
 <?php 
@@ -152,9 +105,9 @@ s.parentNode.insertBefore(ga, s);
 <body class="page page-id-10546 page-template-default logged-in admin-bar no-customize-support header-image altsidebar-content" itemscope="itemscope" itemtype="http://schema.org/WebPage">
 
 <div class="site-container">
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-  Launch demo modal
+<? //<!-- the modals themselves must be drawn right before end body tag or there is a conflict (jpanel is my guess but not sure) -->?>
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#login-modal">
+  login modal
 </button>
 
 
@@ -180,6 +133,7 @@ s.parentNode.insertBefore(ga, s);
 
 <div class="site-inner"><div class="wrap"><div class="content-sidebar-wrap"><main class="content" role="main" itemprop="mainContentOfPage"><article class="post-10546 page type-page status-draft entry" itemscope="itemscope" itemtype="http://schema.org/CreativeWork"><header class="entry-header">
 </header><div class="entry-content" itemprop="text">
+<?php // echo $this->Session->flash('flash',array('element'=>'flash_success')); ?>
 <?php echo $this->Session->flash(); ?>
 
 <?php echo $this->fetch('content'); ?>
@@ -360,16 +314,16 @@ jPM.on();
 .btn-icons{
 	//padding-right:20px;
 	float: right;
-	position: relative;
 }
 </style>
 <!-- Social login modal -->
-<div class="modal fade" id="myModal" tabindex="-1">
+<div class="modal fade" id="login-modal" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button style="color:red" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button style="color:red" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><span class="glyphicon glyphicon-remove"></span></span></button>
 		<h3 style="text-align:center">Super-easy Login</h3>
+		<p>explain something here?</p>
       </div>
       <div class="modal-body">
         <div class="row">
@@ -381,18 +335,18 @@ jPM.on();
 		
 		?>
 		
-		<?=$this->Html->link($fb.'Facebook',array(),array('class'=>'btn btn-social btn-facebook btn-lg','role'=>'button','escape'=>false))?>
-		<?=$this->Html->link($gp.'Google',array(),array('class'=>'btn btn-social btn-gplus btn-lg','role'=>'button','escape'=>false))?>
-		<?=$this->Html->link($tw.'Twitter',array(),array('class'=>'btn btn-social btn-twitter btn-lg','role'=>'button','escape'=>false))?>
+		<?=$this->Html->link($fb.'Facebook',array('plugin'=>'users','controller'=>'users','action'=>'auth_login','Facebook'),array('class'=>'btn btn-social btn-facebook btn-lg','role'=>'button','escape'=>false))?>
+		<?=$this->Html->link($gp.'Google',array('plugin'=>'users','controller'=>'users','action'=>'gauth'),array('class'=>'btn btn-social btn-gplus btn-lg','role'=>'button','escape'=>false))?>
+		<?=$this->Html->link($tw.'Twitter',array('plugin'=>'users','controller'=>'users','action'=>'auth_login','Twitter'),array('class'=>'btn btn-social btn-twitter btn-lg','role'=>'button','escape'=>false))?>
 		<p style="text-align: center;"> - OR - </p>
-		<?=$this->Html->link('<span class="glyphicon glyphicon-envelope" aria-hidden="true" style="float: right"></span> Email',array(),array('class'=>'btn btn-social btn-email btn-lg','role'=>'button','escape'=>false))?>
+		<?=$this->Html->link('<span class="glyphicon glyphicon-envelope" aria-hidden="true" style="float: right"></span> Email',array('plugin'=>'users','controller'=>'users','action'=>'login'),array('class'=>'btn btn-social btn-email btn-lg','role'=>'button','escape'=>false))?>
 		</div>
 		</div>
       </div>
-      <!--div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div-->
+      <div class="modal-footer">
+	  <p>also this space down here</p>
+      
+      </div>
     </div>
   </div>
 </div> 

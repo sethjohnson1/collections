@@ -1,16 +1,18 @@
 <?php
 /**
- * Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 App::uses('CakeEmail', 'Network/Email');
 App::uses('UsersAppController', 'Users.Controller');
+//require_once 'src/Google_Client.php';
+//require_once 'src/contrib/Google_Oauth2Service.php';
 
 /**
  * Users Users Controller
@@ -64,9 +66,9 @@ class UsersController extends UsersAppController {
 		'Session',
 		'Cookie',
 		'Paginator',
-	//	'Security',
-		'Search.Prg',
+		'Security',
 		'Users.RememberMe',
+		'ExtAuth.ExtAuth'
 	);
 
 /**
@@ -121,7 +123,9 @@ class UsersController extends UsersAppController {
 /**
  * Wrapper for CakePlugin::loaded()
  *
+ * @throws MissingPluginException
  * @param string $plugin
+ * @param boolean $exceiption
  * @return boolean
  */
 	protected function _pluginLoaded($plugin, $exception = true) {
@@ -153,11 +157,23 @@ class UsersController extends UsersAppController {
 		parent::beforeFilter();
 		$this->_setupAuth();
 		$this->_setupPagination();
-
 		$this->set('model', $this->modelClass);
+		$this->_setDefaultEmail();
+	}
 
+/**
+ * Sets the default from email config
+ *
+ * @return void
+ */
+	protected function _setDefaultEmail() {
 		if (!Configure::read('App.defaultEmail')) {
-			Configure::write('App.defaultEmail', 'noreply@' . env('HTTP_HOST'));
+			$config = $this->_getMailInstance()->config();
+			if (!empty($config['from'])) {
+				Configure::write('App.defaultEmail', $config['from']);
+			} else {
+				Configure::write('App.defaultEmail', 'noreply@' . env('HTTP_HOST'));
+			}
 		}
 	}
 
@@ -171,10 +187,11 @@ class UsersController extends UsersAppController {
  */
 	protected function _setupPagination() {
 		$this->Paginator->settings = array(
-			'limit' => 12,
+			'limit' => 100,
 			'conditions' => array(
-				$this->modelClass . '.active' => 1,
-				$this->modelClass . '.email_verified' => 1
+				//sj commented out
+				//$this->modelClass . '.active' => 1,
+				//$this->modelClass . '.email_verified' => 1
 			)
 		);
 	}
@@ -188,11 +205,11 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	protected function _setupAdminPagination() {
-		$this->Paginator->settings = array(
-			'limit' => 20,
+		$this->Paginator->settings[$this->modelClass] = array(
+			'limit' => 100,
 			'order' => array(
 				$this->modelClass . '.created' => 'desc'
-			)
+			),
 		);
 	}
 
@@ -206,17 +223,21 @@ class UsersController extends UsersAppController {
 			return;
 		}
 
-		$this->Auth->allow('add', 'reset', 'verify', 'logout', 'view', 'reset_password', 'login', 'resend_verification');
+		//$this->Auth->allow('add', 'reset', 'verify', 'logout', 'view', 'reset_password', 'login', 'resend_verification');
+		//sj - commented this out as we're handling it all in prefixes
+		$this->Auth->allow('login','logout');
 
 		if (!is_null(Configure::read('Users.allowRegistration')) && !Configure::read('Users.allowRegistration')) {
 			$this->Auth->deny('add');
 		}
 
 		if ($this->request->action == 'register') {
+			//sj - disabled because we will want registered users to register other users
 			$this->Components->disable('Auth');
-		}
+		} 
 
-		$this->Auth->authenticate = array(
+		if ($this->request->action == 'login') {
+			$this->Auth->authenticate = array(
 			'Form' => array(
 				'fields' => array(
 					'username' => 'email',
@@ -224,67 +245,51 @@ class UsersController extends UsersAppController {
 				'userModel' => $this->_pluginDot() . $this->modelClass,
 				'scope' => array(
 					$this->modelClass . '.active' => 1,
-					$this->modelClass . '.email_verified' => 1)));
+					$this->modelClass . '.email_verified' => 1
+				)
+			));
+		}
+		
+		
 
 		$this->Auth->loginRedirect = '/';
 		$this->Auth->logoutRedirect = array('plugin' => Inflector::underscore($this->plugin), 'controller' => 'users', 'action' => 'login');
 		$this->Auth->loginAction = array('admin' => false, 'plugin' => Inflector::underscore($this->plugin), 'controller' => 'users', 'action' => 'login');
 	}
+	
 
-/**
- * Simple listing of all users
- *
- * @return void
- */
+
+/* useful but not needed now
 	public function index() {
 		$this->set('users', $this->Paginator->paginate($this->modelClass));
 	}
+*/
 
-/**
- * The homepage of a users giving him an overview about everything
- *
- * @return void
- */
-	public function dashboard() {
-		$user = $this->{$this->modelClass}->read(null, $this->Auth->user('id'));
-		$this->set('user', $user);
-	}
 
-/**
- * Shows a users profile
- *
- * @param string $slug User Slug
- * @return void
- */
+
+ /*
 	public function view($slug = null) {
 		try {
 			$this->set('user', $this->{$this->modelClass}->view($slug));
 		} catch (Exception $e) {
-			$this->Session->setFlash($e->getMessage());
+			$this->Session->setFlash($e->getMessage(),'flash_custom');
 			$this->redirect('/');
 		}
 	}
+	
 
-/**
- * Edit
- *
- * @param string $id User ID
- * @return void
- */
+
 	public function edit() {
-		// @todo replace this with something better than the user details that were removed
 	}
+*/
 
-/**
- * Admin Index
- *
- * @return void
- */
 	public function admin_index() {
-		$this->Prg->commonProcess();
-		unset($this->{$this->modelClass}->validate['username']);
-		unset($this->{$this->modelClass}->validate['email']);
-		$this->{$this->modelClass}->data[$this->modelClass] = $this->passedArgs;
+		if ($this->{$this->modelClass}->Behaviors->loaded('Searchable')) {
+			$this->Prg->commonProcess();
+			unset($this->{$this->modelClass}->validate['username']);
+			unset($this->{$this->modelClass}->validate['email']);
+			$this->{$this->modelClass}->data[$this->modelClass] = $this->passedArgs;
+		}
 
 		if ($this->{$this->modelClass}->Behaviors->loaded('Searchable')) {
 			$parsedConditions = $this->{$this->modelClass}->parseCriteria($this->passedArgs);
@@ -293,32 +298,39 @@ class UsersController extends UsersAppController {
 		}
 
 		$this->_setupAdminPagination();
+		
 		$this->Paginator->settings[$this->modelClass]['conditions'] = $parsedConditions;
+		//sj - added this
+		$this->Paginator->settings[$this->modelClass]['recursive']=1;
+		$users=$this->Paginator->paginate();
 		$this->set('users', $this->Paginator->paginate());
 	}
 
-/**
- * Admin view
- *
- * @param string $id User ID
- * @return void
- */
-	public function admin_view($id = null) {
-		try {
-			$user = $this->{$this->modelClass}->view($id, 'id');
-		} catch (NotFoundException $e) {
-			$this->Session->setFlash(__d('users', 'Invalid User.'));
-			$this->redirect(array('action' => 'index'));
-		}
 
-		$this->set('user', $user);
+	public function admin_view($id = null) {
+		if ($this->request->is('post')){
+		//sj - remember validate false or it won't work!
+			$this->User->create();
+			if ($this->User->save($this->request->data,array('validate' => false))) {
+				$this->Session->setFlash(__('Updated user info'));
+			}
+			else $this->Session->setFlash(__('Update failed!'));
+
+		}
+		
+		//sj - removed old try / catch for this because it didn't work with social logins
+		if (!$this->{$this->modelClass}->exists($id)) {
+			throw new NotFoundException(__('Invalid user'));
+		}
+		$options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
+		//using recursive 2 to get Template
+		$options['recursive']=2;
+		$options['contain']=array('CommentsUser','Comment'=>array('Template'));
+		$user=$this->User->find('first', $options);
+		$this->set('totals',$this->Scorecard->scoreTotals(null,$user['User']['id']));
+		$this->set(compact('user'));
 	}
 
-/**
- * Admin add
- *
- * @return void
- */
 	public function admin_add() {
 		if (!empty($this->request->data)) {
 			$this->request->data[$this->modelClass]['tos'] = true;
@@ -345,6 +357,7 @@ class UsersController extends UsersAppController {
 				$this->Session->setFlash(__d('users', 'User saved'));
 				$this->redirect(array('action' => 'index'));
 			} else {
+				unset($result[$this->modelClass]['password']);
 				$this->request->data = $result;
 			}
 		} catch (OutOfBoundsException $e) {
@@ -354,6 +367,7 @@ class UsersController extends UsersAppController {
 
 		if (empty($this->request->data)) {
 			$this->request->data = $this->{$this->modelClass}->read(null, $userId);
+			unset($this->request->data[$this->modelClass]['password']);
 		}
 		$this->set('roles', Configure::read('Users.roles'));
 	}
@@ -379,9 +393,11 @@ class UsersController extends UsersAppController {
  *
  * @return void
  */
+ /*
 	public function admin_search() {
 		$this->search();
 	}
+	*/
 
 /**
  * User register action
@@ -390,9 +406,10 @@ class UsersController extends UsersAppController {
  */
 	public function add() {
 		if ($this->Auth->user()) {
-			$this->Session->setFlash(__d('users', 'You are already registered and logged in!'));
+			$this->Session->setFlash('You are already registered and logged in!','flash_custom');
 			$this->redirect('/');
 		}
+		
 
 		if (!empty($this->request->data)) {
 			$user = $this->{$this->modelClass}->register($this->request->data);
@@ -410,12 +427,12 @@ class UsersController extends UsersAppController {
 				}
 
 				$this->_sendVerificationEmail($this->{$this->modelClass}->data);
-				$this->Session->setFlash(__d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.'));
+				$this->Session->setFlash('Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.','flash_success');
 				$this->redirect(array('action' => 'login'));
 			} else {
 				unset($this->request->data[$this->modelClass]['password']);
 				unset($this->request->data[$this->modelClass]['temppassword']);
-				$this->Session->setFlash(__d('users', 'Your account could not be created. Please, try again.'), 'default', array('class' => 'message warning'));
+				$this->Session->setFlash('Your account could not be created. Please, try again.','flash_danger');
 			}
 		}
 	}
@@ -425,6 +442,7 @@ class UsersController extends UsersAppController {
  *
  * @return void
  */
+ 
 	public function login() {
 		$Event = new CakeEvent(
 			'Users.Controller.Users.beforeLogin',
@@ -440,8 +458,7 @@ class UsersController extends UsersAppController {
 			return;
 		}
 
-		if ($this->request->is('post') || $this->request->is('put')) {
-			//$this->autoRender = false;
+		if ($this->request->is('post')) {		
 			if ($this->Auth->login()) {
 				$Event = new CakeEvent(
 					'Users.Controller.Users.afterLogin',
@@ -460,7 +477,7 @@ class UsersController extends UsersAppController {
 				if ($this->here == $this->Auth->loginRedirect) {
 					$this->Auth->loginRedirect = '/';
 				}
-				$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged in'), $this->Auth->user('username')));
+				$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged in'), $this->Auth->user($this->{$this->modelClass}->displayField)),'flash_success');
 				if (!empty($this->request->data)) {
 					$data = $this->request->data[$this->modelClass];
 					if (empty($this->request->data[$this->modelClass]['remember_me'])) {
@@ -473,28 +490,30 @@ class UsersController extends UsersAppController {
 				if (empty($data[$this->modelClass]['return_to'])) {
 					$data[$this->modelClass]['return_to'] = null;
 				}
-
+				//debug($this->Auth->user());
 				// Checking for 2.3 but keeping a fallback for older versions
 				if (method_exists($this->Auth, 'redirectUrl')) {
-					$this->redirect($this->Auth->redirectUrl($data[$this->modelClass]['return_to']));
+				//sj - added this to redirect back to the last viewed template
+					if ($this->Session->read('location')) $this->redirect($this->Session->read('location'));
+					else $this->redirect($this->Auth->redirectUrl($data[$this->modelClass]['return_to']));
 				} else {
-					$this->redirect($this->Auth->redirect($data[$this->modelClass]['return_to']));
+					if ($this->Session->read('location')) $this->redirect($this->Session->read('location'));
+					else $this->redirect($this->Auth->redirect($data[$this->modelClass]['return_to']));
 				}
 			} else {
-				$this->Auth->flash(__d('users', 'Invalid e-mail / password combination.  Please try again'));
+				$this->Session->setFlash('Invalid e-mail / password combination. Please try again','flash_danger');
 			}
 		}
 		if (isset($this->request->params['named']['return_to'])) {
 			$this->set('return_to', urldecode($this->request->params['named']['return_to']));
+		} elseif (isset($this->request->query['return_to'])) {
+			$this->set('return_to', $this->request->query['return_to']);
 		} else {
 			$this->set('return_to', false);
 		}
 		$allowRegistration = Configure::read('Users.allowRegistration');
 		$this->set('allowRegistration', (is_null($allowRegistration) ? true : $allowRegistration));
-		//sj added to test, which works, but I could not get the form NOT to redirect
-		if ($this->request->is('ajax')) {
-			$this->layout = false;
-		}
+		//$this->render('login','ajax');
 	}
 
 /**
@@ -527,13 +546,16 @@ class UsersController extends UsersAppController {
 
 		$this->Paginator->settings = array(
 			'search',
-			'limit' => 12,
+			'limit' => 100,
 			'by' => $by,
 			'search' => $searchTerm,
 			'conditions' => array(
-					'AND' => array(
-						$this->modelClass . '.active' => 1,
-						$this->modelClass . '.email_verified' => 1)));
+				'AND' => array(
+					$this->modelClass . '.active' => 1,
+					$this->modelClass . '.email_verified' => 1
+				)
+			)
+		);
 
 		$this->set('users', $this->Paginator->paginate($this->modelClass));
 		$this->set('searchTerm', $searchTerm);
@@ -546,13 +568,12 @@ class UsersController extends UsersAppController {
  */
 	public function logout() {
 		$user = $this->Auth->user();
+		$location=$this->Session->read('location');
 		$this->Session->destroy();
-		if (isset($_COOKIE[$this->Cookie->name])) {
-		$this->Cookie->destroy();
-		}
 		$this->RememberMe->destroyCookie();
-		$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged out'), $user[$this->{$this->modelClass}->displayField]));
-		$this->redirect($this->Auth->logout());
+		//$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged out'), $user[$this->{$this->modelClass}->displayField]));
+		if (isset($location)) $this->redirect($location);
+		else $this->redirect($this->Auth->logout());
 	}
 
 /**
@@ -565,13 +586,13 @@ class UsersController extends UsersAppController {
 			try {
 				if ($this->{$this->modelClass}->checkEmailVerification($this->request->data)) {
 					$this->_sendVerificationEmail($this->{$this->modelClass}->data);
-					$this->Session->setFlash(__d('users', 'The email was resent. Please check your inbox.'));
+					$this->Session->setFlash('The email was resent. Please check your inbox.','flash_success');
 					$this->redirect('login');
 				} else {
-					$this->Session->setFlash(__d('users', 'The email could not be sent. Please check errors.'));
+					$this->Session->setFlash('The email could not be sent. Please check errors.','flash_danger');
 				}
 			} catch (Exception $e) {
-				$this->Session->setFlash($e->getMessage());
+				$this->Session->setFlash($e->getMessage(),'flash_custom');
 			}
 		}
 	}
@@ -590,12 +611,23 @@ class UsersController extends UsersAppController {
 		}
 
 		try {
+			/*sj - added Auth-login here to save the trouble of having to log in again
+			*/
+			$user=$this->User->findByEmail_token($token);
+			//debug($user);
 			$this->{$this->modelClass}->verifyEmail($token);
-			$this->Session->setFlash(__d('users', 'Your e-mail has been validated!'));
-			return $this->redirect(array('action' => 'login'));
+			//unset all the fields saved in the previous function otherwise it will save the old info back during __doAuthLogin
+			unset($user['User']['active']);
+			unset($user['User']['email_verified']);
+			unset($user['User']['email_token']);
+			unset($user['User']['email_token_expires']);
+			$user['User']['provider']='email';
+			$this->__doAuthLogin($user);
+			//$this->Session->setFlash('Your e-mail has been validated!','flash_custom');
+			//return $this->redirect(array('action' => 'login'));
 		} catch (RuntimeException $e) {
-			$this->Session->setFlash($e->getMessage());
-			return $this->redirect('/');
+			$this->Session->setFlash($e->getMessage(),'flash_custom');
+			//return $this->redirect('/');
 		}
 	}
 
@@ -614,17 +646,17 @@ class UsersController extends UsersAppController {
 		$data = $this->{$this->modelClass}->verifyEmail($token);
 
 		if (!$data) {
-			$this->Session->setFlash(__d('users', 'The url you accessed is not longer valid'));
+			$this->Session->setFlash('The url you accessed is not longer valid','flash_danger');
 			return $this->redirect('/');
 		}
 
 		if ($this->{$this->modelClass}->save($data, array('validate' => false))) {
 			$this->_sendNewPassword($data);
-			$this->Session->setFlash(__d('users', 'Your password was sent to your registered email account'));
+			$this->Session->setFlash('Your password was sent to your registered email account','flash_success');
 			$this->redirect(array('action' => 'login'));
 		}
 
-		$this->Session->setFlash(__d('users', 'There was an error verifying your account. Please check the email you were sent, and retry the verification link.'));
+		$this->Session->setFlash('There was an error verifying your account. Please check the email you were sent, and retry the verification link.','flash_danger');
 		$this->redirect('/');
 	}
 
@@ -657,7 +689,7 @@ class UsersController extends UsersAppController {
 		if ($this->request->is('post')) {
 			$this->request->data[$this->modelClass]['id'] = $this->Auth->user('id');
 			if ($this->{$this->modelClass}->changePassword($this->request->data)) {
-				$this->Session->setFlash(__d('users', 'Password changed.'));
+				$this->Session->setFlash('Password changed.','flash_success');
 				// we don't want to keep the cookie with the old password around
 				$this->RememberMe->destroyCookie();
 				$this->redirect('/');
@@ -717,16 +749,21 @@ class UsersController extends UsersAppController {
  */
 	protected function _sendVerificationEmail($userData, $options = array()) {
 		$defaults = array(
+			//'from' => Configure::read('App.defaultEmail'),
 			'from' => Configure::read('App.defaultEmail'),
 			'subject' => __d('users', 'Account verification'),
 			'template' => $this->_pluginDot() . 'account_verification',
-			'layout' => 'default',
-			'emailFormat' => CakeEmail::MESSAGE_TEXT
+			//'layout' => 'default',
+			'layout' => '',
+			'emailFormat' => 'html'
+			//'emailFormat' => CakeEmail::MESSAGE_TEXT
 		);
 
 		$options = array_merge($defaults, $options);
+				//debug();
 
-		$Email = $this->_getMailInstance();
+//		$Email = $this->_getMailInstance();
+		$Email = new CakeEmail();
 		$Email->to($userData[$this->modelClass]['email'])
 			->from($options['from'])
 			->emailFormat($options['emailFormat'])
@@ -752,17 +789,19 @@ class UsersController extends UsersAppController {
 			'from' => Configure::read('App.defaultEmail'),
 			'subject' => __d('users', 'Password Reset'),
 			'template' => $this->_pluginDot() . 'password_reset_request',
-			'emailFormat' => CakeEmail::MESSAGE_TEXT,
-			'layout' => 'default'
+			//'emailFormat' => CakeEmail::MESSAGE_TEXT,
+			'emailFormat' => 'html',
+			//'layout' => 'default'
+			'layout' => ''
 		);
 
 		$options = array_merge($defaults, $options);
 
 		if (!empty($this->request->data)) {
 			$user = $this->{$this->modelClass}->passwordReset($this->request->data);
-
+			
 			if (!empty($user)) {
-
+				if ($user[$this->modelClass]['email_verified'] == 1){
 				$Email = $this->_getMailInstance();
 				$Email->to($user[$this->modelClass]['email'])
 					->from($options['from'])
@@ -776,16 +815,22 @@ class UsersController extends UsersAppController {
 					->send();
 
 				if ($admin) {
-					$this->Session->setFlash(sprintf(
-						__d('users', '%s has been sent an email with instruction to reset their password.'),
-						$user[$this->modelClass]['email']));
+					$this->Session->setFlash('Instructions to reset the password have been sent.','flash_success');
 					$this->redirect(array('action' => 'index', 'admin' => true));
 				} else {
-					$this->Session->setFlash(__d('users', 'You should receive an email with further instructions shortly'));
+					$this->Session->setFlash('You should receive an email with further instructions shortly','flash_success');
 					$this->redirect(array('action' => 'login'));
 				}
-			} else {
-				$this->Session->setFlash(__d('users', 'No user was found with that email.'));
+				}
+				else {
+					$this->Session->setFlash('Your e-mail has not been verified.','flash_danger');
+					$this->redirect(array('action'=>'resend_verification'));
+				}
+			}
+			
+			else {
+
+				$this->Session->setFlash('No user was found with that email.','flash_danger');
 				$this->redirect($this->referer('/'));
 			}
 		}
@@ -815,16 +860,17 @@ class UsersController extends UsersAppController {
 	protected function _resetPassword($token) {
 		$user = $this->{$this->modelClass}->checkPasswordToken($token);
 		if (empty($user)) {
-			$this->Session->setFlash(__d('users', 'Invalid password reset token, try again.'));
+			$this->Session->setFlash('Invalid password reset token, try again.','flash_danger');
 			$this->redirect(array('action' => 'reset_password'));
+			return;
 		}
 
-		if (!empty($this->request->data) && $this->{$this->modelClass}->resetPassword(Set::merge($user, $this->request->data))) {
+		if (!empty($this->request->data) && $this->{$this->modelClass}->resetPassword(Hash::merge($user, $this->request->data))) {
 			if ($this->RememberMe->cookieIsSet()) {
-				$this->Session->setFlash(__d('users', 'Password changed.'));
+				$this->Session->setFlash('Password changed.','flash_success');
 				$this->_setCookie();
 			} else {
-				$this->Session->setFlash(__d('users', 'Password changed, you can now login with your new password.'));
+				$this->Session->setFlash('Password changed, you can now login with your new password.','flash_success');
 				$this->redirect($this->Auth->loginAction);
 			}
 		}
@@ -839,12 +885,7 @@ class UsersController extends UsersAppController {
  * @link http://book.cakephp.org/2.0/en/core-utility-libraries/email.html
  */
 	protected function _getMailInstance() {
-		$emailConfig = Configure::read('Users.emailConfig');
-		if ($emailConfig) {
-			return new CakeEmail($emailConfig);
-		} else {
-			return new CakeEmail('default');
-		}
+		return $this->{$this->modelClass}->getMailInstance();
 	}
 
 /**
@@ -858,6 +899,165 @@ class UsersController extends UsersAppController {
  */
 	public function isAuthorized($user = null) {
 		return parent::isAuthorized($user);
+	}
+
+	
+	public function dummyAuth($id){
+	//great for testing.. Don't want it working in production
+		if (Configure::read('debug')>0){
+			$fuser=$this->User->findById(5);
+			$user['id']=$id;
+			$user['username']='BigDummyTestUser'.$id;
+			$user['provider']='Twitter';
+			//$user['upvotes']=null;
+			//$user['downvotes']=null;
+			//$user['flagged']=null;
+			
+			//$this->Auth->login($fuser['User']);
+			$this->Auth->login($user);
+			if ($this->Session->read('location')) $this->redirect($this->Session->read('location'));
+			else $this->redirect('/');
+		}
+	}
+	
+	
+	//now for the ExtAuth stuff and Google
+	
+	public function auth_login($provider) {
+		$result = $this->ExtAuth->login($provider);
+		if ($result['success']) {
+
+			$this->redirect($result['redirectURL']);
+
+		} else {
+			$this->Session->setFlash($result['message'],'flash_warning');
+			$this->redirect($this->Auth->loginAction);
+		}
+	}
+	
+	public function auth_callback($provider) {
+		$result = $this->ExtAuth->loginCallback($provider);
+		if ($result['success']) {
+
+			$this->__successfulExtAuth($result['profile'], $result['accessToken']);
+
+		} else {
+			$this->Session->setFlash($result['message'],'flash_warning');
+			$this->redirect($this->Auth->loginAction);
+		}
+	}
+	
+	//sj -added this when ExtAuth plugin quit working with Google
+	public function gauth() {
+		//good help here: http://www.sanwebe.com/2012/11/login-with-google-api-php
+		//include google api files - sj will try to clean up to only files I modified - moving forward for now
+		//the src is in webroot folder
+		require_once 'gauth/src/Google_Client.php';
+		require_once 'gauth/src/contrib/Google_Oauth2Service.php';
+
+		$gClient = new Google_Client();
+		$gClient->setApplicationName('iScout Tour');
+		$gClient->setClientId(Configure::read('ExtAuth.Provider.Google.key'));
+		$gClient->setClientSecret(Configure::read('ExtAuth.Provider.Google.secret'));
+		$gClient->setRedirectUri(Configure::read('globalSiteURL').'/users/gauth');
+
+		$google_oauthV2 = new Google_Oauth2Service($gClient);
+
+		//If code is empty, redirect user to google authentication page for code.
+		//Code is required to aquire Access Token from google
+		//Once we have access token, assign token to session variable
+		//and we can redirect user back to page and login.
+		if (isset($_GET['code'])) 
+		{ 
+			$gClient->authenticate($_GET['code']);
+			$_SESSION['token'] = $gClient->getAccessToken();
+			header('Location: ' . filter_var(Configure::read('globalSiteURL').'/users/gauth', FILTER_SANITIZE_URL));
+			return;
+		}
+
+
+		if (isset($_SESSION['token'])) 
+		{ 
+			$gClient->setAccessToken($_SESSION['token']);
+		}
+
+
+		if ($gClient->getAccessToken()) 
+		{
+			  //For logged in user, get details from google using access token
+			  $user 				= $google_oauthV2->userinfo->get();
+			  $_SESSION['token'] 	= $gClient->getAccessToken();
+			  //rejoin the party here, after a little fix-up to match the way everything else was working
+			  $user['oid']='https://plus.google.com/'.$user['id'];
+			 $this->__successfulExtAuth($user, $_SESSION['token']);
+		}
+		else 
+		{
+			//For Guest user, get google login url
+			$authUrl = $gClient->createAuthUrl();
+			$this->redirect($authUrl);
+		}
+		//debug($user);
+		$this->set(compact('authUrl'));
+	
+	}
+	
+	
+	private function __successfulExtAuth($incomingProfile, $accessToken) {
+		$user=$this->User->findByOid($incomingProfile['oid']);
+		if ($user) {
+			$this->__doAuthLogin($user);
+		}
+		else {
+		//make a new account, not much needs to be done with the data the fields were named for the API calls
+			//ensure username is unique - or maybe we just remove this constraint?
+			$an=preg_replace("/[^A-Za-z0-9]/", '', $incomingProfile['oid']);
+			$incomingProfile['username']=$incomingProfile['given_name'].'_'.substr($incomingProfile['family_name'],0,1).'^'.$an;
+			
+			//just get rid of email validation and skip it
+			$this->User->validator()->remove('email');
+
+			//not sure about this, it works fine without them, but they do not show on User list in index 
+			//$user['email_verified']=1;
+			//$user['tos']=1;
+			//$user['active']=1;
+			$incomingProfile['ip'] = $_SERVER["REMOTE_ADDR"]; 
+			$uuid=String::uuid();
+			$incomingProfile['id']=$uuid;
+			
+			if ($this->User->save($incomingProfile)){
+				$user['User']=$incomingProfile;
+				$this->__doAuthLogin($user);
+			}
+			else {
+				$this->Session->setFlash('Something has gone wrong. Please try again or contact the system admin.','flash_danger');
+				debug($this->User->invalidFields());
+			}
+		}
+		//debug($incomingProfile);
+	}
+	
+	
+	//this is used by ExtAuth AND by the email token login AND gauth
+	private function __doAuthLogin($user) {
+		if ($this->Auth->login($user['User'])) {
+			$user['User']['last_login'] = date('Y-m-d H:i:s');
+			if (is_null($user['User']['given_name'])) $user['User']['given_name']=$user['User']['username'];
+			//fails validation otherwise
+			unset($user['User']['password']);
+			$this->User->validator()->remove('email');
+			$this->User->validator()->remove('tos');
+			if ($this->User->save($user['User'])){
+				$this->Session->setFlash('Thanks '.$user['User']['given_name'].'! You are logged in.','flash_success');
+				
+				if ($this->Session->read('location')) $this->redirect($this->Session->read('location'));
+				else $this->redirect('/');
+			}
+			else {
+				$this->Session->setFlash('Something has gone wrong. Please try again or contact the system admin.','flash_danger');
+				debug($this->User->invalidFields());
+			}
+		}
 	}
 
 }

@@ -7,11 +7,11 @@ class TreasuresController extends AppController {
 			'commonProcess'=>array('keepPassed'=>false,'paramType'=>'named'),
 			'presentForm'=>array('paramType'=>'named')
 		),
-		'RequestHandler','Cookie',
-		'Comments.Comments'=>array(
+		'RequestHandler','Cookie','Comment'
+		/*'Comments.Comments'=>array(
 			'userModelClass'=>'Users.User'
 			//although the above is not ignored, it seems like other options I pass here are ignored (like viewVariable), so I use beforeFilter)
-		)
+		)*/
 	);
 	//Regular ol' $this->paginate() ceases to function when this is declared, but you can paginate any Model here (or other ways)
 	public $paginate = array(
@@ -24,7 +24,7 @@ class TreasuresController extends AppController {
 		$this->Auth->allow();
 		//this needs to be a single item with ID (I think)
 		//by default it will use the model name (i.e. kid, treasure, artwork)
-		$this->Comments->viewVariable='treasure';
+		//$this->Comments->viewVariable='treasure';
 		//if you look at manual, you will see there are several useful component settings		
 		//isAdmin isn't always set in CommentsPlugin when it should be, this has fixed it so far
 		$isAdmin = (bool)$this->Auth->user('is_admin');
@@ -32,6 +32,7 @@ class TreasuresController extends AppController {
 		$this->set('TWshorturl',substr($this->UrlShortener->get_bitly_short_url('http://collections.centerofthewest.org'.$this->here.'?utm_source=twitterk&utm_campaign=onlinecollections'),0,-1));					
 	}
 	
+	/*
 	//this is straight from Comments plugin docs, could probably be done other ways - but it works
 	public function callback_commentsInitType() {
 		//Initializes the view type for comments widget
@@ -45,7 +46,7 @@ class TreasuresController extends AppController {
 		return $this->Comments->callback_add($modelId, $commentId, $displayType, $data);
 	}
 	
-	
+	*/
 
 	
 	public function advancedsearch(){
@@ -260,7 +261,19 @@ class TreasuresController extends AppController {
 			unset($treasure['Usergal'][$i]['editcode']);
 			$i++;
 		}
-		$this->set('treasure', $treasure);
+		//sj- begin comments stuff
+		$user=$this->Auth->user();
+		if (isset($user)) $this->set('user',$user);
+		else {
+			$user['id']=null;
+			$user['provider']=null;
+		}
+		//user Comments component to load up view variables
+		$comments=$this->Comment->getComments($treasure['Treasure']['id'],'Treasure',$user['id']);
+		$usercomment=$this->Comment->userComment($treasure['Treasure']['id'],'Treasure',$user['id']);
+		$id=$treasure['Treasure']['id'];
+		$model='Treasure';
+		$this->set(compact('treasure','comments','usercomment','slug','user','id','model'));
 		$this->set('_serialize', array('treasure'));
 		
 		//used as a flag for the Colorbox ajax calls
