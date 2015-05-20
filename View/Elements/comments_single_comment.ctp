@@ -13,11 +13,11 @@ $utoggle='enabled';
 $dtoggle='enabled';
 $upvoted=false;
 $downvoted=false;
-if (isset($comment['Comment']['User']['username'])){
-	$formattedname=explode('^',$comment['Comment']['User']['username']);
+if (isset($comment['User']['username'])){
+	$formattedname=explode('^',$comment['User']['username']);
 	$formattedname[0]=str_replace('_',' ',$formattedname[0]);
 }
-else $formattedname[0]='SethTest';
+else $formattedname[0]='A Guest';
 
 echo $this->Form->create($comment['Comment']['id'],array('class'=>'form-inline comment'.$comment['Comment']['id']));
 echo $this->Form->input('model',array('type'=>'hidden','value'=>$model));

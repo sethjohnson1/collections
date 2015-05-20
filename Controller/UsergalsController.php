@@ -4,11 +4,7 @@ App::uses('CakeEmail','Network/Email');
 
 class UsergalsController extends AppController {
 
-public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Search.Prg'=>array('commonProcess'=>array('keepPassed'=>false)),'RequestHandler','Cookie',
-	'Comments.Comments'=>array(
-	'userModelClass'=>'Users.User'
-		//although the above is not ignored, it seems like other options I pass here are ignored (like viewVariable), so I use beforeFilter)
-)
+public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Search.Prg'=>array('commonProcess'=>array('keepPassed'=>false)),'RequestHandler','Cookie'
 );
 	public $paginate = array(
        // 'Treasure2' => array ()
@@ -20,11 +16,7 @@ public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Searc
 		//$this->Cookie->time = 157680000000;
 		$this->Auth->allow();
 		$this->Auth->deny('mine');
-		//this needs to be a single item with ID (I think)
-		//by default it will use the model name (i.e. kid, treasure, artwork)
-		$this->Comments->viewVariable='usergal';
-		//if you look at manual, you will see there are several useful component settings		
-		
+
 		//isAdmin isn't always set in CommentsPlugin when it should be, this has fixed it so far
 		$isAdmin = (bool)$this->Auth->user('is_admin');
 		$this->set('isAdmin',$isAdmin);
@@ -45,18 +37,6 @@ public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Searc
 		
 	}
 
-//this is straight from Comments plugin docs, could probably be done other ways - but it works
-public function callback_commentsInitType() {
-//Initializes the view type for comments widget
-        return 'tree'; // threaded, tree and flat supported
-    }
-	
-public function callback_commentsAdd($modelId, $commentId, $displayType, $data = array()) {
-    if (!empty($this->request->data)) {
-      // debug('err');
-    }
-    return $this->Comments->callback_add($modelId, $commentId, $displayType, $data);
-}
 
 
 //for logged in users to see all of their vgals and comments
@@ -95,38 +75,13 @@ public function callback_commentsAdd($modelId, $commentId, $displayType, $data =
 		$this->Usergal->recursive=-1;
 		$usergals=$this->Usergal->findAllByEmail($this->Auth->user('email'));
 		$this->set('usergals',$usergals);
-		
-		/* this is eventually to be the "see all my conversations" thing, but disabled for now */
-		$this->loadModel('Comment');
-		/* proof of concept code that I like, but not paginated at all
-		$comments=$this->Comment->findAllByUser_id($this->Auth->user('id'),array('contain'=>false));
-		//now loop through and use Tree behavior to find children of each comment
-		foreach ($comments as $comment){
-		//true means direct children only
-			$kids = $this->Comment->children($comment['Comment']['id'],true);
-			foreach ($kids as $kid){
-				//there is not a Tree way to omit results, but we can do it here in the foreach
-				//for example, only debug child (reply) comments that were not to oneself
-				if ($kid['Comment']['user_id']!=$comment['Comment']['user_id']); //debug($kid);
-			}
-		}
-		*/
+
 		
 		//here is a construction of a Tree manually for Paginator, the order is important 
 		$options['conditions']=array('Comment.user_id'=>$this->Auth->user('id'));
 		$options['order']=array('Comment.lft' => 'asc');
 		$options['limit']=10;
 		$options['contain']=false;
-		
-		$this->Paginator->settings = $options;
-		$pgc=$this->Paginator->paginate('Comment');
-		$childcnt=array();
-		//now count the children - in theory this could be bad for performance someday
-		foreach ($pgc as $key=>$val){
-			$childcnt[$val['Comment']['id']] = $this->Comment->childCount($val['Comment']['id'],true);
-		}
-		$this->set('pgc',$pgc);
-		$this->set('childcnt',$childcnt);
 
 	}
 	

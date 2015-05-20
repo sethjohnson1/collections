@@ -29,7 +29,8 @@ class CommentComponent extends Component {
 	$result=array();
 	foreach ($comments as $key=>$comment){
 	//stop doing it if there's nothing left
-	if (!empty($ucomments)){
+	//wait that won't work, need to load up the arrays first
+	//if (!empty($ucomments)){
 		if (count($comment['children'])>0){
 			foreach($comment['children'] as $kchild=>$child){
 				if (count($child['children'])>0){
@@ -69,7 +70,7 @@ class CommentComponent extends Component {
 			}
 		}
 	}
-	}
+	//}
 		
 		return $result;
 	}
@@ -146,6 +147,7 @@ class CommentComponent extends Component {
 		$options['conditions']=array('Comment.foreign_key'=>$fk,'Comment.model'=>$model,'Comment.user_id'=>$userid);
 		$options['recursive']=1;
 		//should only return one record
+		//no more than one
 		$result=$Comment->find('first',$options);
 		return $result;
 	}
