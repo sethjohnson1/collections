@@ -13,13 +13,14 @@ class CommentsUsersController extends AppController {
 	
 	//$parent is comment ID
 	public function comment_reply($parent,$model,$fk){
+	$comment=$this->CommentsUser->Comment->find('first',array('conditions'=>array('Comment.id'=>$parent)));
 	if ($this->Auth->user()){
 		$user=$this->CommentsUser->User->find('first',array(
 					'conditions'=>array('User.id'=>$this->Auth->user('id')),
 					'recursive'=>-1	
 				));
 		$user=$user['User'];
-		$comment=$this->CommentsUser->Comment->find('first',array('conditions'=>array('Comment.id'=>$parent)));
+		
 		//make sure not replying to oneself
 		if ($comment['Comment']['user_id']!=$user['id'] && !empty($this->request->data[$parent]['reply'.$parent])){
 			$this->CommentsUser->User->create();
@@ -34,7 +35,7 @@ class CommentsUsersController extends AppController {
 			if ($this->CommentsUser->Comment->save($data)){
 				$this->Session->setFlash('Your reply was saved','flash_success',array(),'commentFlash');
 				$tree=$this->CommentsUser->Comment->find('threaded',array('conditions'=>array()));
-        debug($tree); 
+        //debug($tree); 
 			}
 			//debug($this->request->data[$parent]);
 		}
@@ -46,10 +47,15 @@ class CommentsUsersController extends AppController {
 		$this->render('comment_single','ajax');
 	}
 	else {
-		$this->Session->setFlash('You are not logged in. Log in again','flash_warning',array(),'commentFlash');
+		$this->Session->setFlash('You must be logged in to reply','flash_custom',array(),'commentFlash');
 	}
-		$this->set(compact('comment','user','model','fk'));
-		$this->render('comment_single','ajax');
+		
+		$comments=$this->Comment->getComments($fk,$model,$user['id']);
+		$this->set(compact('comment','comments','user','model','fk'));
+		$this->set(compact('comment','user','model','fk'.'comments'));
+		$this->render('comment_add','ajax');
+		//$this->render('comment_single','ajax');
+
 	
 	}
 	//$id is the id of the Comment

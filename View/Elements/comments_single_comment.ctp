@@ -1,4 +1,10 @@
-<div class="row container<? echo $comment['Comment']['id'] ?>" >
+<!-- this is double-wrapped so it can be reloaded in ajax yet easily controlled by widget -->
+<div class="row">
+<div class="col-xs-12">
+<?
+/* This is contained by the comments_widget, then refreshed with Ajax from CommentsUsers actions */
+?>
+<div class="container<? echo $comment['Comment']['id'] ?>" >
 <?
 
 $flagged=false;
@@ -13,7 +19,7 @@ if (isset($comment['Comment']['User']['username'])){
 }
 else $formattedname[0]='SethTest';
 
-echo $this->Form->create($comment['Comment']['id'],array('class'=>'comment'.$comment['Comment']['id']));
+echo $this->Form->create($comment['Comment']['id'],array('class'=>'form-inline comment'.$comment['Comment']['id']));
 echo $this->Form->input('model',array('type'=>'hidden','value'=>$model));
 echo $this->Form->input('foreign_key',array('type'=>'hidden','value'=>$fk));
 //see if its their own comment
@@ -27,8 +33,7 @@ if (isset($comment['CommentsUser']['id'])){
 	$downvoted=$comment['CommentsUser']['downvoted'];
 }
 
-if ($upvoted==true) $utoggle='disabled';
-if ($downvoted==true) $dtoggle='disabled';
+
 if ($flagged==true){
 	$flagvalue=-1; //used later down in link
 	$flaglabel='Unflag';
@@ -37,45 +42,31 @@ else {
 	$flagvalue=1;
 	$flaglabel='Flag';
 	}
-//someday this could be combined a little, this is one Meal of an IF statement and is used Twice!
-/*if(($flagged==true || $comment['Comment']['flags']>=4) ||
- (isset($cookie_flags[$comment['Comment']['id']]) && empty($user['id']) )) $cheight=100;
-else 
-*/
+if (empty($comment['Comment']['downvotes'])) $comment['Comment']['downvotes']='0';
+if (empty($comment['Comment']['upvotes'])) $comment['Comment']['upvotes']='0';
+
 
 	if($flagged==true ||  (isset($cookie_flags[$comment['Comment']['id']]) && empty($user['id']))){?>
-	<div class="col-xs-12">
+	<div class="col-xs-12 well">
 	<?
 		
 			$flaglabel='Unflag';
-			echo $this->Form->input($flaglabel,array(
-				'div'=>false,
-				'type'=>'button',
-				'label'=>false,
-				'class'=>'ui-btn-icon-notext ui-mini ui-icon-alert fsign'.' comment_flag'.$comment['Comment']['id'],
-				'style'=>'float:left'
-				));
-			
 			echo $this->Form->input('pflag',array('type'=>'hidden','value'=>'unflag'));
 			echo '<p><strong>You flagged this message as inappropriate.</strong> If you simply did not like the comment,
 			please unflag and vote it down instead.</p>';?>
-		</div>
+			<a href="#" style="color:white" class="allcaps btn btn-warning comment_flag<?=$comment['Comment']['id']?>"><span class="glyphicon glyphicon-flag"> Unflag</a>
+			<br />
+	</div>
 	<?}
 	else if ($comment['Comment']['flags']>=4 && !isset($reveal)){?>
-	<div class="col-xs-12">
+	<div class="col-xs-12 well">
 	<?
 	
-		echo $this->Form->input('Reveal',array(
-			'div'=>false,
-			'type'=>'button',
-			'label'=>false,
-			'class'=>'ui-btn-icon-notext ui-mini ui-btn ui-icon-alert fsign'.' comment_flag'.$comment['Comment']['id'],
-			'style'=>'float:left'
-			));
 		echo $this->Form->input('pflag',array('type'=>'hidden','value'=>'reveal'));
 		echo '<p>This comment has been flagged as inappropriate '.$comment['Comment']['flags'].' times.
 			Tap the warning icon if you want to live dangerously and read it.</p>';
 		?>
+		<a href="#" style="color:white" class="allcaps btn btn-warning comment_flag<?=$comment['Comment']['id']?>"><span class="glyphicon glyphicon-eye-open"> Reveal</a>
 	</div>
 	<?
 	}
@@ -83,127 +74,89 @@ else
 	else{
 		//giant block to draw the comment and buttons
 		?>
-		
+		<style>
+			
+		</style>
 
 		<div class="row the_comment">
 		
-		<div class="col-xs-3 comment_buttons">
-		<div class="votes">
-			<? echo $this->Form->input('UpVote',array(
-			'div'=>false,
-			'label'=>false,
-			'type'=>'button',
-			'data-role'=>'button',
-			'data-icon'=>'arrow-u',
-			'data-iconshadow'=>'true',
-			'data-iconpos'=>'notext',
-			'data-corners'=>'false',
-			'class'=>'comment_up'.$comment['Comment']['id'],
-			$utoggle
-		));?>
-		<div class="upvote"><?=$comment['Comment']['upvotes']?></div>
-		</div>
-		<?
-		//color the total..
-		$voteclass='';
-		if ($comment['Comment']['diff'] > 0) $voteclass='upvote';
-		if ($comment['Comment']['diff'] < 0) $voteclass='downvote';
-		?>
-		<div class="total <?=$voteclass?>"><span class="diff"><?=$comment['Comment']['diff'] ?></span></div>
-		<div class="votes" >
+		<div class="col-xs-2 comment_buttons">
+		<span class="upvote vote badge-hov">
+			<? 
+			
+			//echo $this->Form->input('UpVote',array('div'=>false,'label'=>false,'type'=>'button','class'=>'comment_up'.$comment['Comment']['id'],$utoggle));?>
+			
+			<? if ($upvoted==true) : ?>
+			<span title="You upvoted this" class="glyphicon glyphicon-triangle-top" style="color:<?=$color['green']?>; font-size: 2em;"></span><br/><small> <span style="background-color:<?=$color['green']?>; color: white" class=" badge badge-hov"><?=$comment['Comment']['upvotes'] ?></span></small>
+			<?else:?>
+			
+			<a title="Upvote this comment" href="#" class="comment_up<?=$comment['Comment']['id']?>"><span class="glyphicon glyphicon-triangle-top" style="font-size: 2em;"></span><br /><small> <span class=" badge badge-hov"><?=$comment['Comment']['upvotes'] ?></span></small></a>
+			
+			<?endif?>
 		
-		<? echo $this->Form->input('DownVote',array(
-			'div'=>false,
-			'label'=>false,
-			'type'=>'button',
-			'data-role'=>'button',
-			'data-icon'=>'arrow-d',
-			'data-iconshadow'=>'true',
-			'data-iconpos'=>'notext',
-			'data-corners'=>'false',
-			'class'=>'comment_down'.$comment['Comment']['id'],
-			$dtoggle
-		));			
-		?>
-		
-		<div class="downvote"><?=$comment['Comment']['downvotes'] ?></div>
-		</div>
-		<div class="votes">
-		<?	echo $this->Form->input($flaglabel,array(
-			'div'=>false,
-			'label'=>false,
-			'type'=>'button',
-			'data-role'=>'button',
-			'data-icon'=>'alert',
-			'data-iconshadow'=>'true',
-			'data-iconpos'=>'notext',
-			'data-corners'=>'false',
-			'class'=>'delbtn comment_flag'.$comment['Comment']['id']
-		));
-		echo $this->Form->input('pflag',array('type'=>'hidden','value'=>'flag'));
-		?>
-		</div>
+		</span>
+		<br />
+		<? //=$comment['Comment']['diff'] ?>
+		<span class="downvote vote badge-hov">
+				
+			<? if ($downvoted==true) : ?>
+			<small><span style="background-color:<?=$color['red']?>; color: white" class=" badge badge-hov"><?=$comment['Comment']['downvotes'] ?></span></small><br />
+			<span title="You downvoted this" class=" glyphicon glyphicon-triangle-bottom" style="color:<?=$color['red']?>; font-size: 2em;"></span>
+			<?else:?>
+			
+			<a title="Downvote this comment" href="#" class="comment_down<?=$comment['Comment']['id']?>"><small><span class=" badge badge-hov"><?=$comment['Comment']['downvotes'] ?></span></small><br /><span class="glyphicon glyphicon-triangle-bottom" style="font-size: 2em;"></span></a>
+			<?endif?>
+			
+		</span>
+
 		
 	</div><!-- /comment_buttons -->
 
-		<div class="col-xs-9 comment_text">
-		<div class="comment_header">
-		<div class="comment_rate">
-				<strong><?=$formattedname[0] ?></strong>
-		
-		
-		<?
-		for ($x=0;$x<=4; $x++):
-			if ($comment['Comment']['rating'] > $x) $starred='starred';
-			else $starred='';
-			
-		?>
-		<span class="ui-icon-star ui-btn-icon-notext staricon <? echo $starred ?>"/></span>
+		<div class="col-xs-8 comment_text">
+		<p><strong><?=$formattedname[0] ?>'s</strong> deep thoughts</p>
+		<p><?=$comment['Comment']['thoughts'] ?></p>
 
-		<?
-		endfor;
-		?>
-		
+		<?if ($mine!='mine'){?>
+	
+		 <div class="form-group">
+
+		<?=$this->Form->input('reply'.$comment['Comment']['id'],array('class'=>'form-control','placeholder'=>'Reply to comment','label'=>false,'type'=>'textarea','rows'=>2,'cols'=>40))?>
 		</div>
-		<div class="comment_destructive"><?
-
-
-		
-		if ($mine=='mine'){
-			echo $this->Form->input('Delete my Comment',array(
-				'div'=>false,'label'=>false,
-				'type'=>'button',
-				'data-role'=>'button',
-				'data-icon'=>'delete',
-				'data-iconshadow'=>'true',
-				'data-iconpos'=>'notext',
-				'data-corners'=>'false',
-				'class'=>'comment_hide'.$comment['Comment']['id'],
-				'rel'=>'external',
-				'data-ajax'=>'false',
-				'style'=>''
-				
-			));
-		}
-		else {
+			  <?
 			echo $this->Form->input('Reply',array(
 				'div'=>false,'label'=>false,
 				'type'=>'button',
-				'class'=>'comment_reply'.$comment['Comment']['id'],
+				'class'=>'btn btn-default comment_reply'.$comment['Comment']['id'],
 				'style'=>''
 				
 			));
-			echo $this->Form->input('reply'.$comment['Comment']['id'],array('class'=>'form-control','placeholder'=>'Reply to comment','label'=>false));
-		}
-		?> </div>
-		</div>
+			?>
+			
+			<?
+		} //end reply section IF
+		?>
+
 		
 		
 
-		<div class="comment_thoughts"><? echo $comment['Comment']['thoughts'] ?></div>
-		</div>
-		<!-- /div -->
-		</div><!-- /the_comment -->
+		</div><!-- /row -->
+	<div class="col-xs-2">
+	<h3>
+	<?		if ($mine=='mine'){ ?>
+			<a href="#" role="button" class="btn btn-default comment_hide<?=$comment['Comment']['id']?>">
+			<span class="glyphicon glyphicon-remove">	Hide</span>
+			</a>
+		
+			<?
+			}
+		else {
+		echo $this->Form->input('pflag',array('type'=>'hidden','value'=>'flag'));
+		?>
+		<a href="#" role="button" style="" title="<?=$flaglabel?> this comment" class="btn btn-default comment_flag<?=$comment['Comment']['id']?>"><span class="glyphicon glyphicon-alert"> Flag</span></a>
+		<?}?>
+	</h3>
+	</div>
+</div><!-- /the_comment -->
 
 	<?	} //end of the else. The colon method doesn't work as well with nested IF above ?>
 
@@ -211,7 +164,6 @@ else
 
 <? 		echo $this->Form->input('flagvalue',array('type'=>'hidden','value'=>$flagvalue));
 		echo $this->Form->end(); 
-		//debug($comment);
  ?>
 
 <? //in theory not all are needed if comment is flagged, but too much to worry about now 
@@ -264,7 +216,7 @@ $(document).off('click', '.comment_reply<?=$comment['Comment']['id']?>').on('cli
 	data:$(".comment<?=$comment['Comment']['id']?>").serialize(),
 	dataType:"html",
 	success:function (data, textStatus) {
-		$(".container<?=$comment['Comment']['id']?>").fadeOut(0).html(data).trigger('create').fadeIn(500);
+		$(".comments<?=$model.$fk?>").fadeOut(0).html(data).trigger('create').fadeIn(500);
 	},
 	type:"POST",
 	url:"<?='http://'.$_SERVER['HTTP_HOST'].Router::url(array('controller'=>'commentsUsers','action'=>'comment_reply',$comment['Comment']['id'],$model,$fk))?>"});
@@ -292,4 +244,5 @@ $(document).off('click', '.comment_flag<?=$comment['Comment']['id']?>').on('clic
 
 </script>
 </div><!-- /comment_container -->
-<hr />
+</div><!-- /end giant col-xs-12 -->
+</div><!-- /end giant row -->

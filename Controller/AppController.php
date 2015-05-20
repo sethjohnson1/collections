@@ -54,6 +54,8 @@ class AppController extends Controller {
 		}	
 		$this->set('Vgals',$jids);
 		$this->set('editflag',$editflag);
+		
+		
 		//bitly component giving every view a shorturl to refrence.
 		//I am shortening the final bitly url by 1 character from the end of the string because it is returning a line break and breaks twitters script.
 		//$this->set('shorturl',substr($this->UrlShortener->get_bitly_short_url('http://collections.centerofthewest.org'.$this->here.''),0,-1));	
@@ -64,6 +66,22 @@ class AppController extends Controller {
 		//$this->RememberMe->restoreLoginFromCookie();
 		
 		//$this->set('loginlink',Router::url(array()));
+		
+		//set some useful colors
+		
+		$color=array(
+			'brown'=>'#6e3219',
+			'blue'=>'#004250',
+			'green'=>'#035642',
+			'red'=>'#981e32',
+			'orange'=>'#bd4f19',
+			'purple'=>'#532e60',
+			'yellow'=>'#c59217',
+			'tan'=>'#aa9c8f'
+		);
+		
+		$this->set(compact('color'));
+		
 		}
 
 public function blackhole($type) {

@@ -6,39 +6,76 @@ App::uses('Component', 'Controller');
 class CommentComponent extends Component {	
 	public $components = array('Cookie');
 	function startup(Controller $controller) { $this->Controller = $controller; }
+
+		//simplifying my approach here
+	public function getComments($fk,$model,$userid){
+	//first get all the comments interacted with for given record
+		$CommentsUser=ClassRegistry::init('CommentsUser');
+		$options['recursive']=2;
+		$options['limit']=200;
+		//this is where you could do pagination manually (pass the variable from the controller)
+		//$options['offset']=0;
+		$options['fields']=array('CommentsUser.*','Comment.*');
+		$options['conditions']=array('CommentsUser.user_id'=>$userid,'Comment.foreign_key'=>$fk,'Comment.model'=>$model,'Comment.hidden != 1');
+		$ucomments=$CommentsUser->find('all',$options);
+		
+	//now get all the comments for given record
+		
+		$Comment=ClassRegistry::init('Comment');
+		$conditions=array('Comment.hidden != 1','Comment.foreign_key'=>$fk,'Comment.model'=>$model);
+		$comments=$Comment->find('threaded',array('conditions'=>$conditions));
 	
-	public function getThreadedComments($fk,$model,$userid){
-			//this is for threaded
-	$Comment=ClassRegistry::init('Comment');
-	$conditions=array('Comment.hidden != 1','Comment.foreign_key'=>$fk,'Comment.model'=>$model);
-	$comments=$Comment->find('threaded',array($conditions,'recursive'=>2));
-	
-	$CommentsUser=ClassRegistry::init('CommentsUser');
-	$options['joins']= array(
-		array(
-			'table' => 'comments',
-			'alias' => 'C',
-			'type' => 'LEFT OUTER',
-			'conditions'=>array('CommentsUser.user_id'=>$userid,'CommentsUser.comment_id = C.id','C.foreign_key'=>$fk,'C.model'=>$model)
-		));	//$options['conditions']=array('CommentsUser.user_id'=>$userid,'Comment1.foreign_key'=>$fk,'Comment1.model'=>$model,'Comment1.hidden != 1');
-	$options['fields']=array('CommentsUser.*','C.*');
-	$cu=$CommentsUser->find('all',$options);
-	
-	//now this is one big-ass nested loop here, but supposedly foreach is faster than in_array
+	//now run some loops, goes three layers deep. I think if I were smarter I could do this better.. oh well.
 	$result=array();
-	foreach ($comments as $key=>$val){
-		foreach ($cu as $c=>$u){
-			if ($u['CommentsUser']['comment_id']==$val['Comment']['id']){
-				$result[$key]=array_merge($cu[$c],$comments[$key]);
+	foreach ($comments as $key=>$comment){
+	//stop doing it if there's nothing left
+	if (!empty($ucomments)){
+		if (count($comment['children'])>0){
+			foreach($comment['children'] as $kchild=>$child){
+				if (count($child['children'])>0){
+					foreach($child['children'] as $klast=>$last){
+						$result[$key]['children'][$kchild]['children'][$klast]=$comments[$key]['children'][$kchild]['children'][$klast];
+						foreach ($ucomments as $k=>$v){
+						if ($v['CommentsUser']['comment_id']==$last['Comment']['id']){
+							$result[$key]['children'][$kchild]['children'][$klast]=array_merge($ucomments[$k],$comments[$key]['children'][$kchild]['children'][$klast]);
+							unset($ucomments[$k]);
+						}
+						}
+					}
+				}
+				$result[$key]['children'][$kchild]=$comments[$key]['children'][$kchild];
+				foreach ($ucomments as $k=>$v){
+				//first set the result
+				
+				if ($v['CommentsUser']['comment_id']==$child['Comment']['id']){
+					$result[$key]['children'][$kchild]=array_merge($ucomments[$k],$comments[$key]['children'][$kchild]);
+					//make looping gradually faster!
+					unset($ucomments[$k]);
+				}
+				//else $result[$key]['children'][$kchild]=$comments[$key]['children'][$kchild];
+				}
+			}
+		}
+		$result[$key]=$comments[$key];
+		foreach ($ucomments as $c=>$u){
+			
+			if ($u['CommentsUser']['comment_id']==$comment['Comment']['id']){
+				$result[$key]=array_merge($ucomments[$c],$comments[$key]);
 				//make looping gradually faster!
-				unset($cu[$c]);
+				unset($ucomments[$c]);
+			}
+			else {
+				
 			}
 		}
 	}
-
-	return $cu;
 	}
-	public function getComments ($fk, $model, $userid){
+		
+		return $result;
+	}
+
+	//this was the original method named getComments renamed so I didn't have to change code all over
+	public function getOldComments ($fk, $model, $userid){
 	$this->Controller->set('cookie_flags',$this->Cookie->read('flagged_comments'));
 	//now find the comments the user interacted with and tack that on
 	//first find all comments that the logged in user has interacted with 
@@ -48,7 +85,7 @@ class CommentComponent extends Component {
 				'table' => 'comments',
 				'alias' => 'Comment1',
 				'type' => 'LEFT OUTER',
-				'conditions'=>array('CommentsUser.comment_id = Comment1.id','Comment1.foreign_key'=>$fk,'Comment1.model'=>$model)
+				'conditions'=>array('CommentsUser.comment_id = Comment1.id','Comment1.foreign_key'=>$fk,'Comment1.model'=>$model,'Comment1.parent_id is null')
 			));
 		$options['recursive']=2;
 		$options['limit']=200;
@@ -57,7 +94,7 @@ class CommentComponent extends Component {
 		$options['fields']=array('CommentsUser.*','Comment.*');
 		//no, better to sort the array, this is meaningless
 		$options['order']=array('Comment.diff desc');
-		$options['conditions']=array('CommentsUser.user_id'=>$userid,'Comment.foreign_key'=>$fk,'Comment.model'=>$model,'Comment.hidden != 1');
+		$options['conditions']=array('CommentsUser.user_id'=>$userid,'Comment.foreign_key'=>$fk,'Comment.model'=>$model,'Comment.hidden != 1','Comment.parent_id is null');
 
 		$comment=$CommentsUser->find('all',$options);
 		//now loop through and extract the ids to exclude from the next query
@@ -68,7 +105,7 @@ class CommentComponent extends Component {
 		
 		$Comment=ClassRegistry::init('Comment');
 		$comment2=$Comment->find('all',array(
-			'conditions'=>array('Comment.hidden != 1','Comment.foreign_key'=>$fk,'Comment.model'=>$model,'AND'=>array($exclusions)),
+			'conditions'=>array('Comment.parent_id is null','Comment.hidden != 1','Comment.foreign_key'=>$fk,'Comment.model'=>$model,'AND'=>array($exclusions)),
 			'recursive'=>1,
 			'fields'=>array('Comment.*','User.*'),
 			'limit'=>200,

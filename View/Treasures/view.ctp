@@ -10,7 +10,7 @@ echo $this->Html->link('Visit record &raquo;',array(),array('escape'=>false)).'<
 <?
 else:
 
-debug($tree);
+//debug($tree);
 ?>
 <?//here is the giant container, needs $user, $model, $fk, $comments?>
 <?=$this->element('comments_container');?>
