@@ -87,10 +87,10 @@ if (empty($comment['Comment']['upvotes'])) $comment['Comment']['upvotes']='0';
 			//echo $this->Form->input('UpVote',array('div'=>false,'label'=>false,'type'=>'button','class'=>'comment_up'.$comment['Comment']['id'],$utoggle));?>
 			
 			<? if ($upvoted==true) : ?>
-			<span title="You upvoted this" class="glyphicon glyphicon-triangle-top" style="color:<?=$color['green']?>; font-size: 2em;"></span><br/><small> <span style="background-color:<?=$color['green']?>; color: white" class=" badge badge-hov"><?=$comment['Comment']['upvotes'] ?></span></small>
+			<span title="You upvoted this" class="glyphicon glyphicon-triangle-top" style="color:<?=$color['green']?>; font-size: 2em;"></span><br/><small><span style="background-color:<?=$color['green']?>; color: white" class="upoffset badge badge-hov"><?=$comment['Comment']['upvotes'] ?></span></small>
 			<?else:?>
 			
-			<a title="Upvote this comment" href="#" class="comment_up<?=$comment['Comment']['id']?>"><span class="glyphicon glyphicon-triangle-top" style="font-size: 2em;"></span><br /><small> <span class=" badge badge-hov"><?=$comment['Comment']['upvotes'] ?></span></small></a>
+			<a title="Upvote this comment" href="#" class="comment_up<?=$comment['Comment']['id']?>"><span class="glyphicon glyphicon-triangle-top" style="font-size: 2em;"></span><br /><small><span class="upoffset badge badge-hov"><?=$comment['Comment']['upvotes'] ?></span></small></a>
 			
 			<?endif?>
 		
@@ -100,11 +100,11 @@ if (empty($comment['Comment']['upvotes'])) $comment['Comment']['upvotes']='0';
 		<span class="downvote vote badge-hov">
 				
 			<? if ($downvoted==true) : ?>
-			<small><span style="background-color:<?=$color['red']?>; color: white" class=" badge badge-hov"><?=$comment['Comment']['downvotes'] ?></span></small><br />
+			<small><span style="background-color:<?=$color['red']?>; color: white" class="downoffset badge badge-hov"><?=$comment['Comment']['downvotes'] ?></span></small><br />
 			<span title="You downvoted this" class=" glyphicon glyphicon-triangle-bottom" style="color:<?=$color['red']?>; font-size: 2em;"></span>
 			<?else:?>
 			
-			<a title="Downvote this comment" href="#" class="comment_down<?=$comment['Comment']['id']?>"><small><span class=" badge badge-hov"><?=$comment['Comment']['downvotes'] ?></span></small><br /><span class="glyphicon glyphicon-triangle-bottom" style="font-size: 2em;"></span></a>
+			<a title="Downvote this comment" href="#" class="comment_down<?=$comment['Comment']['id']?>"><small><span class="downoffset badge badge-hov"><?=$comment['Comment']['downvotes'] ?></span></small><br /><span class="glyphicon glyphicon-triangle-bottom" style="font-size: 2em;"></span></a>
 			<?endif?>
 			
 		</span>
