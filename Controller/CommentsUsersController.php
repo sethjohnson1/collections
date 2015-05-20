@@ -8,9 +8,50 @@ class CommentsUsersController extends AppController {
 	}
 	public function blackhole($type) {
 		//debug($type);
-		$this->Session->setFlash($type,'flash_custom');
+		$this->Session->setFlash('CommentsUsers: '.$type,'flash_custom');
 	}
 	
+	//$parent is comment ID
+	public function comment_reply($parent,$model,$fk){
+	if ($this->Auth->user()){
+		$user=$this->CommentsUser->User->find('first',array(
+					'conditions'=>array('User.id'=>$this->Auth->user('id')),
+					'recursive'=>-1	
+				));
+		$user=$user['User'];
+		$comment=$this->CommentsUser->Comment->find('first',array('conditions'=>array('Comment.id'=>$parent)));
+		//make sure not replying to oneself
+		if ($comment['Comment']['user_id']!=$user['id'] && !empty($this->request->data[$parent]['reply'.$parent])){
+			$this->CommentsUser->User->create();
+			$data['user_id']=$user['id'];
+			$data['parent_id']=$parent;
+			$data['ip']=$_SERVER['REMOTE_ADDR'];
+			$data['hidden']=0;
+			$data['thoughts']=$this->request->data[$parent]['reply'.$parent];
+			$data['foreign_key']=$this->request->data[$parent]['foreign_key'];
+			$data['model']=$this->request->data[$parent]['model'];
+			
+			if ($this->CommentsUser->Comment->save($data)){
+				$this->Session->setFlash('Your reply was saved','flash_success',array(),'commentFlash');
+				$tree=$this->CommentsUser->Comment->find('threaded',array('conditions'=>array()));
+        debug($tree); 
+			}
+			//debug($this->request->data[$parent]);
+		}
+		else if (empty($this->request->data[$parent]['reply'.$parent])) $this->Session->setFlash('Reply box is empty','flash_warning',array(),'commentFlash');
+		else {
+			$this->Session->setFlash('There has been an error. Try again or give up.','flash_danger',array(),'commentFlash');
+		}
+		$this->set(compact('comment','user','model','fk'));
+		$this->render('comment_single','ajax');
+	}
+	else {
+		$this->Session->setFlash('You are not logged in. Log in again','flash_warning',array(),'commentFlash');
+	}
+		$this->set(compact('comment','user','model','fk'));
+		$this->render('comment_single','ajax');
+	
+	}
 	//$id is the id of the Comment
 	//$flag is whether to flag or unflag (1, -1, reveal)
 	public function comment_flag($id,$model,$fk) {
@@ -31,7 +72,7 @@ class CommentsUsersController extends AppController {
 					$userdata['id']=$user['id'];
 					$userdata['flags']=$user['flags'];
 					$userdata['flags']++;
-					$this->CommentsUser->User->create();
+					//$this->CommentsUser->User->create();
 					if ($this->CommentsUser->User->save($userdata));
 				}
 				$commentsuser=$this->CommentsUser->find('first',array(
@@ -102,8 +143,10 @@ class CommentsUsersController extends AppController {
 					'recursive'=>-1,
 					'conditions'=>array('Comment.foreign_key'=>$this->request->data['sComment']['foreign_key'],'Comment.model'=>$this->request->data['sComment']['model'],'Comment.user_id'=>$user['id'])
 				));
+				$noted='added';
 				if (isset($commentdata['Comment']['id'])){
 					$comment['id']=$commentdata['Comment']['id'];
+					$noted='updated';
 				}
 				else {
 				//	$uuid=String::uuid();
@@ -111,21 +154,22 @@ class CommentsUsersController extends AppController {
 				}
 				
 				$comment['thoughts']=$this->request->data['sComment']['comment'];
-				$comment['rating']=$this->request->data['sComment']['rating'];
+				if (isset($comment['rating'])) $comment['rating']=$this->request->data['sComment']['rating'];
 				$comment['user_id']=$this->Auth->user('id');
 				$fk=$this->request->data['sComment']['foreign_key'];
 				$comment['foreign_key']=$fk;
 				$model=$this->request->data['sComment']['model'];
 				$comment['model']=$model;
 				$comment['hidden']=0;
+				$comment['ip']=$_SERVER['REMOTE_ADDR'];
 				if (isset($parentid)) $comment['parent_id']=$parentid;
 				$this->CommentsUser->Comment->create();
 				if ($this->CommentsUser->Comment->save($comment)){
-						$this->Session->setFlash('Your comment was noted.','flash_custom');
+						$this->Session->setFlash('Your comment was '.$noted.'.','flash_custom',array(),'commentFlash');
 				}
 			}
 			else {
-				$this->Session->setFlash('You must be logged in to do this','flash_custom');
+				$this->Session->setFlash('You must be logged in to do this','flash_custom',array(),'commentFlash');
 				$user['id']=null;
 			}
 			//Comment component..
@@ -168,7 +212,7 @@ class CommentsUsersController extends AppController {
 				
 				));
 				//first save user totals, they are simply cumulative
-				$this->CommentsUser->User->create();
+				//$this->CommentsUser->User->create();
 				$votedata['id']=$this->Auth->user('id');
 				if ($vote==1){
 					$votedata['upvotes']=$user['upvotes'];

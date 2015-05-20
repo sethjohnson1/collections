@@ -11,6 +11,7 @@
 ?>
 <div class="users index row">
 <div class="col-xs-12">
+<h4> <?=$this->Html->link('Click here to create an account',array('action'=>'add'))?> if you don't have one already. <small>The signup process is free and simple.</small></h4>
 	<h2><?php echo __d('users', 'Login with email'); ?></h2>
 	<?php echo $this->Session->flash('auth');
 

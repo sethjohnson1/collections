@@ -109,6 +109,9 @@ s.parentNode.insertBefore(ga, s);
 <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#login-modal">
   login modal
 </button>
+<a href="#login-modal" class="btn btn-primary btn-lg" data-toggle="modal">
+  login modal
+</a>
 
 
 <header class="site-header" role="banner" itemscope="itemscope" itemtype="http://schema.org/WPHeader"><div class="wrap"><div class="title-area"><p class="site-title" itemprop="headline"><a href="http://centerofthewest.org/" title="Buffalo Bill Center of the West" >Buffalo Bill Center of the West</a></p></div><aside class="widget-area header-widget-area"></aside>
@@ -165,14 +168,14 @@ s.parentNode.insertBefore(ga, s);
 		echo $this->Html->link('My Exhibit<span id="excount"> <span class="ExNum badge badge-hov"></span></span>',array('plugin'=>'','controller' => 'treasures', 'action' => 'pack'),array('id'=>'myx','escape'=>false));?></li>
         		<?php	
 		if(!$this->Session->read('Auth.User'))
-			echo '<li class="menu-item">'.$this->Html->link('Log In', array('plugin'=>'users','controller'=>'users','action'=>'login')).'</li>';
+			//echo '<li class="menu-item">'.$this->Html->link('Log In', array('plugin'=>'users','controller'=>'users','action'=>'login')).'</li>';
+			echo '<li class="menu-item"><a href="#login-modal" class="" data-toggle="modal">Log In</a></li>';
 		if( $this->Session->read('Auth.User'))
 			{
 				echo '<li class="menu-item">'.$this->Html->link('Log Out', array('plugin'=>'users','controller'=>'users','action'=>'logout')).'</li>';
 
 			}
-		else
-			echo '</li><li class="menu-item">'.$this->Html->link('Register', array('plugin'=>'users','controller'=>'users','action'=>'add')).'</li>';
+		//else echo '</li><li class="menu-item">'.$this->Html->link('Register', array('plugin'=>'users','controller'=>'users','action'=>'add')).'</li>';
 		?>
 		<li class="menu-item"><?php echo $this->Html->link(__('About/Help'), array('plugin'=>'','controller' => 'pages','action' => 'about')); ?> </li>
 

@@ -1,12 +1,14 @@
 <div class="row comments_box">
-	<div class="col-xs-12">
+	<div class="col-xs-10">
 <? 
 	$allow=1;
+	$addbtn='Add';
 	echo $this->Form->create('sComment',array('class'=>'sCommentViewForm'.$fk));
 	if (isset($usercomment['Comment']['thoughts'])) {
 		$thoughts=$usercomment['Comment']['thoughts'];
 		$rating=$usercomment['Comment']['rating'];
 		$labelcomment='Edit your comment and rating';
+		$addbtn='Update';
 	}
 	else { 
 		$thoughts='';
@@ -17,18 +19,20 @@
 	echo $this->Form->input('foreign_key',array('type'=>'hidden','value'=>$fk));		
 	echo $this->Form->input('model',array('type'=>'hidden','value'=>$model));		
 	
-	echo $this->Form->input('rating',
-		array('type'=>'range','data-highlight'=>'true','min'=>'0','max'=>'5','value'=>$rating,'label'=>'Your Approval rating'));		
-	echo $this->Form->input('comment',array('type'=>'textarea','value'=>$thoughts,'label'=>'Your thoughts'));		
-	if (isset($user['id'])){
-		echo $this->Form->button('Add',array('type'=>'button','class'=>'comment_add'.$fk,'id'=>'comment_add','label'=>false));	
+	//echo $this->Form->input('rating',array('type'=>'range','data-highlight'=>'true','min'=>'0','max'=>'5','value'=>$rating,'label'=>'Your Approval rating'));		
+	echo $this->Form->input('comment',array('type'=>'textarea','rows'=>2,'value'=>$thoughts,'label'=>false,'class'=>'form-control','placeholder'=>'Add your comment here'));		
+
+	?>
+	</div>
+	<div class="col-xs-2">
+	<?
+		if (isset($user['id'])){
+		echo $this->Form->button($addbtn,array('type'=>'button','class'=>'comment_add'.$fk,'id'=>'comment_add','label'=>false));	
 	}
 	else {
-		$loginlink = $this->Html->link('Login is simple.','#userPopup',array('data-rel'=>'popup','data-position-to'=>'window','data-transition'=>'pop'));
-		echo 'To ensure the fidelity of information supplied, you must login first.<br />'
-		.$loginlink.'<br />';
+		
+		echo $this->Html->link('Login to comment','#login-modal',array('data-toggle'=>'modal')).'<br />';
 	}
-		//echo $this->Form->submit('Submit',array('id'=>'submit_button'));
 	echo $this->Form->end();
 	?>
 	</div>

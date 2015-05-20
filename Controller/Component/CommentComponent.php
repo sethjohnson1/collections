@@ -7,8 +7,40 @@ class CommentComponent extends Component {
 	public $components = array('Cookie');
 	function startup(Controller $controller) { $this->Controller = $controller; }
 	
+	public function getThreadedComments($fk,$model,$userid){
+			//this is for threaded
+	$Comment=ClassRegistry::init('Comment');
+	$conditions=array('Comment.hidden != 1','Comment.foreign_key'=>$fk,'Comment.model'=>$model);
+	$comments=$Comment->find('threaded',array($conditions,'recursive'=>2));
+	
+	$CommentsUser=ClassRegistry::init('CommentsUser');
+	$options['joins']= array(
+		array(
+			'table' => 'comments',
+			'alias' => 'C',
+			'type' => 'LEFT OUTER',
+			'conditions'=>array('CommentsUser.user_id'=>$userid,'CommentsUser.comment_id = C.id','C.foreign_key'=>$fk,'C.model'=>$model)
+		));	//$options['conditions']=array('CommentsUser.user_id'=>$userid,'Comment1.foreign_key'=>$fk,'Comment1.model'=>$model,'Comment1.hidden != 1');
+	$options['fields']=array('CommentsUser.*','C.*');
+	$cu=$CommentsUser->find('all',$options);
+	
+	//now this is one big-ass nested loop here, but supposedly foreach is faster than in_array
+	$result=array();
+	foreach ($comments as $key=>$val){
+		foreach ($cu as $c=>$u){
+			if ($u['CommentsUser']['comment_id']==$val['Comment']['id']){
+				$result[$key]=array_merge($cu[$c],$comments[$key]);
+				//make looping gradually faster!
+				unset($cu[$c]);
+			}
+		}
+	}
+
+	return $cu;
+	}
 	public function getComments ($fk, $model, $userid){
 	$this->Controller->set('cookie_flags',$this->Cookie->read('flagged_comments'));
+	//now find the comments the user interacted with and tack that on
 	//first find all comments that the logged in user has interacted with 
 		$CommentsUser=ClassRegistry::init('CommentsUser');
 		$options['joins']= array(
@@ -48,6 +80,7 @@ class CommentComponent extends Component {
 			$comment3[$key]['Comment']['User']=$value['User'];
 		}
 		$result=array_merge($comment,$comment3);
+		
 		return $result;
 	}
 	

@@ -1,4 +1,4 @@
-<div class="container<? echo $comment['Comment']['id'] ?>" >
+<div class="row container<? echo $comment['Comment']['id'] ?>" >
 <?
 
 $flagged=false;
@@ -14,7 +14,8 @@ if (isset($comment['Comment']['User']['username'])){
 else $formattedname[0]='SethTest';
 
 echo $this->Form->create($comment['Comment']['id'],array('class'=>'comment'.$comment['Comment']['id']));
-
+echo $this->Form->input('model',array('type'=>'hidden','value'=>$model));
+echo $this->Form->input('foreign_key',array('type'=>'hidden','value'=>$fk));
 //see if its their own comment
 if (!empty($user['id']) && $comment['Comment']['user_id']==$user['id']) $mine='mine';
 else echo $this->Session->flash('commentFlash');
@@ -42,100 +43,9 @@ else {
 else 
 */
 
-$cheight=160;
-
-
-?>	
-	<style type="text/css" scoped>
-		.container<?=$comment['Comment']['id'] ?>{
-			height: <?=$cheight ?>px;
-		}
-		.comment_buttons{
-			width: 9%;
-			max-width: 10px;
-			padding: 0 0 0 4px;
-			height: 140px;
-			float: left;
-		}
-		.the_comment{
-			float:left;
-			height: 173px;
-			width:90%;
-			padding-top: 1px;
-			overflow-y:auto;
-			border: 1px dashed #ede9e7;
-			border-right:none;
-		}
-		.comment_text{
-			
-			padding: 16px 0px 0px 53px;
-		}
-		.starred:after{
-			background-color: #bd4f19 !important;
-		}
-		.staricon{
-			position: relative;
-			padding: 12px;
-		}
-		.comment_destructive{
-			width:60px;
-			padding-top:2px;	
-			float:right;
-		}		
-		.comment_header{
-		width:100%;	
-		}
-		.comment_thoughts{
-			width:85%;
-			overflow-y:auto;
-			max-height:150px;
-		}
-		div.total{
-			background-color: rgba(246, 246, 246, .5);
-			border: 1px solid rgb(221, 221, 221);
-			position: relative;
-			display: block;
-			width: 11px;
-			height: 15px;
-			top: 0px;
-			box-shadow: 0 1px 0 rgba(255,255,255,.4);
-			font-size:.75em;
-			left:0px;
-			font-weight:bold;			
-			
-			
-		}
-		div.votes div{
-			background-color: rgba(246, 246, 246, .75);
-			border: 1px solid rgb(221, 221, 221);
-			box-shadow: 0 1px 0 rgba(255,255,255,.4);
-			position: relative;
-			left: 20px;
-			top: -20px;
-			z-index:99 !important;
-			font-size: .75em;
-			border-radius: 25px;	
-			padding: 3px 12px 0px 6px;
-		}
-		div.votes{
-			height:42px;
-		}
-		div.upvote{
-			color:#035642;
-		}
-		div.downvote{
-			color:#981e32;
-		}
-		span.diff{
-			margin-left:-9px;
-		}
-		
-		
-	</style>
-		<div style="clear:both">&nbsp;</div>
+	if($flagged==true ||  (isset($cookie_flags[$comment['Comment']['id']]) && empty($user['id']))){?>
+	<div class="col-xs-12">
 	<?
-
-	if($flagged==true ||  (isset($cookie_flags[$comment['Comment']['id']]) && empty($user['id']))){
 		
 			$flaglabel='Unflag';
 			echo $this->Form->input($flaglabel,array(
@@ -148,9 +58,12 @@ $cheight=160;
 			
 			echo $this->Form->input('pflag',array('type'=>'hidden','value'=>'unflag'));
 			echo '<p><strong>You flagged this message as inappropriate.</strong> If you simply did not like the comment,
-			please unflag and vote it down instead.</p>';
-	}
-	else if ($comment['Comment']['flags']>=4 && !isset($reveal)){
+			please unflag and vote it down instead.</p>';?>
+		</div>
+	<?}
+	else if ($comment['Comment']['flags']>=4 && !isset($reveal)){?>
+	<div class="col-xs-12">
+	<?
 	
 		echo $this->Form->input('Reveal',array(
 			'div'=>false,
@@ -162,7 +75,9 @@ $cheight=160;
 		echo $this->Form->input('pflag',array('type'=>'hidden','value'=>'reveal'));
 		echo '<p>This comment has been flagged as inappropriate '.$comment['Comment']['flags'].' times.
 			Tap the warning icon if you want to live dangerously and read it.</p>';
-		
+		?>
+	</div>
+	<?
 	}
 	
 	else{
@@ -170,9 +85,9 @@ $cheight=160;
 		?>
 		
 
-		<div class="the_comment">
+		<div class="row the_comment">
 		
-		<div class="comment_buttons">
+		<div class="col-xs-3 comment_buttons">
 		<div class="votes">
 			<? echo $this->Form->input('UpVote',array(
 			'div'=>false,
@@ -231,7 +146,7 @@ $cheight=160;
 		
 	</div><!-- /comment_buttons -->
 
-		<div class="comment_text">
+		<div class="col-xs-9 comment_text">
 		<div class="comment_header">
 		<div class="comment_rate">
 				<strong><?=$formattedname[0] ?></strong>
@@ -270,6 +185,16 @@ $cheight=160;
 				
 			));
 		}
+		else {
+			echo $this->Form->input('Reply',array(
+				'div'=>false,'label'=>false,
+				'type'=>'button',
+				'class'=>'comment_reply'.$comment['Comment']['id'],
+				'style'=>''
+				
+			));
+			echo $this->Form->input('reply'.$comment['Comment']['id'],array('class'=>'form-control','placeholder'=>'Reply to comment','label'=>false));
+		}
 		?> </div>
 		</div>
 		
@@ -282,17 +207,16 @@ $cheight=160;
 
 	<?	} //end of the else. The colon method doesn't work as well with nested IF above ?>
 
-	
 
-	<!-- div style="clear:both;">
-	</div -->
 
 <? 		echo $this->Form->input('flagvalue',array('type'=>'hidden','value'=>$flagvalue));
 		echo $this->Form->end(); 
 		//debug($comment);
  ?>
 
-<? //in theory not all are needed if comment is flagged, but too much to worry about now ?>
+<? //in theory not all are needed if comment is flagged, but too much to worry about now 
+//also, only the "reply" properly serializes the form, the others just use the URL, but its easier that way for testing sometimes anyway
+?>
 <script type="text/javascript">
       
 $(document).off('click', '.comment_hide<?=$comment['Comment']['id']?>').on('click', '.comment_hide<?=$comment['Comment']['id']?>',function(e) {
@@ -334,6 +258,19 @@ $(document).off('click', '.comment_down<?=$comment['Comment']['id']?>').on('clic
 	return false;
 });
 
+$(document).off('click', '.comment_reply<?=$comment['Comment']['id']?>').on('click', '.comment_reply<?=$comment['Comment']['id']?>',function(e) {
+	$.ajax({
+	async:true,
+	data:$(".comment<?=$comment['Comment']['id']?>").serialize(),
+	dataType:"html",
+	success:function (data, textStatus) {
+		$(".container<?=$comment['Comment']['id']?>").fadeOut(0).html(data).trigger('create').fadeIn(500);
+	},
+	type:"POST",
+	url:"<?='http://'.$_SERVER['HTTP_HOST'].Router::url(array('controller'=>'commentsUsers','action'=>'comment_reply',$comment['Comment']['id'],$model,$fk))?>"});
+	return false;
+});
+
 <?
 
 $flagclass='.container'.$comment['Comment']['id'];
@@ -355,3 +292,4 @@ $(document).off('click', '.comment_flag<?=$comment['Comment']['id']?>').on('clic
 
 </script>
 </div><!-- /comment_container -->
+<hr />

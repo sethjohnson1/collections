@@ -63,7 +63,7 @@ class AppController extends Controller {
 		
 		//$this->RememberMe->restoreLoginFromCookie();
 		
-		$this->set('login_link','#');
+		//$this->set('loginlink',Router::url(array()));
 		}
 
 public function blackhole($type) {
