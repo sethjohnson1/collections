@@ -3,7 +3,32 @@
 <div class="col-xs-12">
 <?
 /* This is contained by the comments_widget, then refreshed with Ajax from CommentsUsers actions */
+//debug($comment);
 ?>
+<?
+
+?>
+<?if (isset($growl)):
+if ($growl['type']=='success') $gtitle='<span style="color:green"><span class="glyphicon glyphicon-ok" style="text-align: left"></span><span style="text-align: right"> '.$growl['msg'].'</span></span>';
+if ($growl['type']=='warning') $gtitle='<span style="color:yellow"><span class="glyphicon glyphicon-alert" style="text-align: left"></span><span style="text-align: right"> '.$growl['msg'].'</span></span>';
+if ($growl['type']=='danger') $gtitle='<span style="color:red"><span class="glyphicon glyphicon-remove" style="text-align: left"></span><span style="text-align: right"> '.$growl['msg'].'</span></span>';
+?>
+<style scoped>
+
+div.growlUI h1, div.growlUI h2 {
+    color: white; font-size: 1em;
+}   
+</style>
+<script>
+$(document).ready(function() { 
+   $('#growl_message').click(function() { 
+       $.growlUI( '<?=$gtitle?>'); 
+   }); 
+   $( "#growl_message" ).trigger( "click" );
+}); 
+</script>
+<a href="#" id="growl_message"></a>
+<?endif?>
 <div class="container<? echo $comment['Comment']['id'] ?>" >
 <?
 
@@ -24,7 +49,7 @@ echo $this->Form->input('model',array('type'=>'hidden','value'=>$model));
 echo $this->Form->input('foreign_key',array('type'=>'hidden','value'=>$fk));
 //see if its their own comment
 if (!empty($user['id']) && $comment['Comment']['user_id']==$user['id']) $mine='mine';
-else echo $this->Session->flash('commentFlash');
+echo $this->Session->flash('commentFlash'.$comment['Comment']['id']);
 
 if (isset($comment['CommentsUser']['id'])){
 	//the user has interacted with this comment, set some useful variables
@@ -44,6 +69,28 @@ else {
 	}
 if (empty($comment['Comment']['downvotes'])) $comment['Comment']['downvotes']='0';
 if (empty($comment['Comment']['upvotes'])) $comment['Comment']['upvotes']='0';
+
+//see if there is a value to set for reply
+$reply='';
+$replybtn='Reply';
+$replydis='disabled';
+$replypl='You must login to reply';
+
+if (isset($user['id'])){
+	$replydis=false;
+	$replypl='Reply to comment';
+	if (isset($comments['usercomments'][$comment['Comment']['id']])){
+		$reply=$comments['usercomments'][$comment['Comment']['id']]['thoughts'];
+		echo $this->Form->input('reply_id',array('type'=>'hidden','value'=>$comments['usercomments'][$comment['Comment']['id']]['comment_id']));
+		$replybtn='Update';
+	}
+}
+
+//need a default value here.
+$avatar='truckerhat-114.png';
+if (!empty($comment['User']['email'])) $avatar=$this->Gravatar->get_gravatar($comment['User']['email'],true,$comment['User']['username']);
+else if (!empty($comment['User']['picture'])) $avatar=$comment['User']['picture'];
+
 
 
 	if($flagged==true ||  (isset($cookie_flags[$comment['Comment']['id']]) && empty($user['id']))){?>
@@ -80,7 +127,8 @@ if (empty($comment['Comment']['upvotes'])) $comment['Comment']['upvotes']='0';
 
 		<div class="row the_comment">
 		
-		<div class="col-xs-2 comment_buttons">
+		<div class="col-xs-1 comment_buttons">
+		<div style="float: left">
 		<span class="upvote vote badge-hov">
 			<? 
 			
@@ -109,31 +157,36 @@ if (empty($comment['Comment']['upvotes'])) $comment['Comment']['upvotes']='0';
 			
 		</span>
 
-		
+	</div>
 	</div><!-- /comment_buttons -->
 
 		<div class="col-xs-8 comment_text">
+		<?=$this->Html->image($avatar,array('alt'=>'user avatar','style'=>'width:60px;float:left; padding-right:5px;','class'=>'img-responsive'))?>
+		
 		<p><strong><?=$formattedname[0] ?>'s</strong> deep thoughts</p>
+
+
 		<p><?=$comment['Comment']['thoughts'] ?></p>
 
-		<?if ($mine!='mine'){?>
-	
+		<?if ($mine!='mine'){
+			if (isset($comment['children'])){?>
 		 <div class="form-group">
 
-		<?=$this->Form->input('reply'.$comment['Comment']['id'],array('class'=>'form-control','placeholder'=>'Reply to comment','label'=>false,'type'=>'textarea','rows'=>2,'cols'=>40))?>
+		<?=$this->Form->input('reply'.$comment['Comment']['id'],array('class'=>'form-control','placeholder'=>$replypl,'label'=>false,'type'=>'textarea','rows'=>1,'cols'=>40,'value'=>$reply,'disabled'=>$replydis))?>
 		</div>
 			  <?
-			echo $this->Form->input('Reply',array(
+			echo $this->Form->input($replybtn,array(
 				'div'=>false,'label'=>false,
 				'type'=>'button',
 				'class'=>'btn btn-default comment_reply'.$comment['Comment']['id'],
-				'style'=>''
+				'disabled'=>$replydis
 				
 			));
 			?>
 			
 			<?
-		} //end reply section IF
+		}
+		}		//end reply section IF
 		?>
 
 		

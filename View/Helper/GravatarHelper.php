@@ -17,13 +17,15 @@ class GravatarHelper extends AppHelper  {
 	function get_gravatar( $email, $img, $alt) {
 		$s = 80;
 		$d = 'mm';
-		$r = 'g';
+		$r = 'pg';
 		$url = 'http://www.gravatar.com/avatar/';
 		$url .= md5( strtolower( trim( $email ) ) );
 		$url .= "?s=$s&d=$d&r=$r";
+	/* sj - we only want the URL now
 		if ( $img ) {
 			return $this->Html->image($url,array('alt'=>$alt));
 		}
+		*/
 		return $url;
 	}
 }

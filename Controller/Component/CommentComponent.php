@@ -28,35 +28,30 @@ class CommentComponent extends Component {
 	//now run some loops, goes three layers deep. I think if I were smarter I could do this better.. oh well.
 	$result=array();
 	foreach ($comments as $key=>$comment){
-	//stop doing it if there's nothing left
-	//wait that won't work, need to load up the arrays first
-	//if (!empty($ucomments)){
-		if (count($comment['children'])>0){
-			foreach($comment['children'] as $kchild=>$child){
-				if (count($child['children'])>0){
-					foreach($child['children'] as $klast=>$last){
-						$result[$key]['children'][$kchild]['children'][$klast]=$comments[$key]['children'][$kchild]['children'][$klast];
-						foreach ($ucomments as $k=>$v){
-						if ($v['CommentsUser']['comment_id']==$last['Comment']['id']){
-							$result[$key]['children'][$kchild]['children'][$klast]=array_merge($ucomments[$k],$comments[$key]['children'][$kchild]['children'][$klast]);
-							unset($ucomments[$k]);
-						}
-						}
+	//loops through and adds to array as needed
+		foreach($comment['children'] as $kchild=>$child){
+				foreach($child['children'] as $klast=>$last){
+					$result[$key]['children'][$kchild]['children'][$klast]=$comments[$key]['children'][$kchild]['children'][$klast];
+					unset($comments[$key]['children'][$kchild]['children'][$klast]['children']);
+					foreach ($ucomments as $k=>$v){
+					if ($v['CommentsUser']['comment_id']==$last['Comment']['id']){
+						$result[$key]['children'][$kchild]['children'][$klast]=array_merge($ucomments[$k],$comments[$key]['children'][$kchild]['children'][$klast]);
+						unset($ucomments[$k]);
+					}
 					}
 				}
-				$result[$key]['children'][$kchild]=$comments[$key]['children'][$kchild];
-				foreach ($ucomments as $k=>$v){
-				//first set the result
-				
-				if ($v['CommentsUser']['comment_id']==$child['Comment']['id']){
-					$result[$key]['children'][$kchild]=array_merge($ucomments[$k],$comments[$key]['children'][$kchild]);
-					//make looping gradually faster!
-					unset($ucomments[$k]);
-				}
-				//else $result[$key]['children'][$kchild]=$comments[$key]['children'][$kchild];
-				}
+			$result[$key]['children'][$kchild]=$comments[$key]['children'][$kchild];
+			foreach ($ucomments as $k=>$v){
+			//first set the result
+			
+			if ($v['CommentsUser']['comment_id']==$child['Comment']['id']){
+				$result[$key]['children'][$kchild]=array_merge($ucomments[$k],$comments[$key]['children'][$kchild]);
+				//make looping gradually faster!
+				unset($ucomments[$k]);
+			}
 			}
 		}
+
 		$result[$key]=$comments[$key];
 		foreach ($ucomments as $c=>$u){
 			
@@ -69,10 +64,24 @@ class CommentComponent extends Component {
 				
 			}
 		}
+		//
 	}
-	//}
-		
-		return $result;
+		$coptions['conditions']=array('Comment.foreign_key'=>$fk,'Comment.model'=>$model,'Comment.user_id'=>$userid);
+		$coptions['recursive']=1;
+		//find all the comments user left on this record then build into array (notice put the PARENT id into the array!)
+		$usercomments=$Comment->find('all',$coptions);
+		$uarray['usercomments']=array();
+		foreach ($usercomments as $kidea=>$idea){
+			if (empty($idea['Comment']['parent_id'])) $uarray['usercomments']['primary']=$idea['Comment']['thoughts'];
+			else {
+				$uarray['usercomments'][$idea['Comment']['parent_id']]['thoughts']=$idea['Comment']['thoughts'];
+				$uarray['usercomments'][$idea['Comment']['parent_id']]['comment_id']=$idea['Comment']['id'];
+			}
+		}
+		$newresult=array();
+		$newresult['comments']=$result;
+		$newresult=array_merge($newresult,$uarray);
+		return $newresult;
 	}
 
 	//this was the original method named getComments renamed so I didn't have to change code all over
@@ -124,30 +133,33 @@ class CommentComponent extends Component {
 	
 	//$id is the id of the comment
 	public function getComment ($id, $userid){
+	//not sure if this cookie business still is in use, leaving it here
 		$this->Controller->set('cookie_flags',$this->Cookie->read('flagged_comments'));
-		$model=ClassRegistry::init('CommentsUser');
+		$CommentsUser=ClassRegistry::init('CommentsUser');
 		$conditions=array('CommentsUser.comment_id'=>$id);
-		if (isset($userid)) $conditions['CommentsUser.user_id']=$userid;
-		$comment=$model->find('first',array(
+		$conditions['CommentsUser.user_id']=$userid;
+		$ucomment=$CommentsUser->find('first',array(
 			'conditions'=>$conditions,
-			'recursive'=>2,
-			'fields'=>array('Comment.*','CommentsUser.*'),
-			'limit'=>200,
-			'order'=>'Comment.diff desc'
+			'recursive'=>0,
+			'fields'=>array('CommentsUser.*')
 		));
-		//$result=array_merge($comment,$comment3);
-		$comment['Comment']['User']=$comment['Comment']['Comment']['User'];
-		unset($comment['Comment']['Comment']);
-		if (!isset($userid)) unset($comment['CommentsUser']);
-		return $comment;
+		$Comment=ClassRegistry::init('Comment');
+		$comment=$Comment->find('first',array(
+			'conditions'=>array('Comment.id'=>$id),
+			'recursive'=>1,
+			'fields'=>array('Comment.*','User.*')
+		));
+		$result=array_merge($comment,$ucomment);
+		return $result;
 	}
 	
+	//all this info is fetched in the first component now, don't need it
 	public function userComment ($fk,$model, $userid){
 		$Comment=ClassRegistry::init('Comment');
-		$options['conditions']=array('Comment.foreign_key'=>$fk,'Comment.model'=>$model,'Comment.user_id'=>$userid);
+		$options['conditions']=array('Comment.foreign_key'=>$fk,'Comment.model'=>$model,'Comment.user_id'=>$userid,'Comment.parent_id is null');
 		$options['recursive']=1;
 		//should only return one record
-		//no more than one
+		//no lots now with replies
 		$result=$Comment->find('first',$options);
 		return $result;
 	}

@@ -23,7 +23,7 @@ class CommentsUsersController extends AppController {
 		
 		//make sure not replying to oneself
 		if ($comment['Comment']['user_id']!=$user['id'] && !empty($this->request->data[$parent]['reply'.$parent])){
-			$this->CommentsUser->User->create();
+			if (isset($this->request->data[$parent]['reply_id'])) $data['id']=$this->request->data[$parent]['reply_id'];
 			$data['user_id']=$user['id'];
 			$data['parent_id']=$parent;
 			$data['ip']=$_SERVER['REMOTE_ADDR'];
@@ -33,30 +33,34 @@ class CommentsUsersController extends AppController {
 			$data['model']=$this->request->data[$parent]['model'];
 			
 			if ($this->CommentsUser->Comment->save($data)){
-				$this->Session->setFlash('Your reply was saved','flash_success',array(),'commentFlash');
-				$tree=$this->CommentsUser->Comment->find('threaded',array('conditions'=>array()));
-        //debug($tree); 
+				//$this->Session->setFlash('Your reply was saved','flash_growl_success',array(),'commentFlash');
+				$growl['type']='success';
+				$growl['msg']='Your reply was saved';
+				//$tree=$this->CommentsUser->Comment->find('threaded',array('conditions'=>array()));
 			}
-			//debug($this->request->data[$parent]);
 		}
-		else if (empty($this->request->data[$parent]['reply'.$parent])) $this->Session->setFlash('Reply box is empty','flash_warning',array(),'commentFlash');
+		else if (empty($this->request->data[$parent]['reply'.$parent])){
+//			$this->Session->setFlash('Reply box is empty','flash_warning',array(),'commentFlash');
+			$growl['type']='warning';
+			$growl['msg']='Reply box is empty';
+		}
 		else {
-			$this->Session->setFlash('There has been an error. Try again or give up.','flash_danger',array(),'commentFlash');
+			//$this->Session->setFlash('There has been an error. Try again or give up.','flash_danger',array(),'commentFlash');
+			$growl['type']='danger';
+			$growl['msg']='There has been an error. Try again or give up.';
 		}
-		$this->set(compact('comment','user','model','fk'));
-		$this->render('comment_single','ajax');
 	}
 	else {
-		$this->Session->setFlash('You must be logged in to reply','flash_custom',array(),'commentFlash');
+		$user='';
+		$growl['type']='danger';
+		$growl['msg']='You must be logged in to reply';
+		//$this->Session->setFlash('You must be logged in to reply','flash_custom',array(),'commentFlash');
 	}
 		
 		$comments=$this->Comment->getComments($fk,$model,$user['id']);
 		$this->set(compact('comment','comments','user','model','fk'));
-		$this->set(compact('comment','user','model','fk'.'comments'));
+		if (isset($growl)) $this->set('growl',$growl);
 		$this->render('comment_add','ajax');
-		//$this->render('comment_single','ajax');
-
-	
 	}
 	//$id is the id of the Comment
 	//$flag is whether to flag or unflag (1, -1, reveal)
@@ -113,7 +117,9 @@ class CommentsUsersController extends AppController {
 				}
 			}
 			else {
-				$this->Session->setFlash('Create an account to permanently flag and unflag comments.','flash_custom',array(),'commentFlash');
+				//$this->Session->setFlash('Create an account to permanently flag and unflag comments.','flash_custom',array(),'commentFlash');
+				$growl['type']='warning';
+				$growl['msg']='Create an account to permanently flag and unflag comments.';
 				//makes a cookie for flagged comments, this is read and set from CommentComponent
 				$cookie=$this->Cookie->read('flagged_comments');
 				if ($this->request->data[$id]['pflag']=='flag') $cookie[$id]=true;
@@ -123,12 +129,13 @@ class CommentsUsersController extends AppController {
 				//$user['username']='test';
 				$user['id']=null;
 			}
-		
-			$comment=$this->Comment->getComment($id,$user['id']);
+			$comment=$this->Comment->getComment($id,$this->Auth->user('id'));
 			if ($this->request->data[$id]['pflag']=='reveal') $this->set('reveal',true);
+			if (isset($growl)) $this->set('growl',$growl);
 			$this->set(compact('comment','user','model','fk'));
 			$this->render('comment_single','ajax');
 		}
+			
 	}
 	
 	//$fk is foreign_key
@@ -171,15 +178,21 @@ class CommentsUsersController extends AppController {
 				if (isset($parentid)) $comment['parent_id']=$parentid;
 				$this->CommentsUser->Comment->create();
 				if ($this->CommentsUser->Comment->save($comment)){
-						$this->Session->setFlash('Your comment was '.$noted.'.','flash_custom',array(),'commentFlash');
+					$growl['type']='success';
+					$growl['msg']='Your comment was '.$noted;
+						//$this->Session->setFlash('Your comment was '.$noted.'.','flash_custom',array(),'commentFlash');
+						
 				}
 			}
 			else {
-				$this->Session->setFlash('You must be logged in to do this','flash_custom',array(),'commentFlash');
+				$growl['type']='danger';
+				$growl['msg']='You must be logged in to add comments';
+				//$this->Session->setFlash('You must be logged in to do this','flash_custom',array(),'commentFlash');
 				$user['id']=null;
 			}
 			//Comment component..
 			$comments=$this->Comment->getComments($fk,$model,$user['id']);
+			if (isset($growl)) $this->set('growl',$growl);
 			$this->set(compact('comment','comments','user','model','fk'));
 			$this->render('comment_add','ajax');
 			
@@ -301,7 +314,6 @@ class CommentsUsersController extends AppController {
 			}
 			//return only the single comment
 			$comment=$this->Comment->getComment($id,$user['id']);
-			//debug($comment);
 			$this->set(compact('comment','user','model','fk'));
 			$this->render('comment_single','ajax');
 		//}
@@ -319,28 +331,37 @@ class CommentsUsersController extends AppController {
 					'recursive'=>1,
 					'conditions'=>array('Comment.id'=>$id,'Comment.user_id'=>$user['id'])
 				));
-				//debug($commentdata);
 				if (isset($commentdata['Comment']['id'])){
 					$commentdata['Comment']['hidden']=1;
 					$this->CommentsUser->Comment->create();
 					if ($this->CommentsUser->Comment->save($commentdata)){
-						$this->Session->setFlash('Comment hidden. Feel free to update and resubmit.','flash_custom',array(),'commentFlash');
+						//$this->Session->setFlash('Comment hidden. Feel free to update and resubmit.','flash_custom',array(),'commentFlash');
+						$growl['type']='success';
+						$growl['msg']='Your comment was hidden, feel free to resubmit';
+						
 					}
 					else {
-						$this->Session->setFlash('Something went very bad.','flash_danger');
+						$growl['type']='danger';
+						$growl['msg']='Something went very bad';
+						//$this->Session->setFlash('Something went very bad.','flash_danger');
 					}
 				}
 				else {
-					$this->Session->setFlash('Another bad thing.','flash_danger');
+					$growl['type']='danger';
+					$growl['msg']='Something went really bad';
+					//$this->Session->setFlash('Another bad thing.','flash_danger');
 					return true;
 				}
 				
 			}
 			else {
-				$this->Session->setFlash('account mismatch','flash_custom',array(),'commentFlash');
+				$growl['type']='danger';
+				$growl['msg']='Account mismatch. Try refreshing the page';
+				//$this->Session->setFlash('account mismatch','flash_custom',array(),'commentFlash');
 				$user['id']=null;
 			}
 			$comments=$this->Comment->getComments($fk,$model,$user['id']);
+			if (isset($growl)) $this->set('growl',$growl);
 			$this->set(compact('comments','user','model','fk'));
 			$this->render('comment_add','ajax');
 		//}

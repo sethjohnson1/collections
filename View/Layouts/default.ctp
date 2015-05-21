@@ -40,6 +40,9 @@
 	echo $this->Html->css('colorbox');
 	echo $this->Html->script('jquery.colorbox');
 	
+	//blockUI for growl notifications and possibly loading screens later
+	echo $this->Html->script('jquery.blockUI.js');
+	
 	echo $this->Html->script('bootstrap.min');
 	echo $this->Html->css('bootstrap.min');
 //	echo $this->Html->css('bootstrap-theme.min');

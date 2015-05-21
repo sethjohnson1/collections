@@ -4,8 +4,9 @@
 	$allow=1;
 	$addbtn='Add';
 	echo $this->Form->create('sComment',array('class'=>'sCommentViewForm'.$fk));
-	if (isset($usercomment['Comment']['thoughts'])) {
-		$thoughts=$usercomment['Comment']['thoughts'];
+	//debug($comment['usercomments']['primary']);
+	if (isset($comments['usercomments']['primary'])) {
+		$thoughts=$comments['usercomments']['primary'];
 		$rating=$usercomment['Comment']['rating'];
 		$labelcomment='Edit your comment and rating';
 		$addbtn='Update';
