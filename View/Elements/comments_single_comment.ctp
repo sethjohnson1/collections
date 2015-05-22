@@ -75,6 +75,7 @@ $reply='';
 $replybtn='Reply';
 $replydis='disabled';
 $replypl='You must login to reply';
+$replylbl=false;
 
 if (isset($user['id'])){
 	$replydis=false;
@@ -83,6 +84,7 @@ if (isset($user['id'])){
 		$reply=$comments['usercomments'][$comment['Comment']['id']]['thoughts'];
 		echo $this->Form->input('reply_id',array('type'=>'hidden','value'=>$comments['usercomments'][$comment['Comment']['id']]['comment_id']));
 		$replybtn='Update';
+		$replylbl='Edit';
 	}
 }
 
@@ -171,7 +173,7 @@ else if (!empty($comment['User']['picture'])) $avatar=$comment['User']['picture'
 		<?if ($mine!='mine'){
 			if (isset($comment['children'])){?>
 		 <div class="col-md-offset-1 form-group">
-		<?=$this->Form->input('reply'.$comment['Comment']['id'],array('class'=>'form-control','placeholder'=>$replypl,'label'=>'Reply','type'=>'textarea','rows'=>1,'cols'=>30,'value'=>$reply,'disabled'=>$replydis))?>
+		<?=$this->Form->input('reply'.$comment['Comment']['id'],array('class'=>'form-control','placeholder'=>$replypl,'label'=>$replylbl,'type'=>'textarea','rows'=>1,'cols'=>30,'value'=>$reply,'disabled'=>$replydis))?>
 		</div>
 			  <?
 			echo $this->Form->input($replybtn,array(
