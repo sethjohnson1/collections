@@ -60,7 +60,6 @@ $(document).ready(function(){
 		data:$(".sCommentViewForm<?=$fk?>").serialize(),
 		dataType:"html",
 		success:function (data, textStatus) {
-			console.log(data);
 			$(".comments<?=$model.$fk?>").html(data).trigger('create');
 		},
 		type:"POST",

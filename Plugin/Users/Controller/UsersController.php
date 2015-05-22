@@ -916,10 +916,11 @@ debug($userData);
 	public function dummyAuth($id){
 	//great for testing.. Don't want it working in production
 		if (Configure::read('debug')>0){
-			$fuser=$this->User->findById(5);
 			$user['id']=$id;
 			$user['username']='BigDummyTestUser'.$id;
-			$user['provider']='Twitter';
+			$user['provider']='Facebook';
+			$this->User->create();
+			$this->User->save($user,array('validate'=>false));
 			//$user['upvotes']=null;
 			//$user['downvotes']=null;
 			//$user['flagged']=null;

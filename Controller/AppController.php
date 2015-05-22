@@ -81,7 +81,7 @@ class AppController extends Controller {
 		);
 		
 		//users plugin uses this to redirect
-		if ($this->params['plugin'] != 'users') $this->Session->write('location','http://'.$_SERVER['HTTP_HOST'].$this->here);
+		if ($this->params['controller']=='treasures' || $this->params['controller']=='usergals') $this->Session->write('location','http://'.$_SERVER['HTTP_HOST'].$this->here);
 		
 		$this->set(compact('color'));
 		

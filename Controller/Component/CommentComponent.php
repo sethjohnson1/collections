@@ -9,6 +9,7 @@ class CommentComponent extends Component {
 
 		//simplifying my approach here
 	public function getComments($fk,$model,$userid){
+	$this->Controller->set('cookie_flags',$this->Cookie->read('flagged_comments'));
 	//first get all the comments interacted with for given record
 		$CommentsUser=ClassRegistry::init('CommentsUser');
 		$options['recursive']=2;
@@ -84,7 +85,43 @@ class CommentComponent extends Component {
 		return $newresult;
 	}
 
-	//this was the original method named getComments renamed so I didn't have to change code all over
+	
+	//$id is the id of the comment
+	public function getComment ($id, $userid){
+	//cookie_flags very necessary passes info back
+		$this->Controller->set('cookie_flags',$this->Cookie->read('flagged_comments'));
+		$CommentsUser=ClassRegistry::init('CommentsUser');
+		$conditions=array('CommentsUser.comment_id'=>$id);
+		$conditions['CommentsUser.user_id']=$userid;
+		$ucomment=$CommentsUser->find('first',array(
+			'conditions'=>$conditions,
+			'recursive'=>0,
+			'fields'=>array('CommentsUser.*')
+		));
+		$Comment=ClassRegistry::init('Comment');
+		
+		//this is problem on third one
+		$comment=$Comment->find('threaded',array(
+			'conditions'=>array('Comment.id'=>$id)
+		));
+		$result=array_merge($comment[0],$ucomment);
+		return $result;
+	}
+	
+	/* everything below this is OUTDATED! and shouldn't be used */
+	
+	//all this info is fetched in the first component now, don't need it
+	public function userComment ($fk,$model, $userid){
+		$Comment=ClassRegistry::init('Comment');
+		$options['conditions']=array('Comment.foreign_key'=>$fk,'Comment.model'=>$model,'Comment.user_id'=>$userid,'Comment.parent_id is null');
+		$options['recursive']=1;
+		//should only return one record
+		//no lots now with replies
+		$result=$Comment->find('first',$options);
+		return $result;
+	}
+	
+		//this was the original method named getComments renamed so I didn't have to change code all over
 	public function getOldComments ($fk, $model, $userid){
 	$this->Controller->set('cookie_flags',$this->Cookie->read('flagged_comments'));
 	//now find the comments the user interacted with and tack that on
@@ -128,39 +165,6 @@ class CommentComponent extends Component {
 		}
 		$result=array_merge($comment,$comment3);
 		
-		return $result;
-	}
-	
-	//$id is the id of the comment
-	public function getComment ($id, $userid){
-	//not sure if this cookie business still is in use, leaving it here
-		$this->Controller->set('cookie_flags',$this->Cookie->read('flagged_comments'));
-		$CommentsUser=ClassRegistry::init('CommentsUser');
-		$conditions=array('CommentsUser.comment_id'=>$id);
-		$conditions['CommentsUser.user_id']=$userid;
-		$ucomment=$CommentsUser->find('first',array(
-			'conditions'=>$conditions,
-			'recursive'=>0,
-			'fields'=>array('CommentsUser.*')
-		));
-		$Comment=ClassRegistry::init('Comment');
-		$comment=$Comment->find('first',array(
-			'conditions'=>array('Comment.id'=>$id),
-			'recursive'=>1,
-			'fields'=>array('Comment.*','User.*')
-		));
-		$result=array_merge($comment,$ucomment);
-		return $result;
-	}
-	
-	//all this info is fetched in the first component now, don't need it
-	public function userComment ($fk,$model, $userid){
-		$Comment=ClassRegistry::init('Comment');
-		$options['conditions']=array('Comment.foreign_key'=>$fk,'Comment.model'=>$model,'Comment.user_id'=>$userid,'Comment.parent_id is null');
-		$options['recursive']=1;
-		//should only return one record
-		//no lots now with replies
-		$result=$Comment->find('first',$options);
 		return $result;
 	}
 		

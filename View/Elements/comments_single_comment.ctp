@@ -161,7 +161,7 @@ else if (!empty($comment['User']['picture'])) $avatar=$comment['User']['picture'
 	</div><!-- /comment_buttons -->
 
 		<div class="col-xs-8 comment_text">
-		<?=$this->Html->image($avatar,array('alt'=>'user avatar','style'=>'width:60px;float:left; padding-right:5px;','class'=>'img-responsive'))?>
+		<?=$this->Html->image($avatar,array('alt'=>'user avatar','style'=>'width:60px;float:left; padding-right:5px;','class'=>'img-responsive img-rounded'))?>
 		
 		<p><strong><?=$formattedname[0] ?>'s</strong> deep thoughts</p>
 
@@ -170,9 +170,8 @@ else if (!empty($comment['User']['picture'])) $avatar=$comment['User']['picture'
 
 		<?if ($mine!='mine'){
 			if (isset($comment['children'])){?>
-		 <div class="form-group">
-
-		<?=$this->Form->input('reply'.$comment['Comment']['id'],array('class'=>'form-control','placeholder'=>$replypl,'label'=>false,'type'=>'textarea','rows'=>1,'cols'=>40,'value'=>$reply,'disabled'=>$replydis))?>
+		 <div class="col-md-offset-1 form-group">
+		<?=$this->Form->input('reply'.$comment['Comment']['id'],array('class'=>'form-control','placeholder'=>$replypl,'label'=>'Reply','type'=>'textarea','rows'=>1,'cols'=>30,'value'=>$reply,'disabled'=>$replydis))?>
 		</div>
 			  <?
 			echo $this->Form->input($replybtn,array(

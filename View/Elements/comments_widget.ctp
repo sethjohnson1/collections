@@ -7,7 +7,7 @@ foreach ($comments['comments'] as $comment): ?>
 ?>
 	<div class="col-xs-12">
 <?
-	echo $this->element('comments_single_comment',array($comment));
+	echo $this->element('comments_single_comment',array($comment,$user));
 	?>
 	</div>
 	
@@ -17,7 +17,7 @@ foreach ($comments['comments'] as $comment): ?>
 		<div class="col-xs-11 col-sm-offset-1 well">
 		<?
 			$this->set('comment',$child);
-			echo $this->element('comments_single_comment',array($comment));
+			echo $this->element('comments_single_comment',array($comment,$user));
 		?>
 		<?if (!empty($child['children'])):
 			foreach ($child['children'] as $klast=>$last):?>
@@ -25,7 +25,7 @@ foreach ($comments['comments'] as $comment): ?>
 			<div class="last_child col-xs-10 col-sm-offset-2">
 			<?
 			$this->set('comment',$last);
-			echo $this->element('comments_single_comment',array($comment));?>
+			echo $this->element('comments_single_comment',array($comment,$user));?>
 			</div>
 			</div>
 		<?		endforeach;
