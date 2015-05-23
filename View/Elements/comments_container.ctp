@@ -1,5 +1,5 @@
 <div class="row comments_box">
-	<div class="col-xs-10">
+	<div class="col-xs-12 col-sm-10">
 <? 
 	$allow=1;
 	$addbtn='Add';
@@ -20,15 +20,17 @@
 	echo $this->Form->input('foreign_key',array('type'=>'hidden','value'=>$fk));		
 	echo $this->Form->input('model',array('type'=>'hidden','value'=>$model));		
 	
-	//echo $this->Form->input('rating',array('type'=>'range','data-highlight'=>'true','min'=>'0','max'=>'5','value'=>$rating,'label'=>'Your Approval rating'));		
-	echo $this->Form->input('comment',array('type'=>'textarea','rows'=>2,'value'=>$thoughts,'label'=>false,'class'=>'form-control','placeholder'=>'Add your comment here'));		
-
-	?>
+	//echo $this->Form->input('rating',array('type'=>'range','data-highlight'=>'true','min'=>'0','max'=>'5','value'=>$rating,'label'=>'Your Approval rating'));	
+?>
+<div class="form-group commentadd">
+<?=$this->Form->input('comment',array('type'=>'textarea','rows'=>2,'value'=>$thoughts,'label'=>false,'class'=>'form-control commentadd','placeholder'=>'Add your comment here'))?>
+</div>
 	</div>
-	<div class="col-xs-2">
+	<div class="col-xs-12 col-sm-2">
+
 	<?
 		if (isset($user['id'])){
-		echo $this->Form->button($addbtn,array('type'=>'button','class'=>'comment_add'.$fk,'id'=>'comment_add','label'=>false));	
+		echo $this->Form->button($addbtn,array('type'=>'button','class'=>'btn btn-default comment_add'.$fk,'id'=>'comment_add','label'=>false));	
 	}
 	else {
 		
@@ -55,11 +57,13 @@
 <script type="text/javascript">
 $(document).ready(function(){     
     $(document).off('click', '.comment_add<?=$fk?>').on('click', '.comment_add<?=$fk?>',function(e) {
+		$('.comments<?=$model.$fk?>').block({ message: 'One Moment'}); 
 		$.ajax({
 		async:true,
 		data:$(".sCommentViewForm<?=$fk?>").serialize(),
 		dataType:"html",
 		success:function (data, textStatus) {
+			$('.comments<?=$model.$fk?>').unblock();
 			$(".comments<?=$model.$fk?>").html(data).trigger('create');
 		},
 		type:"POST",

@@ -106,7 +106,8 @@ s.parentNode.insertBefore(ga, s);
 </script>
 </head>
 <body class="page page-id-10546 page-template-default logged-in admin-bar no-customize-support header-image altsidebar-content" itemscope="itemscope" itemtype="http://schema.org/WebPage">
-
+<script>
+</script>
 <div class="site-container">
 <? //<!-- the modals themselves must be drawn right before end body tag or there is a conflict (jpanel is my guess but not sure) -->?>
 <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#login-modal">
@@ -164,7 +165,7 @@ s.parentNode.insertBefore(ga, s);
 		<li class="menu-item"><?php echo $this->Html->link(__('Search Makers'), array('plugin'=>'','controller' => 'makers', 'action' => 'index')); ?> </li>
 		<li class="menu-item"><?php echo $this->Html->link(__('Search Mediums'), array('plugin'=>'','controller' => 'medvalues', 'action' => 'index')); ?> </li>
 		<li class="menu-item"><?php echo $this->Html->link(__('Virtual Exhibits'), array('plugin'=>'','controller' => 'usergals', 'action' => 'index')); ?></li>      				
-<? if( $this->Session->read('Auth.User')) echo '<li class="menu-item">'.$this->Html->link('My Virtual Exhibits',array('plugin'=>'','controller'=>'usergals','action'=>'mine')).'</li>';?>                        
+<? if( $this->Session->read('Auth.User')) echo '<li class="menu-item badge-green">'.$this->Html->link('My Dashboard <span class="badge badge-hov">?!</span>',array('plugin'=>'','controller'=>'usergals','action'=>'mine'),array('escape'=>false)).'</li>';?>                        
 
 		<li class="menu-item exhibit badge-orange"><?php 
 		//$ct from the AppController

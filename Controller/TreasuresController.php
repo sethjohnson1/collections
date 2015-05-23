@@ -450,8 +450,8 @@ class TreasuresController extends AppController {
 		if (empty($treasures)){
 			//something went wrong, because either the COOKIE or the DATA should've had something
 		}
-		$this->set('treasures', $treasures);
-		$this->set('limit',$limit);
+		$user=$this->Auth->user();
+		$this->set(compact('treasures','limit','user'));
 		
 		//now the post stuff
 		if ($this->request->is('post','put','ajax')) {
@@ -468,11 +468,20 @@ class TreasuresController extends AppController {
 			}
 			else {
 				$this->Usergal->create();
+				//set user_id, rather crude - but I think the above $editcook save will prevent zaniness
+				if (isset($user['id'])){
+					$this->request->data['Usergal']['user_id']=$user['id'];
+				}
+				else {
+					$this->request->data['Usergal']['user_id']=$this->request->data['Usergal']['email'];
+				}
 				$usergal['Usergal']=$this->request->data['Usergal'];
-				if ($this->Usergal->save($usergal)) {
+				//need to fix this right here left off
+				if ($this->Usergal->save($usergal,array('validate'=>false))) {
 					$lastid = $this->Usergal->getInsertID();
 				}
 				else {
+					debug('bad');
 					$this->Session->setFlash(__('The gallery could not be saved. Please try again.'));
 				}
 			}

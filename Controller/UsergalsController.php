@@ -73,8 +73,10 @@ public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Searc
 		}
 		
 		$this->Usergal->recursive=-1;
+		$user=$this->Auth->user();
+		//this must be fixed for logged in users
 		$usergals=$this->Usergal->findAllByEmail($this->Auth->user('email'));
-		$this->set('usergals',$usergals);
+		$this->set(compact('usergals','user'));
 
 		
 		//here is a construction of a Tree manually for Paginator, the order is important 

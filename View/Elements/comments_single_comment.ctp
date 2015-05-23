@@ -75,7 +75,6 @@ $reply='';
 $replybtn='Reply';
 $replydis='disabled';
 $replypl='You must login to reply';
-$replylbl=false;
 
 if (isset($user['id'])){
 	$replydis=false;
@@ -84,7 +83,6 @@ if (isset($user['id'])){
 		$reply=$comments['usercomments'][$comment['Comment']['id']]['thoughts'];
 		echo $this->Form->input('reply_id',array('type'=>'hidden','value'=>$comments['usercomments'][$comment['Comment']['id']]['comment_id']));
 		$replybtn='Update';
-		$replylbl='Edit';
 	}
 }
 
@@ -171,9 +169,9 @@ else if (!empty($comment['User']['picture'])) $avatar=$comment['User']['picture'
 		<p><?=$comment['Comment']['thoughts'] ?></p>
 
 		<?if ($mine!='mine'){
-			if (isset($comment['children'])){?>
+			if (isset($comment['children'])&&(!isset($comment['count']) || $comment['count']<3)){?>
 		 <div class="col-md-offset-1 form-group">
-		<?=$this->Form->input('reply'.$comment['Comment']['id'],array('class'=>'form-control','placeholder'=>$replypl,'label'=>$replylbl,'type'=>'textarea','rows'=>1,'cols'=>30,'value'=>$reply,'disabled'=>$replydis))?>
+		<?=$this->Form->input('reply'.$comment['Comment']['id'],array('class'=>'form-control','placeholder'=>$replypl,'label'=>false,'type'=>'textarea','rows'=>1,'cols'=>27,'value'=>$reply,'disabled'=>$replydis))?>
 		</div>
 			  <?
 			echo $this->Form->input($replybtn,array(
@@ -197,7 +195,7 @@ else if (!empty($comment['User']['picture'])) $avatar=$comment['User']['picture'
 	<div class="col-xs-2">
 	<h3>
 	<?		if ($mine=='mine'){ ?>
-			<a href="#" role="button" class="btn btn-default comment_hide<?=$comment['Comment']['id']?>">
+			<a href="#" role="button" class="btn btn-default orange-btn comment_hide<?=$comment['Comment']['id']?>">
 			<span class="glyphicon glyphicon-remove">	Hide</span>
 			</a>
 		
@@ -206,7 +204,7 @@ else if (!empty($comment['User']['picture'])) $avatar=$comment['User']['picture'
 		else {
 		echo $this->Form->input('pflag',array('type'=>'hidden','value'=>'flag'));
 		?>
-		<a href="#" role="button" style="" title="<?=$flaglabel?> this comment" class="btn btn-default comment_flag<?=$comment['Comment']['id']?>"><span class="glyphicon glyphicon-alert"> Flag</span></a>
+		<a href="#" role="button" style="" title="<?=$flaglabel?> this comment" class="orange-btn btn btn-default comment_flag<?=$comment['Comment']['id']?>"><span class="glyphicon glyphicon-alert"> Flag</span></a>
 		<?}?>
 	</h3>
 	</div>
@@ -265,11 +263,13 @@ $(document).off('click', '.comment_down<?=$comment['Comment']['id']?>').on('clic
 });
 
 $(document).off('click', '.comment_reply<?=$comment['Comment']['id']?>').on('click', '.comment_reply<?=$comment['Comment']['id']?>',function(e) {
+$('.comments<?=$model.$fk?>').block({ message: null}); 
 	$.ajax({
 	async:true,
 	data:$(".comment<?=$comment['Comment']['id']?>").serialize(),
 	dataType:"html",
 	success:function (data, textStatus) {
+		$('.comments<?=$model.$fk?>').unblock();
 		$(".comments<?=$model.$fk?>").fadeOut(0).html(data).trigger('create').fadeIn(500);
 	},
 	type:"POST",
@@ -284,13 +284,17 @@ $flagclass='.container'.$comment['Comment']['id'];
 ?>
 
 $(document).off('click', '.comment_flag<?=$comment['Comment']['id']?>').on('click', '.comment_flag<?=$comment['Comment']['id']?>',function(e) {
+$('<?=$flagclass?>').block({ message: null}); 
 	$.ajax({
 	async:true,
 	data:$(".comment<?=$comment['Comment']['id']?>").serialize(),
 	dataType:"html",
 	success:function (data, textStatus) {
+		$('<?=$flagclass?>').unblock();
 		$("<?=$flagclass?>").fadeOut(0).html(data).trigger('create').fadeIn(500);
+		 
 	},
+	
 	type:"POST",
 	url:"<?='http://'.$_SERVER['HTTP_HOST'].Router::url(array('controller'=>'commentsUsers','action'=>'comment_flag',$comment['Comment']['id'],$model,$fk))?>"});
 	return false;

@@ -10,6 +10,7 @@ public $filterArgs = array(
 	'searchall'=>array('type' => 'like','encode'=>false,'connectorAnd' => ' ', 'connectorOr' => ',','field'=>array('Usergal.name','Usergal.gloss','Usergal.creator'))
 );
 	public function beforeSave($options = array()) {
+	
 	    $this->bindModel(
         array('hasMany' => array('Badword' => array())));
 	
@@ -51,8 +52,9 @@ public $filterArgs = array(
 		for ($i = 0; $i < 8; $i++) $str .= $characters[rand(0, strlen($characters) - 1)];
 		$this->data['Usergal']['editcode']=$str;
 		}
+		
 		$this->data['Usergal']['ip'] = $_SERVER["REMOTE_ADDR"]; 
-
+		//debug($this->data);
 		//this should be return TRUE, but false for testing
 		return true;
 			
@@ -60,7 +62,7 @@ public $filterArgs = array(
 		
 		
 		public function afterSave($created, $options = array()) {
-		
+		if (!isset($this->data['Usergal']['user_id'])){
 		if($created==true){
 			App::import('Component','Cookie');
 			$cond = array('Usergal.email'=>$this->data['Usergal']['email']);
@@ -90,6 +92,7 @@ public $filterArgs = array(
 			//$this->
 			
 			}
+			}
 			
 		}
 		
@@ -97,7 +100,7 @@ public $filterArgs = array(
 	
 
 	public $validate = array(
-		
+	/*	
 		'email' => array(
 			'rule' => array('email'),
 			'message' => 'Please enter a valid e-mail',
@@ -105,13 +108,13 @@ public $filterArgs = array(
 			'required' => true,
 		),
 
-		/*'name'=>array(
+		'name'=>array(
 			'rule'    => array('maxLength',401),
 			'message' => 'Please enter your name',
 			//'allowEmpty' => false,
 			//'required' => true
 		
-    ),*/
+    ),
 
 			'creator'=>array(
 			'rule'    => array('maxLength',401),
@@ -128,6 +131,7 @@ public $filterArgs = array(
 			'required' => false
 		
     ),
+	*/
 	);
 	
 

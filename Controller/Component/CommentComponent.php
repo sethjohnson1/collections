@@ -24,24 +24,26 @@ class CommentComponent extends Component {
 		
 		$Comment=ClassRegistry::init('Comment');
 		$conditions=array('Comment.hidden != 1','Comment.foreign_key'=>$fk,'Comment.model'=>$model);
-		$comments=$Comment->find('threaded',array('conditions'=>$conditions));
+		$comments=$Comment->find('threaded',array('conditions'=>$conditions,'order'=>array('Comment.upvotes desc','Comment.downvotes')));
 	
 	//now run some loops, goes three layers deep. I think if I were smarter I could do this better.. oh well.
 	$result=array();
 	foreach ($comments as $key=>$comment){
+		$result[$key]=$comments[$key];
+		foreach ($ucomments as $c=>$u){
+		
+		if ($u['CommentsUser']['comment_id']==$comment['Comment']['id']){
+			$result[$key]=array_merge($ucomments[$c],$comments[$key]);
+			//make looping gradually faster!
+			unset($ucomments[$c]);
+		}
+		else {
+			
+		}
+	}
 	//loops through and adds to array as needed
 		foreach($comment['children'] as $kchild=>$child){
-				foreach($child['children'] as $klast=>$last){
-					$result[$key]['children'][$kchild]['children'][$klast]=$comments[$key]['children'][$kchild]['children'][$klast];
-					unset($comments[$key]['children'][$kchild]['children'][$klast]['children']);
-					foreach ($ucomments as $k=>$v){
-					if ($v['CommentsUser']['comment_id']==$last['Comment']['id']){
-						$result[$key]['children'][$kchild]['children'][$klast]=array_merge($ucomments[$k],$comments[$key]['children'][$kchild]['children'][$klast]);
-						unset($ucomments[$k]);
-					}
-					}
-				}
-			$result[$key]['children'][$kchild]=$comments[$key]['children'][$kchild];
+		//$result[$key]['children'][$kchild]=$comments[$key]['children'][$kchild];
 			foreach ($ucomments as $k=>$v){
 			//first set the result
 			
@@ -51,20 +53,19 @@ class CommentComponent extends Component {
 				unset($ucomments[$k]);
 			}
 			}
+				foreach($child['children'] as $klast=>$last){
+					//$result[$key]['children'][$kchild]['children'][$klast]=$comments[$key]['children'][$kchild]['children'][$klast];
+					unset($comments[$key]['children'][$kchild]['children'][$klast]['children']);
+					foreach ($ucomments as $k=>$v){
+					if ($v['CommentsUser']['comment_id']==$last['Comment']['id']){
+						$result[$key]['children'][$kchild]['children'][$klast]=array_merge($ucomments[$k],$comments[$key]['children'][$kchild]['children'][$klast]);
+						unset($ucomments[$k]);
+					}
+					}
+				}
+			
 		}
 
-		$result[$key]=$comments[$key];
-		foreach ($ucomments as $c=>$u){
-			
-			if ($u['CommentsUser']['comment_id']==$comment['Comment']['id']){
-				$result[$key]=array_merge($ucomments[$c],$comments[$key]);
-				//make looping gradually faster!
-				unset($ucomments[$c]);
-			}
-			else {
-				
-			}
-		}
 		//
 	}
 		$coptions['conditions']=array('Comment.foreign_key'=>$fk,'Comment.model'=>$model,'Comment.user_id'=>$userid);
@@ -105,6 +106,8 @@ class CommentComponent extends Component {
 			'conditions'=>array('Comment.id'=>$id)
 		));
 		$result=array_merge($comment[0],$ucomment);
+		//use the Tree behavior to count the number of parents
+		$result['count']=count($Comment->getPath($id));
 		return $result;
 	}
 	

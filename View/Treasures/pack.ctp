@@ -1,3 +1,4 @@
+<?=$this->Form->create('Treasure',array('div'=>true))?>
 <script type="text/javascript">
 $(function() {	   
     $('input,textarea').not('.ignore').bind("change", function(){setConfirmUnload(true);});
@@ -77,7 +78,7 @@ echo $this->Html->link('Start Over', array('controller'=>'treasures','action' =>
 </div>
 </div>
 <?
-echo $this->Form->create('Treasure',array('div'=>true));
+
 echo $this->Form->input('Usergal.id');
 echo $this->Form->input('Usergal.editcode',array('type'=>'hidden'));
 $this->Js->get('.search-results');
@@ -130,15 +131,30 @@ echo $this->Js->writeBuffer();
 	<div class="col-xs-12">
 	<h4>Relax, your exhibit can easily be edited once saved</h4>
 	<div class="input-group">
-	<?=$this->Form->input('Usergal.email',array('required'=>true,'div'=>false,'placeholder'=>'(for verification only)','label'=>'Valid e-mail, will not be shared','class'=>'form-control'))?>
+	<?
+	$userval='';
+	if (empty($user)):
+	$logintxt='. '.$this->Html->link('Create an Account to skip this!','#login-modal',array('data-toggle'=>'modal'));
+	echo $this->Form->input('Usergal.email',array('required'=>true,'div'=>false,'placeholder'=>'(for verification only)','label'=>'Valid e-mail, will not be shared'.$logintxt,'class'=>'form-control'));
+	
+	?>
+	<br />
+	<br />
+	<br />
+	<?
+	elseif (isset($this->request->data['Usergal']['creator'])): $userval=$this->request->data['Usergal']['creator'];
+	elseif (isset($user['username'])):
+	$formattedname=explode('^',$user['username']);
+	$formattedname[0]=str_replace('_',' ',$formattedname[0]);
+	$userval=$formattedname[0];
+	//echo $this->Form->input('Usergal.email',array('type'=>'hidden','value'=>$user['username']));
+	endif;
+	?>
 	</div>
 	</div>
-	<br />
-	<br />
-	<br />
 	<div class="col-xs-12">
 	<div class="input-group input-group-lg">
-	<?=$this->Form->input('Usergal.creator',array('required'=>true,'placeholder'=>'(as you\'d like it displayed)','label'=>'Your name','class'=>'form-control'))?>
+	<?=$this->Form->input('Usergal.creator',array('required'=>true,'placeholder'=>'(as you\'d like it displayed)','label'=>'Your name','class'=>'form-control','value'=>$userval))?>
 	</div>
 	</div>
 	<div class="col-xs-12">
@@ -167,7 +183,7 @@ echo $this->Js->writeBuffer();
 	</style>
 		<?
 	$tosLink = $this->Html->link('terms of service', array('controller' => 'pages', 'action' => 'tos'));
-		if(isset($edit)) :?>
+		if(isset($edit) || isset($user)) :?>
 		<div class="col-xs-6"><?
 			//they already agreed so check the box for them
 			//also we DON'T want to changed 'listed' value when editing or it's a loophole for chaos
@@ -175,7 +191,7 @@ echo $this->Js->writeBuffer();
 		</div>
 		<div class="col-xs-6">
 		<?
-			echo $this->Form->submit(__('Submit Changes'), array('div' => false,'class'=>'ignore btn btn-danger btn-lg'));
+			//echo $this->Form->submit(__('Save exhibit'), array('div' => false,'class'=>'ignore btn btn-danger btn-lg'));
 		?>
 		</div>
 		<?else :?>
@@ -187,10 +203,10 @@ echo $this->Js->writeBuffer();
 		</div>
 		<div class="col-xs-6">
 			<?
-			echo $this->Form->submit('Save exhibit', array('div' => false,'class'=>'ignore btn btn-danger btn-lg"'));	
 			?>
 		</div>
 		<?endif;
+					echo $this->Form->submit('Save exhibit', array('div' => false,'class'=>'ignore btn btn-danger btn-lg"'));	
 	?>
 	</div>
   </div>
