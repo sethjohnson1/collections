@@ -37,8 +37,8 @@
 	echo $this->Html->script('select2_fields');
 	//jpanelmenu caused sticky header no worky
 	//echo $this->Html->script('jquery.jpanelmenu');
-	echo $this->Html->script('jquery.sidr.min');
-	echo $this->Html->css('jquery.sidr.light');
+	//echo $this->Html->script('jquery.sidr.min');
+	//echo $this->Html->css('jquery.sidr.light');
 	//colorbox CSS must be before JS is loaded
 	echo $this->Html->css('colorbox');
 	echo $this->Html->script('jquery.colorbox');
@@ -156,7 +156,6 @@ $(function() {
 
 <div class="site-inner"><div class="wrap"><div class="content-sidebar-wrap"><main class="content" role="main" itemprop="mainContentOfPage"><article class="post-10546 page type-page status-draft entry" itemscope="itemscope" itemtype="http://schema.org/CreativeWork"><header class="entry-header">
 </header><div class="entry-content" itemprop="text">
-<?php // echo $this->Session->flash('flash',array('element'=>'flash_success')); ?>
 <?php echo $this->Session->flash(); ?>
 
 <?php echo $this->fetch('content'); ?>
@@ -182,19 +181,36 @@ $(window).scroll(function() {
     stickyNav();
 });
 
-$('.toggle-button').sidr( [] );
+
 });
 </script>
 <div id="mobilebuttons" class="row mnav">
-<div class="col-xs-12">
+<!-- EXAMPLE OF JUSTIFIED, I don't know that I really like it
+div class="col-xs-12">
 <div class="btn-group btn-group-justified" role="group">
 <div class="btn-group" role="group">
-<a href="#nothing" class="orange btn btn-lg btn-default toggle-button"><span class="glyphicon glyphicon-menu-hamburger"></span><span style=""> Menu</a>
+<button type="button" class="orange btn btn-lg btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-menu-hamburger"></span> Menu <span class="caret"></span></button>
+<ul class="dropdown-menu" role="menu">
+<?=$this->element('default_menu')?>
+</ul>
 </div>
-<div class="btn-group" role="group"><?=$this->Html->link('<span class="glyphicon glyphicon-collapse-down"></span>','#search-results',array('escape'=>false,'role'=>'button','class'=>'orange btn btn-lg btn-default'))?>
+<div class="btn-group" role="group">
+<button type="button" class="btn btn-default btn-lg dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-collapse-down"></span> Museums <span class="caret"></span></button>
+<ul class="dropdown-menu" role="menu">
+<?=$this->element('default_browse-menu',array('mobile'=>1))?>
+</ul>
 </div>
 <div class="btn-group" role="group"><?=$this->Html->link('<span class="glyphicon glyphicon-user"></span>','#login-modal',array('data-toggle'=>'modal','escape'=>false,'role'=>'button','class'=>'orange btn btn-lg btn-default '))?>
 </div>
+</div>
+</div -->
+<div class="col-xs-3">
+<div class="btn-group" role="group">
+<button type="button" class="orange btn btn-lg btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-menu-hamburger"></span> Menu <span class="caret"></span></button>
+<ul class="dropdown-menu" role="menu">
+<?=$this->element('default_menu')?>
+<?=$this->element('default_browse-menu')?>
+</ul>
 </div>
 </div>
 </div><!-- /mobile-menu row -->
@@ -209,42 +225,13 @@ $('.toggle-button').sidr( [] );
 	
 <ul class="menu">
 
-		<li class="menu-item"><?php echo $this->Html->link(__('New Search'), array('plugin'=>'','controller' => 'treasures','action' => 'index')); ?> </li>
-		<li class="menu-item"><?php echo $this->Html->link(__('Search Makers'), array('plugin'=>'','controller' => 'makers', 'action' => 'index')); ?> </li>
-		<li class="menu-item"><?php echo $this->Html->link(__('Search Mediums'), array('plugin'=>'','controller' => 'medvalues', 'action' => 'index')); ?> </li>
-		<li class="menu-item"><?php echo $this->Html->link(__('Virtual Exhibits'), array('plugin'=>'','controller' => 'usergals', 'action' => 'index')); ?></li>      				
-<? if( $this->Session->read('Auth.User')) echo '<li class="menu-item badge-green">'.$this->Html->link('My Dashboard <span class="badge badge-hov">?!</span>',array('plugin'=>'','controller'=>'usergals','action'=>'mine'),array('escape'=>false)).'</li>';?>                        
-
-		<li class="menu-item exhibit badge-orange"><?php 
-		//$ct from the AppController
-		echo $this->Html->link('My Exhibit<span id="excount"> <span class="ExNum badge badge-hov"></span></span>',array('plugin'=>'','controller' => 'treasures', 'action' => 'pack'),array('id'=>'myx','escape'=>false));?></li>
-        		<?php	
-		if(!$this->Session->read('Auth.User'))
-			//echo '<li class="menu-item">'.$this->Html->link('Log In', array('plugin'=>'users','controller'=>'users','action'=>'login')).'</li>';
-			echo '<li class="menu-item"><a href="#login-modal" class="" data-toggle="modal">Log In</a></li>';
-		if( $this->Session->read('Auth.User'))
-			{
-				echo '<li class="menu-item">'.$this->Html->link('Log Out', array('plugin'=>'users','controller'=>'users','action'=>'logout'),null, __('Are you sure you want to log out? Unsaved changes to your Virtual exhibit will be lost.')).'</li>';
-
-			}
-		//else echo '</li><li class="menu-item">'.$this->Html->link('Register', array('plugin'=>'users','controller'=>'users','action'=>'add')).'</li>';
-		?>
-		<li class="menu-item"><?php echo $this->Html->link(__('About/Help'), array('plugin'=>'','controller' => 'treasures','action' => 'about')); ?> </li>
+<?=$this->element('default_menu')?>
 
 </ul>
 <ul class="browse-menu">
         
-       		<li class="browse-item heading"><strong>Browse Museums</strong></li>
-            <li class="browse-item" <?php if(!empty($this->params['controller'])=='treasures'){if(!empty($this->params['data']['Treasure']['bbm'])==1){echo 'id="glower" ';}}?>>
-			<?php echo $this->Html->link(__('> Buffalo Bill'),array('plugin'=>'','controller' => 'treasures','action' => 'index'.'/bbm:1/wg:0/cfm:0/pim:0/dmnh:0/')); ?> 
-            </li>
-            
-            <li class="browse-item" <?php if(!empty($this->params['controller'])=='treasures'){if(!empty($this->params['data']['Treasure']['wg'])==1){echo 'id="glower" ';}}?>><?php echo $this->Html->link(__('> Western Art'), array('plugin'=>'','controller' => 'treasures','action' => 'index'.'/bbm:0/wg:1/cfm:0/pim:0/dmnh:0/')); ?> </li>
-            <li class="browse-item" <?php if(!empty($this->params['controller'])=='treasures'){if(!empty($this->params['data']['Treasure']['cfm'])==1){echo 'id="glower" ';}}?>><?php echo $this->Html->link(__('> Firearms'), array('plugin'=>'','controller' => 'treasures','action' => 'index'.'/bbm:0/wg:0/cfm:1/pim:0/dmnh:0/')); ?> </li>
-            <li class="browse-item" <?php if(!empty($this->params['controller'])=='treasures'){if(!empty($this->params['data']['Treasure']['pim'])==1){echo 'id="glower" ';}}?>><?php echo $this->Html->link(__('> Plains Indian'), array('plugin'=>'','controller' => 'treasures','action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:1/dmnh:0/')); ?> </li>
-            <li class="browse-item" <?php if(!empty($this->params['controller'])=='treasures'){if(!empty($this->params['data']['Treasure']['dmnh'])==1){echo 'id="glower" ';}}?>><?php echo $this->Html->link(__('> Natural History'), array('plugin'=>'','controller' => 'treasures','action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:0/dmnh:1/')); ?> </li>
-        
-
+<?=$this->element('default_browse-menu')?>
+    
 		
 </ul>
   

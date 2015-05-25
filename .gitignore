@@ -5,7 +5,7 @@
 /webroot/zoomify
 /webroot/large_img
 /webroot/ayah_config.php
-
+/webroot/js/zoomify_source
 # OS generated files #
 ######################
 .DS_Store
