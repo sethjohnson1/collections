@@ -33,11 +33,15 @@ p{
 </ul>
 </div>
 </div>
+<?
+$feedback='Provide Feedback';
+if (isset($this->request->query['error'])) $feedback='Error Reporting';
 
-
+?>
+<a name="feedback"></a>
 		<div class="row">
 		<div class="col-xs-12">
-			<h2>Provide Feedback</h2>
+			<h2><?=$feedback?></h2>
 			<p>You can use this form to send feedback regarding this application or anything about your visit to the Buffalo Bill Center of the West. We'd
 			love to hear from you!</p>
 			<br />

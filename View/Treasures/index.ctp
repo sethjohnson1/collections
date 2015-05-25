@@ -1,16 +1,21 @@
+<a name="index-top"></a>
 <script>
 $(document).ready(function(){
-/* just going to page now 
-//set defaults
-cbw="100%";
-cbh="75%";
-//override if screen wider than tall
-if ($( window ).width()>=$( window ).height()){
-	cbw="80%";
-	cbh="90%";
-}
-	var $gallery=$(".site-search").colorbox({rel:'site-search',width:cbw,height:cbh,opacity:0.75,current:"Viewing object {current} of {total}"});
-	*/
+//smooth scrolling, easy copy-paste!
+$(function() {
+  $('a[href*=#]:not([href=#])').click(function() {
+    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+      var target = $(this.hash);
+      target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+      if (target.length) {
+        $('html,body').animate({
+          scrollTop: target.offset().top
+        }, 1000);
+        return false;
+      }
+    }
+  });
+});
 });
 </script>
 <div class="treasure-search allcaps">
@@ -168,20 +173,7 @@ if(empty($this->params['named']['bbm']))
 </div>
 
 <div class="search-results" style="clear:both">
-<?php 
-if(empty($treasures)):?>
-<br />
-<br />
-<br />
-<div class="row">
-<div class="col-xs-12">
-<h4>No results found. Try using <?=$this->Html->link('Advanced Search',$adv,array())?>, or the box below for Google Site Search.</h4>
-<?=$this->element('google_search')?>
-</div>
-</div>
-
 <?
-endif;
 //featured Galleries
 if ($usergals && empty($this->request->params['named'])) :?>
 <br />
@@ -224,7 +216,9 @@ if ($usergals && empty($this->request->params['named'])) :?>
 
 	<hr style="clear:both">
 </div><!-- /featured vgals -->
+
 <?endif?>
+<a name="search-results"></a>
 <?
 //only show paging if more than one page
 $controller = $this->name;
@@ -232,6 +226,7 @@ $model = trim($controller , "s");
 if ($this->request->paging[$model]['pageCount']>1):
 ?>
 <hr />
+
 <div class="row allcaps">
 <div class="form-group col-sm-4">
     <div class="input-group">
@@ -256,13 +251,31 @@ if ($this->request->paging[$model]['pageCount']>1):
 
 <?endif?>
 <div class="col-md-12">
+<p>
 <? 
 $cnt =$this->Number->format($this->Paginator->counter(array('format' => __('{:count}'))));
 echo $this->Paginator->counter(array('format' => __('Viewing records {:start} to {:end} out of '.$cnt)));
 ?>
-
-</div>
 <?
+if (!empty($this->params['named']['searchall'])) echo ' for "'.$this->params['named']['searchall'].'" ';
+echo ' - '.$this->Html->link('Refine Search','#index-top');
+?>
+</p>
+</div>
+<?php 
+if(empty($treasures)):?>
+<br />
+<br />
+<br />
+<div class="row">
+<div class="col-xs-12">
+<h4>No results found. Try using <?=$this->Html->link('Advanced Search',$adv,array())?>, or the box below for Google Site Search.</h4>
+<?=$this->element('google_search')?>
+</div>
+</div>
+
+<?
+endif;
 foreach ($treasures as $treasure):
 ?>
 <div class="the-objects col-xs-4">

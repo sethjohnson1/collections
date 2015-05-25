@@ -346,13 +346,18 @@ class PrgComponent extends Component {
  *  - mixed modelMethod - If not false a string that is the model method that will be used to process the data
  *  - array allowedParams - An array of additional top level route params that should be included in the params processed
  *  - array excludedParams - An array of named/query params that should be excluded from the redirect url
- *  - string paramType - 'named' if you want to used named params or 'querystring' is you want to use query string
+ *  - string paramType - 'named' if you want to used named params or 'querystring' is you want to use query
+ string
+ sj - added anchor down below line 424ish
  * @return void
  */
 	public function commonProcess($modelName = null, array $options = array()) {
+	//sj - set this early before hashing with defaults
+		if (isset($options['anchor'])) $anchor=$options['anchor'];
 		$defaults = array(
 			'excludedParams' => array('page'),
 		);
+		
 		$defaults = Hash::merge($defaults, $this->_defaults['commonProcess']);
 		extract(Hash::merge($defaults, $options));
 
@@ -417,7 +422,8 @@ class PrgComponent extends Component {
 						$params[$key] = $this->controller->request->params[$key];
 					}
 				}
-
+				//sj  - added this here 
+				$params['#']=$anchor;
 				$this->controller->redirect($params);
 			} else {
 				$this->controller->Session->setFlash(__d('search', 'Please correct the errors below.'));

@@ -4,7 +4,9 @@ App::uses('AppController', 'Controller');
 class TreasuresController extends AppController {
 	public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Search.Prg'=>array(
 			//newer version of search plugin defaults to querystring, we have lots of work to do before we're ready for that...
-			'commonProcess'=>array('keepPassed'=>false,'paramType'=>'named'),
+			/* NOTE!!  sj modified plugin to accept additional option "anchor" for the anchor tag at the end, you can see that mod around line 424 of PrgComponent
+			*/
+			'commonProcess'=>array('keepPassed'=>false,'paramType'=>'named','anchor'=>'search-results'),
 			'presentForm'=>array('paramType'=>'named')
 		),
 		'RequestHandler','Cookie','Comment'
@@ -566,6 +568,8 @@ class TreasuresController extends AppController {
 	}
 	
 	public function about() {
+	if (isset($this->request->query['src'])) $this->request->data['message']="ERROR REPORT \n".$this->request->query['error']."\n".$this->request->query['src'];
+
 		if ($this->request->is('post')) {
 			//send an e-mail reads addresses from private config file
 			$Email = new CakeEmail();
