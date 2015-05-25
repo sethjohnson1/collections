@@ -1,5 +1,7 @@
+<h2>Questions and Comments</h2>
 <div class="row comments_box">
 	<div class="col-xs-12 col-sm-10">
+		
 <? 
 	$allow=1;
 	$addbtn='Add';
@@ -7,7 +9,6 @@
 	//debug($comment['usercomments']['primary']);
 	if (isset($comments['usercomments']['primary'])) {
 		$thoughts=$comments['usercomments']['primary'];
-		$rating=$usercomment['Comment']['rating'];
 		$labelcomment='Edit your comment and rating';
 		$addbtn='Update';
 	}
@@ -43,7 +44,6 @@
 
 <div class="big_comment_container row">
 <div class="col-xs-12">
-	<h2>Comment and Rate</h2>
 
 	<div class="comments<?=$model.$fk?>">
 

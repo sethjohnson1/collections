@@ -4,7 +4,7 @@ App::uses('CakeEmail','Network/Email');
 
 class UsergalsController extends AppController {
 
-public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Search.Prg'=>array('commonProcess'=>array('keepPassed'=>false)),'RequestHandler','Cookie'
+public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Search.Prg'=>array('commonProcess'=>array('keepPassed'=>false)),'RequestHandler','Cookie','Comment'
 );
 	public $paginate = array(
        // 'Treasure2' => array ()
@@ -48,7 +48,7 @@ public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Searc
 		$val=$this->Usergal->find('first',array('conditions'=>array('Usergal.id'=>$this->params['named']['ed']),'contain'=>$cont));
 			
 		//validate Auth user - otherwise params could be tampered with
-			if (!empty($val['Usergal']['email'])&&($val['Usergal']['email']==$this->Auth->user('email'))){
+			if (!empty($val['Usergal']['user_id'])&&($val['Usergal']['user_id']==$this->Auth->user('id'))){
 				
 					$forcook=array($val['Usergal']['id']=>$val['Usergal']['editcode']);
 					$trval=array();
@@ -74,8 +74,8 @@ public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Searc
 		
 		$this->Usergal->recursive=-1;
 		$user=$this->Auth->user();
-		//this must be fixed for logged in users
-		$usergals=$this->Usergal->findAllByEmail($this->Auth->user('email'));
+		
+		$usergals=$this->Usergal->findAllByUser_id($this->Auth->user('id'));
 		$this->set(compact('usergals','user'));
 
 		
@@ -169,12 +169,12 @@ public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Searc
 						 'You can edit your Virtual Exhibits at http://collections.centerofthewest.org/usergals/load'."\n".
 						 'or create an account to easily access all your Virtual Galleries and comments. Registration is fast and free.'
 						);
-					$this->Session->setFlash(__('Your edit codes have been e-mailed.'));
+					$this->Session->setFlash('Your edit codes have been e-mailed.','flash_success');
 					return $this->redirect(array('action' => 'load'));
 				}
 				else 
 				{
-					$this->Session->setFlash(__("No virtual galleries seem to be associated with that e-mail."));
+					$this->Session->setFlash("No virtual galleries seem to be associated with that e-mail.",'flash_danger');
 					return $this->redirect(array('action' => 'load'));
 				}
 			}
@@ -202,7 +202,7 @@ public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Searc
 			//nothing found
 			else
 			{
-				$this->Session->setFlash(__('No matches found.'));
+				$this->Session->setFlash('No matches found.','flash_danger');
 				return $this->redirect(array('action' => 'load'));
 			}
 		}
@@ -270,6 +270,20 @@ public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Searc
 		$this->set('apivar',$apivar);
 		$this->set('_serialize',array('apivar'));
 		
+		//comments stuff
+		$fk=$usergal['Usergal']['id'];
+		$model='Usergal';
+		$user=$this->Auth->user();
+		if (isset($user)) $this->set('user',$user);
+		else {
+			$user['id']=null;
+			$user['provider']=null;
+		}
+		$comments=$this->Comment->getComments($fk,$model,$user['id']);
+		
+		$this->set(compact('comments','user','fk','model'));
+
+		
 		//lloyd SEO stuff
 		$this->set('TheTitle',$usergal['Usergal']['name'].'- Buffalo Bill Online Collections Virtual Exhibits');
 		if(!empty($usergal['Usergal']['gloss']))
@@ -289,14 +303,14 @@ public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Searc
 				$Email->subject('Virtual gallery has been flagged');
 				$Email->send('This has been flagged inappropriate http://collections.centerofthewest.org/usergals/view/'.
 				$usergal['Usergal']['id']);
-				$this->Session->setFlash(__('Thank you for letting us know, we will review ASAP.'));
+				$this->Session->setFlash('Thank you for letting us know, we will review ASAP.','flash_warning');
 			}
 			else{
 			//debug($this->Usergal->validationErrors);
 			}
 		}
 		else {
-			$this->Session->setFlash(__('This item has already been flagged and is awaiting review. Thank you.'));
+			$this->Session->setFlash('This item has already been flagged and is awaiting review. Thank you.','flash_warning');
 		}
 	}
 	}

@@ -11,6 +11,7 @@
 ?>
 <div class="row users form">
 <div class="col-xs-12">
+<h4> If you already have an account, <?=$this->Html->link('log-in now',array('action'=>'login'))?>!</h4>
 	<h2>Register with email	</h2>
 
 	<p>Email addresses are not displayed publicly or shared</p>

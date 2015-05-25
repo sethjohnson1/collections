@@ -16,8 +16,7 @@ if ($this->request->paging[$model]['pageCount']>1):
 <div class="form-group col-sm-4">
     <div class="input-group">
       <div class="input-group-addon orange-bg">Jump to</div>
-	  <?=$this->Form->input('pXv_9g', array('div' => false,'name'=>'goto','onchange'=>'document.getElementById("TreasurePXv9g").setAttribute("name","data[Treasure][pXv_9gg]");','empty'=>true,'placeholder'=>'Page ','label'=>'','class'=>'pagenum form-control','type'=>'number','min'=>1,'max'=>$this->Paginator->counter(array('format' => __('{:pages}')))
-//,'default'=>$this->params['paging']['Treasure']['page']
+	  <?=$this->Form->input('pXv_9g', array('div' => false,'name'=>'goto','onchange'=>'document.getElementById("MakerPXv9g").setAttribute("name","data[Maker][pXv_9gg]");','empty'=>true,'placeholder'=>'Page ','label'=>'','class'=>'pagenum form-control','type'=>'number','min'=>1,'max'=>$this->Paginator->counter(array('format' => __('{:pages}')))
 ));	 ?>
       <div class="input-group-addon orange-bg">of<?= $this->Paginator->counter(array('format' => __(' {:pages}')))?></div>
     </div>

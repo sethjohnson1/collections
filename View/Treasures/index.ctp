@@ -99,7 +99,7 @@ echo $this->Html->link('Site Search',array('action'=>'google_search_page','contr
 <div class="row checkbox-label">
 <?
 $boxoptions=array('div'=>false,'class'=>'regular-checkbox');
-if(empty($this->params['named']['bbm'])) $boxoptions['checked']=1;
+if(empty($this->params['named']['bbm'])&&empty($this->params['named']['dmnh'])&&empty($this->params['named']['pim'])&&empty($this->params['named']['wg'])&&empty($this->params['named']['cfm'])) $boxoptions['checked']=1;
 ?>
 <div class="col-sm-4 col-xs-6">
 <?

@@ -40,9 +40,13 @@ class MakersController extends AppController {
 		    $this->paginate = array('conditions' => $this->Maker->parseCriteria($this->Prg->parsedParams()),'order'=>$sortord,'limit'=>$limit);
 			$makers=$this->paginate();		
 		}
-		if (!empty($this->params['named']['pXv_9g'])&&$this->params['named']['pXv_9g']<=$this->params['paging']['Maker']['pageCount']) {  
-			$nurl = str_replace("/pXv_9g:","/page:",$this->params['url']);
-			$this->redirect($nurl);
+		if (!empty($this->params['named']['pXv_9gg'])) {
+			$parms=$this->params['named'];
+			unset($parms['url']);
+			$parms['page']=$parms['pXv_9gg'];
+			unset($parms['pXv_9gg']);
+			$parms['action']='index';
+			$this->redirect($parms);
 		}		
 		$this->set('makers', $makers);
 		$this->set('limit', $limit);

@@ -122,13 +122,39 @@ $('.img-block').hover(
 });
 function emptyvexhibit(){
 $( "a#myx" ).click(function() {
-	var lightbox ="<div class='overlay' onclick=\"$('.overlay').remove();$('.lightbox').remove();\"></div> <div class='lightbox'><a href='#' class='closebutton' onclick=\"$('.overlay').remove();$('.lightbox').remove();\"><img src='http://collections.centerofthewest.org/img/close.png'></a><h2>Welcome to our Online Collections! Some basic instructions to get you started:</h2><ul>    <li>Enter a keyword in \"Search all Fields\" or try an \"Advanced Search\"</li>    <li>Select your favorite objects by clicking on the + symbol of a thumbnail or on \"Add to Virtual Exhibit\" on an object's page.</li>    <li>To complete your exhibit, click on \"My Exhibit\" in the left menu, fill out a title, your e-mail address and name, and a descriptive label.</li>    <li>Click \"Submit\" and you've curated an exhibit! Check your e-mail for a link to share your exhibit.</li></ul><img src='http://collections.centerofthewest.org/img/animation.gif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='http://collections.centerofthewest.org/img/help.jpg'></div>";
+	//var lightbox ="<div class='overlay' onclick=\"$('.overlay').remove();$('.lightbox').remove();\"></div> <div class='lightbox'><a href='#' class='closebutton' onclick=\"$('.overlay').remove();$('.lightbox').remove();\"><img src='http://collections.centerofthewest.org/img/close.png'></a><h2>Welcome to our Online Collections! Some basic instructions to get you started:</h2><ul>    <li>Enter a keyword in \"Search all Fields\" or try an \"Advanced Search\"</li>    <li>Select your favorite objects by clicking on the + symbol of a thumbnail or on \"Add to Virtual Exhibit\" on an object's page.</li>    <li>To complete your exhibit, click on \"My Exhibit\" in the left menu, fill out a title, your e-mail address and name, and a descriptive label.</li>    <li>Click \"Submit\" and you've curated an exhibit! Check your e-mail for a link to share your exhibit.</li></ul><img src='http://collections.centerofthewest.org/img/animation.gif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='http://collections.centerofthewest.org/img/help.jpg'></div>";
+	var vgalbox='';
+	vgalbox+='<div class="modal fade" id="vgal-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+  vgalbox+='<div class="modal-dialog">';
+  vgalbox+='  <div class="modal-content">';
+  vgalbox+='    <div class="modal-header">';
+  vgalbox+='      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+  vgalbox+='      <h3 class="modal-title" id="myModalLabel">Create your own exhibit! <small>Here\'s how:</small></h3>';
+  vgalbox+='    </div>';
+  vgalbox+='    <div class="modal-body"><div class="row"><div class="col-xs-12">';
+   vgalbox+='     <ul>';
+   vgalbox+='<li>Browse or search the collection</li>';
+   vgalbox+='<li>Add objects to your new exhibit with the + symbol on thumbnails or the <strong>Add to Virtual Exhibit</strong> link on an object\'s page.</li>';
+   vgalbox+='<li>When you’re done, click on <strong>My Exhibit</strong>.</li>';
+   vgalbox+='<li>Add a title, description, and <strong>final details</strong>.</li>';
+   vgalbox+='<li>Click <strong>Save exhibit</strong>.</li>';
+   vgalbox+='   </ul></div><div class="col-xs-6"><img class="img-responsive" src="http://collections.centerofthewest.org/img/animation.gif"></div><div class="col-xs-6"><img class="img-responsive" src="http://collections.centerofthewest.org/img/help.jpg"></div></div></div><!-- row -->';
+  vgalbox+='    <div class="modal-footer">';
+  vgalbox+='      <a style="color:white" href="http://collections.centerofthewest.org/usergals/load" role="button" class="btn btn-success">Edit an existing exhibit</a>';
+  vgalbox+='      <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>'; 
+ vgalbox+='    </div>';
+   vgalbox+=' </div>';
+ vgalbox+=' </div>';
+vgalbox+='</div>';
 	if(getCookie("CakeCookie[vgal]")=="")
 		{
 			event.preventDefault();
-			$('body').append(lightbox)
-			event.preventDefault();
-			$('a.closebutton').unbind('click');			
+			
+			//$("a#myx").attr("href", "http://www.google.com/")
+			$('body').append(vgalbox);
+			$('#vgal-modal').modal();
+			//event.preventDefault();
+			//$('a.closebutton').unbind('click');			
 		}
 });
 	}
@@ -223,7 +249,7 @@ function deleteCookie(dcname)
 			//then add
 			document.cookie = "CakeCookie[vgal]=" + res + "; path=/";
 			//then redirect.
-			window.location.replace('http://oc.bbhclan.org/treasures/dopack/d:all');	
+			window.location.replace('http://collections.centerofthewest.org/treasures/dopack/d:all');	
 		}
 		else
 		{

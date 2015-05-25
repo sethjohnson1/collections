@@ -917,8 +917,8 @@ debug($userData);
 	//great for testing.. Don't want it working in production
 		if (Configure::read('debug')>0){
 			$user['id']=$id;
-			$user['username']='BigDummyTestUser'.$id;
-			$user['provider']='Facebook';
+			$user['username']='dipo_'.$id;
+			$user['provider']='Dummy';
 			$this->User->create();
 			$this->User->save($user,array('validate'=>false));
 			//$user['upvotes']=null;
@@ -928,7 +928,7 @@ debug($userData);
 			//$this->Auth->login($fuser['User']);
 			$this->Auth->login($user);
 			if ($this->Session->read('location')) $this->redirect($this->Session->read('location'));
-			else $this->redirect('/');
+			//else $this->redirect('/');
 		}
 	}
 	

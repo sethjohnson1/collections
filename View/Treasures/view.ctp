@@ -1,4 +1,12 @@
-<?//make link to self if Ajax
+<?
+//count non-empty for completeness, I chose the number 19 as the divisor, so "completed" records will still only be 84% done
+$completecolor=$color['red'];
+$complete=round(((count(array_filter($treasure['Treasure'])))/19)*100);
+if ($complete>=30) $completecolor=$color['yellow'];
+if ($complete>=60) $completecolor=$color['orange'];
+if ($complete>=80) $completecolor=$color['green'];
+
+//make link to self if Ajax
 if (isset($ajax)):?>
 <div style="padding: 0 10px">
 <?
@@ -12,8 +20,7 @@ else:
 
 //debug($tree);
 ?>
-<?//here is the giant container, needs $user, $model, $fk, $comments?>
-<?=$this->element('comments_container');?>
+
 
 <div class="backto">
 <?
@@ -104,15 +111,18 @@ else{
 if(!empty($file))
 	echo "<script type='text/javascript'> Z.showImage('myContainer', 'http://collections.centerofthewest.org/zoomify/1/".str_replace(' ','_',str_replace('#','',$treasure['Treasure']['img']))."','zImageProperties=".$file."','zFullPageVisible=0'); </script>";
 
-//Prints Links
+//Prints Links - sj removed this web site is not long for this world
+/*
 if(!empty($treasure['Treasure']['opencartid']))
 	echo'<p style="float:left;font-weight:bold;font-size:0.9em"><a href="http://prints.centerofthewest.org/index.php?route=product/product&product_id='.$treasure['Treasure']['opencartid'].'">Purchase a Museum Quality Reproduction</a></p>';
+	*/
 if (count($treasure['Image'])>1):?>
 
 <div class="related-img">
 <?	
 	foreach ($treasure['Image'] as $image):
-		$file = file_get_contents("http://collections.centerofthewest.org/zoomify/".$image['sortorder']."/".str_replace(' ','_',str_replace('#','',$image['name']))."/ImageProperties.xml");?>
+		//this is a completely worthless waste of load time
+		//$file = file_get_contents("http://collections.centerofthewest.org/zoomify/".$image['sortorder']."/".str_replace(' ','_',str_replace('#','',$image['name']))."/ImageProperties.xml");?>
 
 	<div class="the-related-objects" style="background-image: url('http://collections.centerofthewest.org/zoomify/<?=$image['sortorder'].'/'.str_replace(' ','_',str_replace('#','',$image['name']))?>/TileGroup0/0-0-0.jpg');">
 	
@@ -241,6 +251,7 @@ echo $loctxt;
 ?>
 </div>
 
+
 </div><!-- /row (inner) -->
 </div><!-- inner grid -->
 <br />
@@ -268,6 +279,14 @@ if(!empty($treasure['Treasure']['inscription']))echo '<p><span class="field-name
 if(!empty($treasure['Treasure']['synopsis']))echo '<p><span class="field-name">Synopsis: </span>'.$treasure['Treasure']['synopsis'].'</p>';
 
 ?>
+
+<h3>Record Completeness</h3>
+<div class="progress">
+  <div class="progress-bar" role="progressbar" aria-valuenow="<?=$complete?>" aria-valuemin="0" aria-valuemax="100" style="background-color:<?=$completecolor?> ;font-family: verdana, sans-serif; min-width: 2em; width: <?=$complete?>%;">
+    <?=$complete?>%
+  </div>
+</div>
+<p><strong>Know something we don't? Have a question?</strong> Just leave a comment at the bottom of this page and we'll get back to you.</p>
 
 <?if (!empty($treasure['Tag'])):?>
 <h3>Tags</h3>
@@ -308,32 +327,34 @@ if(!empty($treasure['Treasure']['synopsis']))echo '<p><span class="field-name">S
 <div class="row">
 
 <?
+//we load these now via async AJAX, really cut page load time bc file_get_contents is so slow (also tried cURL)
 if(!empty($treasure['Relation'])):?>
-<div class="col-sm-8">
+<div class="col-sm-8 related_articles">
 <h3 style="margin:5px 0px 10px 0px;">Related Articles</h3>
-	<?foreach ($treasure['Relation'] as $article):
-	$strJson = @file_get_contents('http://centerofthewest.org/wp-json/posts/'.$article['blogid'].'/');
-	$arrJson = json_decode($strJson,true);
-	$tn=$arrJson['featured_image']['attachment_meta']['sizes']['thumbnail']['url'];
-	if(!empty($arrJson['featured_image']['source'])):?>
-	<div class="row">
-	<div class="col-xs-4">
+	<?foreach ($treasure['Relation'] as $article):?>
+	<script>
+$(document).ready(function() { 
+  	$.ajax({
+	async:true,
+	dataType:"jsonp",
+	success:function (data, textStatus) {
+
+	var html='<div class="row"><div class="col-xs-4">';
+	html+='<a href="'+data['link']+'"><img src="'+data['featured_image']['attachment_meta']['sizes']['thumbnail']['url']+'" class="img-responsive img-thumbnail alt=" " /></a>';
+	html+='</div><div class="col-xs-8"><p style="text-align:justify;">';
+	html+='<a href="'+data['link']+'" >'+data['title']+'</a><br />';
+	html+='<span style="font-style: italic; font-size:90%"> By '+data['author']['name']+"</span><br />";
+	html+=data['excerpt'];
+	html+='</p><hr /></div></div><br />';
 	
-	<?=$this->Html->link($this->Html->image($tn,array('class'=>'img-responsive img-thumbnail','alt'=>$arrJson['title'])),$arrJson['link'],array('escape'=>false))?>
-	</div>
-	<div class="col-xs-8">
-		<p style="text-align:justify;"><a href="<?=$arrJson['link']?>"><?=$arrJson['title']?></a>
-		<br/><span style="font-style: italic; font-size:90%"> By <?=$arrJson['author']['name']?></span><br />
-		<?=strip_tags(substr($arrJson['content'],0,100)).'...<br><a href="'.$arrJson['link'].'" class="">&#x25ba; Read More</a>';	
-		?>
-		
-		</p>
-		<hr />
-	</div>
-	</div>
-	<br />
-	<?endif;
-	endforeach;?>
+	$('.related_articles').append(html);
+	},
+	url:"http://centerofthewest.org/wp-json/posts/<?=$article['blogid']?>/?_jsonp=?"});
+	return false;
+});
+</script>
+<?endforeach?>
+
 </div>
 <?endif?>
 <?
@@ -375,6 +396,8 @@ if(!empty($treasure['Usergal'])):?>
 
 
 </div><!-- /row -->
+<?//here is the giant container, needs $user, $model, $fk, $comments?>
+<?=$this->element('comments_container');?>
 <?
 //this was for the beginning of an AJAX login. It worked sort of but kept redirecting so I commented out
 //echo ' <button id="login-button">Login</button>';
@@ -389,4 +412,3 @@ if(!empty($treasure['Usergal'])):?>
 // my tests have found 'tree' to be a good display, but the data is all stored the same
  ?>
 </div><!-- /info-container -->
-

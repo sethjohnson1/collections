@@ -183,7 +183,7 @@ class TreasuresController extends AppController {
 		//the collections are the trickiest one, dump into array then count them
 		$cols=array();
 		if (!empty($pm['bbm'])) $cols['bbm']='Buffalo Bill';
-		if (!empty($pm['pim'])) $cols['pim']='Plains Indians';
+		if (!empty($pm['pim'])) $cols['pim']='Plains Indian';
 		if (!empty($pm['cfm'])) $cols['cfm']='Firearms';
 		if (!empty($pm['dmnh'])) $cols['dmnh']='Natural History';
 		if (!empty($pm['wg'])) $cols['wg']='Western Art';
@@ -244,7 +244,7 @@ class TreasuresController extends AppController {
 				else{
 					if ($cnt > 1){$searchvar='slug:'; $flash='Found more than one item like '.$slug;}
 					if ($cnt < 1){$searchvar='searchall:'; $flash='Invalid item, tried searching for '.$slug;}
-					$this->Session->setFlash(__($flash, true));
+					$this->Session->setFlash($flash, 'flash_warning');
 					//return $this->redirect(array('action' => 'index',$searchvar.$slug));	
 				}
 			}
@@ -271,10 +271,10 @@ class TreasuresController extends AppController {
 		//use Comment component to load up view variables
 		$comments=$this->Comment->getComments($treasure['Treasure']['id'],'Treasure',$user['id']);
 
-		$usercomment=$this->Comment->userComment($treasure['Treasure']['id'],'Treasure',$user['id']);
+		//$usercomment=$this->Comment->userComment($treasure['Treasure']['id'],'Treasure',$user['id']);
 		$fk=$treasure['Treasure']['id'];
 		$model='Treasure';
-		$this->set(compact('treasure','comments','usercomment','slug','user','fk','model'));
+		$this->set(compact('treasure','comments','slug','user','fk','model'));
 		$this->set('_serialize', array('treasure'));
 		
 		//used as a flag for the Colorbox ajax calls
@@ -343,7 +343,7 @@ class TreasuresController extends AppController {
 				else{
 					if ($cnt > 1){$searchvar='slug:'; $flash='Found more than one item like '.$slug;}
 					if ($cnt < 1){$searchvar='searchall:'; $flash='Invalid item, tried searching for '.$slug;}
-					$this->Session->setFlash(__($flash, true));
+					$this->Session->setFlash($flash, 'flash_danger');
 					return $this->redirect(array('action' => 'index',$searchvar.$slug));	
 				}
 			}
@@ -382,7 +382,7 @@ class TreasuresController extends AppController {
 		//if the pack is empty redirect them, this only triggers when
 		$variable=$this->Cookie->read('vgal');
 		if (empty($variable)){
-			$this->Session->setFlash(__('Your virtual gallery is empty'));
+			$this->Session->setFlash('Your virtual gallery is empty, add some items to get started.','flash_warning');
 			$this->redirect(array('controller'=>'treasures','action' => 'index'));
 		}
 	
@@ -477,12 +477,13 @@ class TreasuresController extends AppController {
 				}
 				$usergal['Usergal']=$this->request->data['Usergal'];
 				//need to fix this right here left off
-				if ($this->Usergal->save($usergal,array('validate'=>false))) {
+				if ($this->Usergal->save($usergal)) {
 					$lastid = $this->Usergal->getInsertID();
 				}
 				else {
-					debug('bad');
-					$this->Session->setFlash(__('The gallery could not be saved. Please try again.'));
+					//debug('bad');
+					debug($this->User->invalidFields());
+					$this->Session->setFlash('The gallery could not be saved. Please try again.','flash_danger');
 				}
 			}
 			$this->TreasuresUsergal->deleteAll(array('usergal_id'=>$lastid), $cascade=false);
@@ -510,7 +511,7 @@ class TreasuresController extends AppController {
 				$newcook[key($forcook)]=$forcook[key($forcook)];
 				$this->Cookie->write('editflag',$newcook);
 			}
-				$this->Session->setFlash(__('Your Virtual Exhibit has been '.$note));
+				$this->Session->setFlash('Your Virtual Exhibit has been '.$note.'. Share it with your friends and check back for comments.','flash_success');
 				$this->redirect(array('controller'=>'usergals','action' => 'view',$lastid));
 		}
 		else {
@@ -537,7 +538,7 @@ class TreasuresController extends AppController {
 		if (!empty($this->request->query['c'])){
 			$this->Cookie->delete('editflag');
 			$this->Cookie->delete('vgal');
-			$this->Session->setFlash(__('Exhibit emptied', true));
+			$this->Session->setFlash('Exhibit emptied', 'flash_success');
 			return $this->redirect(array('action'=>'index','controller'=>'treasures'));
 		}
 		if (!empty($this->params['named']['d'])&&$this->Cookie->read('editflag')){
@@ -554,7 +555,7 @@ class TreasuresController extends AppController {
 			$this->Usergal->delete();
 			$this->Cookie->delete('editflag');
 			$this->Cookie->delete('vgal');
-			$this->Session->setFlash(__('Exhibit deleted', true));
+			$this->Session->setFlash('Exhibit deleted', 'flash_danger');
 		}
 		//send back from whence they came
 		return $this->redirect($this->referer());

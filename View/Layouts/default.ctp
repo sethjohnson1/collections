@@ -72,7 +72,7 @@
 	if(!empty($TheDescription))	
 		echo '<meta name="description" content="'.$TheDescription.'">';
 	else
-		echo '<meta name="description" content="The Buffalo Bill Center of the West Online Collection contains nearly every photographed object in our database.">';
+		echo '<meta name="description" content="The Buffalo Bill Center of the West Online Collections contain nearly every photographed object in our database.">';
 
 	
 	if(!empty($FeaturedImage))	
@@ -176,7 +176,7 @@ s.parentNode.insertBefore(ga, s);
 			echo '<li class="menu-item"><a href="#login-modal" class="" data-toggle="modal">Log In</a></li>';
 		if( $this->Session->read('Auth.User'))
 			{
-				echo '<li class="menu-item">'.$this->Html->link('Log Out', array('plugin'=>'users','controller'=>'users','action'=>'logout')).'</li>';
+				echo '<li class="menu-item">'.$this->Html->link('Log Out', array('plugin'=>'users','controller'=>'users','action'=>'logout'),null, __('Are you sure you want to log out? Unsaved changes to your Virtual exhibit will be lost.')).'</li>';
 
 			}
 		//else echo '</li><li class="menu-item">'.$this->Html->link('Register', array('plugin'=>'users','controller'=>'users','action'=>'add')).'</li>';
@@ -204,10 +204,10 @@ s.parentNode.insertBefore(ga, s);
   </div></section>
   </aside></div></div>  
   
-
+<div class="hidden-xs hidden-sm" style="margin-top:100px"></div>
   
   
-  <div class="footer-top-bar">
+  <div class="footer-top-bar hidden-sm hidden-xs">
 		<div class="wrap">
 			<div class="our-blogs">Our Blogs: <a href="http://centerofthewest.org/center-west-blogs/">View all the blogs from the Center of the West</a></div>
 			<ul class="social-links">
@@ -218,7 +218,7 @@ s.parentNode.insertBefore(ga, s);
 			</ul>
 		</div>
 	</div>
-<div class="footer-widgets">
+<div class="footer-widgets hidden-sm hidden-xs">
 <div class="wrap"><div class="footer-widgets-1 widget-area"><section id="text-6" class="widget widget_text">
 <div class="widget-wrap"><h4 class="widget-title widgettitle">location</h4>
 			<div class="textwidget">Buffalo Bill Center of the West&nbsp;&nbsp;<a href="mailto:info@centerofthewest.org"><img src="http://centerofthewest.org/wp-content/uploads/2013/11/envelope-icon.png" width="14px" height="10px"></a><br>
@@ -281,6 +281,7 @@ Cody, Wyoming 82414<br>
 <div class="one-third"><p><span class="bold">Group tour rates</span><br>call 307-578-4114</p><p><span class="bold">Children Free</span><br>age 5 &amp; younger</p></div></div>
 		</div></section>
 </div></div></div -->
+
 <footer class="site-footer" role="contentinfo" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
 
 

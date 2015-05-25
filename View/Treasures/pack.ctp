@@ -134,16 +134,16 @@ echo $this->Js->writeBuffer();
 	<?
 	$userval='';
 	if (empty($user)):
+	if (isset($this->request->data['Usergal']['creator'])) $userval=$this->request->data['Usergal']['creator'];
 	$logintxt='. '.$this->Html->link('Create an Account to skip this!','#login-modal',array('data-toggle'=>'modal'));
-	echo $this->Form->input('Usergal.email',array('required'=>true,'div'=>false,'placeholder'=>'(for verification only)','label'=>'Valid e-mail, will not be shared'.$logintxt,'class'=>'form-control'));
+	echo $this->Form->input('Usergal.email',array('required'=>true,'div'=>false,'placeholder'=>'(for verification only)','type'=>'email','label'=>'Valid e-mail, will not be shared'.$logintxt,'class'=>'form-control'));
 	
 	?>
 	<br />
 	<br />
 	<br />
 	<?
-	elseif (isset($this->request->data['Usergal']['creator'])): $userval=$this->request->data['Usergal']['creator'];
-	elseif (isset($user['username'])):
+	else:
 	$formattedname=explode('^',$user['username']);
 	$formattedname[0]=str_replace('_',' ',$formattedname[0]);
 	$userval=$formattedname[0];
@@ -206,7 +206,7 @@ echo $this->Js->writeBuffer();
 			?>
 		</div>
 		<?endif;
-					echo $this->Form->submit('Save exhibit', array('div' => false,'class'=>'ignore btn btn-danger btn-lg"'));	
+					echo $this->Form->submit('Save exhibit', array('div' => false,'class'=>'ignore btn btn-danger btn-lg'));	
 	?>
 	</div>
   </div>
