@@ -1,9 +1,9 @@
 <a name="index-top"></a>
 <script>
 $(document).ready(function(){
-//smooth scrolling, easy copy-paste!
+//smooth scrolling, easy copy-paste! - makes modal not work if applied globally
 $(function() {
-  $('a[href*=#]:not([href=#])').click(function() {
+  $('a[href*=#index-top]:not([href=#])').click(function() {
     if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
       var target = $(this.hash);
       target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
@@ -251,6 +251,8 @@ if ($this->request->paging[$model]['pageCount']>1):
 
 <?endif?>
 <div class="col-md-12">
+<div class="row">
+<div class="col-sm-6">
 <p>
 <? 
 $cnt =$this->Number->format($this->Paginator->counter(array('format' => __('{:count}'))));
@@ -258,9 +260,12 @@ echo $this->Paginator->counter(array('format' => __('Viewing records {:start} to
 ?>
 <?
 if (!empty($this->params['named']['searchall'])) echo ' for "'.$this->params['named']['searchall'].'" ';
-echo ' - '.$this->Html->link('Refine Search','#index-top');
 ?>
 </p>
+</div>
+<div class="col-sm-6">
+<?=$this->Html->link('Refine Search','#index-top')?>
+</div>
 </div>
 <?php 
 if(empty($treasures)):?>

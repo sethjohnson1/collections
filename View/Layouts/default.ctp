@@ -35,7 +35,10 @@
 	echo $this->Html->script('http://cdn.jsdelivr.net/select2/3.4.8/select2.min.js');
 
 	echo $this->Html->script('select2_fields');
-	echo $this->Html->script('jquery.jpanelmenu');
+	//jpanelmenu caused sticky header no worky
+	//echo $this->Html->script('jquery.jpanelmenu');
+	echo $this->Html->script('jquery.sidr.min');
+	echo $this->Html->css('jquery.sidr.light');
 	//colorbox CSS must be before JS is loaded
 	echo $this->Html->css('colorbox');
 	echo $this->Html->script('jquery.colorbox');
@@ -105,19 +108,30 @@ var s = document.getElementsByTagName('script')[0];
 s.parentNode.insertBefore(ga, s);
 })();
 </script>
-
+<script>
+$(document).ready(function(){
+//smooth scrolling, easy copy-paste! - makes modal not work if applied globally
+$(function() {
+  $('a[href*=#search-results]:not([href=#])').click(function() {
+    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+      var target = $(this.hash);
+      target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+      if (target.length) {
+        $('html,body').animate({
+          scrollTop: target.offset().top
+        }, 1000);
+        return false;
+      }
+    }
+  });
+});
+});
+</script>
 </head>
 <body class="page page-id-10546 page-template-default logged-in admin-bar no-customize-support header-image altsidebar-content" itemscope="itemscope" itemtype="http://schema.org/WebPage">
 <script>
 </script>
 <div class="site-container">
-<? //<!-- the modals themselves must be drawn right before end body tag or there is a conflict (jpanel is my guess but not sure) -->?>
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#login-modal">
-  login modal
-</button>
-<a href="#login-modal" class="btn btn-primary btn-lg" data-toggle="modal">
-  login modal
-</a>
 
 
 <header class="site-header" role="banner" itemscope="itemscope" itemtype="http://schema.org/WPHeader"><div class="wrap"><div class="title-area"><p class="site-title" itemprop="headline"><a href="http://centerofthewest.org/" title="Buffalo Bill Center of the West" >Buffalo Bill Center of the West</a></p></div><aside class="widget-area header-widget-area"></aside>
@@ -147,12 +161,44 @@ s.parentNode.insertBefore(ga, s);
 
 <?php echo $this->fetch('content'); ?>
 </div></article></main></div>
-<div id="mobilebuttons">
-<div class="toggle-button"><a><div class="trigram"></div><span style="padding-left:26px">Menu</a></div>
-<!-- eventually this will trigger a social sign-in popup similar to iScout -->
-<div class="login-button"><?=$this->Html->link('&#9733; Login',array('plugin'=>'users','controller'=>'users','action'=>'login'),array('escape'=>false))?></div>
+
+<script>
+$(document).ready(function() {
+var stickyNavTop = $('.mnav').offset().top;
+ 
+var stickyNav = function(){
+var scrollTop = $(window).scrollTop();
+      
+if (scrollTop > stickyNavTop) { 
+    $('.mnav').addClass('sticky');
+} else {
+    $('.mnav').removeClass('sticky'); 
+}
+};
+ 
+stickyNav();
+ 
+$(window).scroll(function() {
+    stickyNav();
+});
+
+$('.toggle-button').sidr( [] );
+});
+</script>
+<div id="mobilebuttons" class="row mnav">
+<div class="col-xs-12">
+<div class="btn-group btn-group-justified" role="group">
+<div class="btn-group" role="group">
+<a href="#nothing" class="orange btn btn-lg btn-default toggle-button"><span class="glyphicon glyphicon-menu-hamburger"></span><span style=""> Menu</a>
 </div>
-<aside class="sidebar-secondary" style="margin-top:10px;">
+<div class="btn-group" role="group"><?=$this->Html->link('<span class="glyphicon glyphicon-collapse-down"></span>','#search-results',array('escape'=>false,'role'=>'button','class'=>'orange btn btn-lg btn-default'))?>
+</div>
+<div class="btn-group" role="group"><?=$this->Html->link('<span class="glyphicon glyphicon-user"></span>','#login-modal',array('data-toggle'=>'modal','escape'=>false,'role'=>'button','class'=>'orange btn btn-lg btn-default '))?>
+</div>
+</div>
+</div>
+</div><!-- /mobile-menu row -->
+<aside class="sidebar-secondary hidden-xs hidden-sm" style="margin-top:10px;">
 
 <h1 class="OC-header"><?php echo $this->Html->link('Online Collections', array('plugin'=>'','controller' => 'treasures','action' => 'index')); ?></h1>
 
@@ -205,6 +251,7 @@ s.parentNode.insertBefore(ga, s);
   </div><!-- /mainmenu -->
   </div></section>
   </aside></div></div>  
+  
   
 <div class="hidden-xs hidden-sm" style="margin-top:100px"></div>
   
@@ -294,13 +341,15 @@ Cody, Wyoming 82414<br>
 
 <script>
 //call this after the menu is drawn, this is for mobile slide-out menu
-var jPM = $.jPanelMenu();
+//var jPM = $.jPanelMenu();
+/* causes too many problems, mainly kills the sticky header nav, so 86'd
 var jPM = $.jPanelMenu({
     menu: '#mainmenu',
-    trigger: '.toggle-button'
+    trigger: '.toggle-button',
+	excludedPanelContent: '#mobilebuttons'
 });
 jPM.on();
-
+*/
 </script>
 <style>
 .btn-social{
@@ -354,7 +403,7 @@ jPM.on();
 		</div>
       </div>
       <div class="modal-footer">
-	  <p>also this space down here</p>
+	  <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
       
       </div>
     </div>

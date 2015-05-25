@@ -5,7 +5,16 @@
 	max-width: 1002px;
 	margin: 0 auto;
 }
-
+.sticky {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 100;
+    border-top: 0;
+	height:100px;
+	display: block;
+}
 .badge-orange{
 	span.badge{
 		background-color: @burnt-orange;
@@ -1480,8 +1489,9 @@ margin-top: 30px;
 		}
 	}
 }
+body { overflow-x: visible; }
 #mainmenu{
-	@media @mq-site-width {
+	@media @mq-site-width { 
 		display:none;
 		
 		ul{
@@ -1503,18 +1513,9 @@ margin-top: 30px;
 	display:none;
 	@media @mq-site-width {
 		display:block;
-		width:100%;
-		position: relative;
-		top: -34px;
-		font-size:152%;
-		font-weight:bold;
-		.login-button{
-			float:left;
-		}
-		.toggle-button{ 
-			float:left; 
-			padding-right:60px;			
-		}
+		//margin-top:-55px;
+		font-size:1.5em;		
+
 	}
 }
 

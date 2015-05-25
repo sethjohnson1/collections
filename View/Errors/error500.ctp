@@ -21,7 +21,12 @@
 <div class="row">
 <div class="col-xs-12">
 <div class="jumbotron" style="background-color:white">
-<img src="http://collectionimages.s3-website-us-west-1.amazonaws.com/1/112.67.jpg" alt="The End of the Trail" class="img-responsive" style="width:45%; float: left">
+<div class="row">
+<div class="col-xs-5">
+<img src="http://collectionimages.s3-website-us-west-1.amazonaws.com/1/112.67.jpg" alt="The End of the Trail" class="img-responsive" style="">
+<p style="font-size:.75em"><?=$this->Html->link('End of the Trail',array('controller'=>'treasures','plugin'=>'','action'=>'view','end_of_the_trail')).' - 112.67'?></p>
+</div>
+<div class="col-xs-7">
 <h1>Uh-oh. <small>
 <?php echo $name; ?></small></h1>
 
@@ -32,7 +37,8 @@
 	); ?><br /><br />
 	If you keep receiving this message please leave feedback at the bottom of <?=$this->Html->link('this page',array('controller'=>'treasures','action'=>'about','plugin'=>'','#'=>'feedback','?'=>array('src'=>$url,'error'=>$name)))?>.<br/><small>Just follow the link and send the information in the box. Include any additional information if you'd like.</small>
 	</p>
-
+</div>
+</div>
 </div>
 </div>
 </div>
