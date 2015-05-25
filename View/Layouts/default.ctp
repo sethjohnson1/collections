@@ -54,6 +54,7 @@
 	echo $this->Html->css('jquery-ui-1.10.3.custom.min');
 	
 	//my script uses jQuery, so it only works when loaded AFTER!
+	//cookie1 is the bulk of everything, although some other scripts are referenced inline still maybe
 	echo $this->Html->script('sj_cookie1');	
 	echo $this->Html->meta('icon');
 	echo $this->fetch('meta');
@@ -104,6 +105,7 @@ var s = document.getElementsByTagName('script')[0];
 s.parentNode.insertBefore(ga, s);
 })();
 </script>
+
 </head>
 <body class="page page-id-10546 page-template-default logged-in admin-bar no-customize-support header-image altsidebar-content" itemscope="itemscope" itemtype="http://schema.org/WebPage">
 <script>
@@ -181,7 +183,7 @@ s.parentNode.insertBefore(ga, s);
 			}
 		//else echo '</li><li class="menu-item">'.$this->Html->link('Register', array('plugin'=>'users','controller'=>'users','action'=>'add')).'</li>';
 		?>
-		<li class="menu-item"><?php echo $this->Html->link(__('About/Help'), array('plugin'=>'','controller' => 'pages','action' => 'about')); ?> </li>
+		<li class="menu-item"><?php echo $this->Html->link(__('About/Help'), array('plugin'=>'','controller' => 'treasures','action' => 'about')); ?> </li>
 
 </ul>
 <ul class="browse-menu">
@@ -347,7 +349,7 @@ jPM.on();
 		<?=$this->Html->link($gp.'Google',array('plugin'=>'users','controller'=>'users','action'=>'gauth'),array('class'=>'btn btn-social btn-gplus btn-lg','role'=>'button','escape'=>false))?>
 		<?=$this->Html->link($tw.'Twitter',array('plugin'=>'users','controller'=>'users','action'=>'auth_login','Twitter'),array('class'=>'btn btn-social btn-twitter btn-lg','role'=>'button','escape'=>false))?>
 		<p style="text-align: center;"> - OR - </p>
-		<?=$this->Html->link('<span class="glyphicon glyphicon-envelope" aria-hidden="true" style="float: right"></span> Email',array('plugin'=>'users','controller'=>'users','action'=>'login'),array('class'=>'btn btn-social btn-email btn-lg','role'=>'button','escape'=>false))?>
+		<?=$this->Html->link('<span class="glyphicon glyphicon-envelope" aria-hidden="true" style="float: right"></span> E-mail',array('plugin'=>'users','controller'=>'users','action'=>'login'),array('class'=>'btn btn-social btn-email btn-lg','role'=>'button','escape'=>false))?>
 		</div>
 		</div>
       </div>

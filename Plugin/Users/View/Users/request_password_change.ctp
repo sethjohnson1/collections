@@ -12,14 +12,14 @@
 <div class="users form row">
 <div class="col-xs-12">
 <h2><?php echo __d('users', 'Forgot your password?'); ?></h2>
-<p><?php echo __d('users', 'Please enter the email you used for registration and you\'ll get an email with further instructions.'); ?></p>
+<p><?php echo __d('users', 'Please enter the e-mail you used for registration and you\'ll get an e-mail with further instructions.'); ?></p>
 <?php
 	echo $this->Form->create($model, array(
 		'url' => array(
 			'admin' => false,
 			'action' => 'reset_password')));
 	echo $this->Form->input('email', array(
-		'label'=>false,'class'=>'form-control','placeholder'=>'Email address')).'<br />';
+		'label'=>false,'class'=>'form-control','placeholder'=>'E-mail address')).'<br />';
 	echo $this->Form->submit(__d('users', 'Submit'));
 	echo $this->Form->end();
 ?>

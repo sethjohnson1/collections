@@ -564,4 +564,24 @@ class TreasuresController extends AppController {
 	public function google_search_page(){
 		//$this->layout=false;
 	}
+	
+	public function about() {
+		if ($this->request->is('post')) {
+			//send an e-mail reads addresses from private config file
+			$Email = new CakeEmail();
+			$Email->from('forms@centerofthewest.org')
+				->to('web@centerofthewest.org')
+				->subject('Online Collections Feedback')
+				->send(
+				"From: ".$this->request->data['Feedback']['email']."\n\n\n".
+				$this->request->data['Feedback']['message']
+				);
+			//$this->render(false);
+			$this->Session->setFlash('Your message was sent! Thank you.','flash_success');
+			
+			if ($this->Session->read('location')) $this->redirect($this->Session->read('location'));
+			else $this->redirect('/');
+		}
+		$this->set('TheTitle','Offer Feedback');
+	}
 }

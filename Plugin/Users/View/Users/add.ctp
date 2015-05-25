@@ -12,9 +12,9 @@
 <div class="row users form">
 <div class="col-xs-12">
 <h4> If you already have an account, <?=$this->Html->link('log-in now',array('action'=>'login'))?>!</h4>
-	<h2>Register with email	</h2>
+	<h2>Register with e-mail	</h2>
 
-	<p>Email addresses are not displayed publicly or shared</p>
+	<p>E-mail addresses are not displayed publicly or shared</p>
 	<fieldset>
 		<?php
 			echo $this->Form->create($model);
@@ -24,10 +24,10 @@
 				'placeholder'=>'Display name'));
 			echo $this->Form->input('email', array(
 				'label' => false,
-				'error' => array('isValid' => __d('users', 'Must be a valid email address'),
-				'isUnique' => __d('users', 'An account with that email already exists'))
+				'error' => array('isValid' => __d('users', 'Must be a valid e-mail address'),
+				'isUnique' => __d('users', 'An account with that e-mail already exists'))
 				,'class'=>'form-control',
-				'placeholder'=>'Email address (used as login)'
+				'placeholder'=>'E-mail address (used as login)'
 				));
 			echo $this->Form->input('password', array(
 				'label' => false,

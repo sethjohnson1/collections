@@ -18,7 +18,6 @@ echo $this->Html->link('Visit record &raquo;',array(),array('escape'=>false)).'<
 <?
 else:
 
-//debug($tree);
 ?>
 
 
@@ -106,10 +105,15 @@ if(empty($treasure['Treasure']['img']))
 }
 else{
 	$file = file_get_contents("http://collections.centerofthewest.org/zoomify/1/".str_replace(' ','_',str_replace('#','',$treasure['Treasure']['img']))."/ImageProperties.xml");
+	$file=str_replace('"',"'",$file);
+	/* Zoomify 3 doesn't work because of the ".JPG" at the end of the path, not much we can do about that at the moment so just moving on for now*/
 	echo '<div id="myContainer"></div>';
 }
-if(!empty($file))
-	echo "<script type='text/javascript'> Z.showImage('myContainer', 'http://collections.centerofthewest.org/zoomify/1/".str_replace(' ','_',str_replace('#','',$treasure['Treasure']['img']))."','zImageProperties=".$file."','zFullPageVisible=0'); </script>";
+if(!empty($file)){?>
+	<script type='text/javascript'> Z.showImage("myContainer", "http://collections.centerofthewest.org/zoomify/1/<?=str_replace(' ','_',str_replace('#','',$treasure['Treasure']['img']))?>","zImageProperties=<?=$file?>","zFullPageVisible=0"); 
+	</script>
+	<?
+	}
 
 //Prints Links - sj removed this web site is not long for this world
 /*
