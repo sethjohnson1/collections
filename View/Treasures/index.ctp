@@ -267,8 +267,7 @@ if (!empty($this->params['named']['searchall'])) echo ' for "'.$this->params['na
 <?=$this->Html->link('Refine Search','#index-top')?>
 </div>
 </div>
-<?php 
-if(empty($treasures)):?>
+<? if(empty($treasures)):?>
 <br />
 <br />
 <br />
@@ -279,8 +278,9 @@ if(empty($treasures)):?>
 </div>
 </div>
 
+<? else: ?>
+<div class="row">
 <?
-endif;
 foreach ($treasures as $treasure):
 ?>
 <div class="the-objects col-xs-4">
@@ -397,7 +397,9 @@ else $css_img='img/non.jpg';
 </div><!-- /the-objects -->
 
 
-<?php endforeach; ?>
+<?endforeach?>
+</div>
+<?endif?>
 <div style="margin-top:20px;">&nbsp;</div>
 </div><!-- /search-results -->
 <br style="clear:both;" />

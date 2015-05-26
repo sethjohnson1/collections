@@ -1,11 +1,10 @@
 <?
-//count non-empty for completeness, I chose the number 19 as the divisor, so "completed" records will still only be 84% done
-$completecolor=$color['red'];
-$complete=round(((count(array_filter($treasure['Treasure'])))/19)*100);
-if ($complete>=30) $completecolor=$color['yellow'];
-if ($complete>=60) $completecolor=$color['orange'];
-if ($complete>=80) $completecolor=$color['green'];
-
+//first set count for filled record completeness, initially add some value based on relations, then add as we go
+$filled=0;
+if (!empty($treasure['Usergal'])) $filled++;
+if (!empty($treasure['Relation'])) $filled++;
+if (!empty($treasure['Maker'])) $filled++;
+if (!empty($treasure['Medvalue'])) $filled++;
 //make link to self if Ajax
 if (isset($ajax)):?>
 <div style="padding: 0 10px">
@@ -110,7 +109,7 @@ else{
 	echo '<div id="myContainer"></div>';
 }
 if(!empty($file)){?>
-	<script type='text/javascript'> Z.showImage("myContainer", "http://collections.centerofthewest.org/zoomify/1/<?=str_replace(' ','_',str_replace('#','',$treasure['Treasure']['img']))?>","zImageProperties=<?=$file?>","zFullPageVisible=0"); 
+	<script type='text/javascript'> Z.showImage("myContainer", "http://collections.centerofthewest.org/zoomify/1/<?=str_replace(' ','_',str_replace('#','',$treasure['Treasure']['img']))?>","zImageProperties=<?=$file?>","zFullPageVisible=1"); 
 	</script>
 	<?
 	}
@@ -189,7 +188,8 @@ $('.badge-hov').hover(function(e) {
 </div>
 <?endif?>
 
-<?if (!empty($treasure['Maker'])):?>
+<?if (!empty($treasure['Maker'])):
+?>
 <div class="col-sm-12">
 <h3>Made by</h3>
 
@@ -212,7 +212,8 @@ $('.badge-hov').hover(function(e) {
 </div>
 <?endif?>
 
-<?if (!empty($treasure['Medvalue'])):?>
+<?if (!empty($treasure['Medvalue'])):
+?>
 <div class="col-sm-12">
 	<h3>Medium</h3>
 <?
@@ -260,30 +261,45 @@ echo $loctxt;
 </div><!-- inner grid -->
 <br />
 <div class="data col-sm-8 col-sm-pull-4 col-xs-12">
-<?php if(!empty($treasure['Treasure']['objtitle']))echo '<p><span class="field-name">Object name: </span> '. $treasure['Treasure']['objtitle'].'</p>'; 
-if(!empty($treasure['Treasure']['accnum']))echo '<p><span class="field-name">Accession Number:</span> '.$treasure['Treasure']['accnum'].'</p>';
+<? 
 
-//sj -makers and stuff were here
-
-if(!empty($treasure['Treasure']['daterange']))echo '<p><span class="field-name">Date : </span> '.$treasure['Treasure']['daterange'].'</p>'; 
-if(!empty($treasure['Treasure']['gloss']))echo '<p><span class="field-name">Gloss: </span>'.$treasure['Treasure']['gloss'].'</p>';
-if(!empty($treasure['Treasure']['dimensions']))echo '<p><span class="field-name">Dimensions: </span>'.$treasure['Treasure']['dimensions'].'</p>';
-if(!empty($treasure['Treasure']['creditline']))echo '<p><span class="field-name">Credit Line: </span>'.$treasure['Treasure']['creditline'].'</p>';
-
-
-if(!empty($treasure['Treasure']['commonname']))echo '<p><span class="field-name">Common Name: </span>'.$treasure['Treasure']['commonname'].'</p>';
-if(!empty($treasure['Treasure']['taxonomic']))echo '<p><span class="field-name">Taxonomic: </span>'.$treasure['Treasure']['taxonomic'].'</p>';
-if(!empty($treasure['Treasure']['genus']))echo '<p><span class="field-name">Genus species: </span><i>'.$treasure['Treasure']['genus'].'</i></p>';
-
-if(!empty($treasure['Treasure']['remarks']))echo '<p><span class="field-name">Remarks: </span>'.$treasure['Treasure']['remarks'].'</p>';
-
-if(!empty($treasure['Treasure']['inscription']))echo '<p><span class="field-name">Inscription: </span>'.$treasure['Treasure']['inscription'].'</p>';
+	if(!empty($treasure['Treasure']['objtitle'])){
+	echo '<p><span class="field-name">Object name: </span> '. $treasure['Treasure']['objtitle'].'</p>'; 
+	$filled++;
+	}
+if(!empty($treasure['Treasure']['accnum'])){
+echo '<p><span class="field-name">Accession Number:</span> '.$treasure['Treasure']['accnum'].'</p>';
+$filled++;
+}
 
 
-if(!empty($treasure['Treasure']['synopsis']))echo '<p><span class="field-name">Synopsis: </span>'.$treasure['Treasure']['synopsis'].'</p>';
+if(!empty($treasure['Treasure']['daterange'])){echo '<p><span class="field-name">Date : </span> '.$treasure['Treasure']['daterange'].'</p>'; $filled++; }
+if(!empty($treasure['Treasure']['gloss'])){echo '<p><span class="field-name">Gloss: </span>'.$treasure['Treasure']['gloss'].'</p>'; $filled++;}
+if(!empty($treasure['Treasure']['dimensions'])){echo '<p><span class="field-name">Dimensions: </span>'.$treasure['Treasure']['dimensions'].'</p>'; $filled++;}
+if(!empty($treasure['Treasure']['creditline'])){echo '<p><span class="field-name">Credit Line: </span>'.$treasure['Treasure']['creditline'].'</p>';$filled++;}
+
+
+if(!empty($treasure['Treasure']['commonname'])){echo '<p><span class="field-name">Common Name: </span>'.$treasure['Treasure']['commonname'].'</p>';$filled++;}
+if(!empty($treasure['Treasure']['taxonomic'])){echo '<p><span class="field-name">Taxonomic: </span>'.$treasure['Treasure']['taxonomic'].'</p>';$filled++;}
+if(!empty($treasure['Treasure']['genus'])){echo '<p><span class="field-name">Genus species: </span><i>'.$treasure['Treasure']['genus'].'</i></p>';$filled++;}
+
+if(!empty($treasure['Treasure']['remarks'])){echo '<p><span class="field-name">Remarks: </span>'.$treasure['Treasure']['remarks'].'</p>';$filled++;}
+
+if(!empty($treasure['Treasure']['inscription'])){echo '<p><span class="field-name">Inscription: </span>'.$treasure['Treasure']['inscription'].'</p>';$filled++;}
+
+
+if(!empty($treasure['Treasure']['synopsis'])){echo '<p><span class="field-name">Synopsis: </span>'.$treasure['Treasure']['synopsis'].'</p>';$filled++;}
 
 ?>
-
+<?
+//these were totalled at each echo, the divisor set here:
+$possible=17;
+$completecolor=$color['red'];
+$complete=round(($filled/$possible)*100);
+if ($complete>=30) $completecolor=$color['yellow'];
+if ($complete>=60) $completecolor=$color['orange'];
+if ($complete>=80) $completecolor=$color['green'];
+?>
 <h3>Record Completeness</h3>
 <div class="progress">
   <div class="progress-bar" role="progressbar" aria-valuenow="<?=$complete?>" aria-valuemin="0" aria-valuemax="100" style="background-color:<?=$completecolor?> ;font-family: verdana, sans-serif; min-width: 2em; width: <?=$complete?>%;">

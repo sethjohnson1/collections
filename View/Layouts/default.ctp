@@ -23,6 +23,12 @@
 
 	echo $this->Html->charset(); 
 	echo $this->Html->meta('icon', $this->Html->url('http://collections.centerofthewest.org/img/truckerhat.ico'));
+	
+	//loading Zoomify on every page is needless overhead
+	
+	//this version still has toolbar issues, but getting closer
+	//echo $this->Html->script('zoomify3-custom.min');
+	
 	echo $this->Html->script('ZoomifyImageViewer');
 	
 	echo $this->Html->script('Assets/ViewResizable/sizeViewerToPage.js');
