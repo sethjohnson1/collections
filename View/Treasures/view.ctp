@@ -1,6 +1,7 @@
 <?
 //first set count for filled record completeness, initially add some value based on relations, then add as we go
 $filled=0;
+$possible=18;
 if (!empty($treasure['Usergal'])) $filled++;
 if (!empty($treasure['Relation'])) $filled++;
 if (!empty($treasure['Maker'])) $filled++;
@@ -292,8 +293,7 @@ if(!empty($treasure['Treasure']['synopsis'])){echo '<p><span class="field-name">
 
 ?>
 <?
-//these were totalled at each echo, the divisor set here:
-$possible=17;
+//total the record and assign color
 $completecolor=$color['red'];
 $complete=round(($filled/$possible)*100);
 if ($complete>=30) $completecolor=$color['yellow'];
