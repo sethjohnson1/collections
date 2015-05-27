@@ -1,6 +1,6 @@
 <?php
 App::uses('AppController', 'Controller');
-
+App::uses('CakeEmail', 'Network/Email');
 class TreasuresController extends AppController {
 	public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Search.Prg'=>array(
 			//newer version of search plugin defaults to querystring, we have lots of work to do before we're ready for that...

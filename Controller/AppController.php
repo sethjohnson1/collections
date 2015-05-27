@@ -80,6 +80,7 @@ class AppController extends Controller {
 			'tan'=>'#aa9c8f'
 		);
 		
+		
 		//users plugin uses this to redirect
 		if ($this->params['controller']=='treasures' || $this->params['controller']=='usergals') $this->Session->write('location','http://'.$_SERVER['HTTP_HOST'].$this->here);
 		

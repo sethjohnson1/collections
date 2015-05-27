@@ -1,7 +1,7 @@
 <h2>Virtual Exhibits</h2>
 
 <h3>Check out a few virtual exhibits created from our online collections.</h3>
-<p>You can make your own: <?=$this->Html->link('click here to get started',array('action'=>'pack','controller'=>'treasures')).'!'?></p>
+<p>You can make your own: <?=$this->Html->link('click here to get started',array('action'=>'pack','controller'=>'treasures'),array('class'=>'myx')).'!'?></p>
 <div class="row">    
 <div class="col-md-12">
 		<?
@@ -23,7 +23,8 @@
 </div>
 
 <?=$this->element('paging')?>
-
+<?$cnt =$this->Number->format($this->Paginator->counter(array('format' => __('{:count}'))));
+echo $this->Paginator->counter(array('format' => __('Viewing records {:start} to {:end} out of '.$cnt)));?>
 <?php foreach ($usergals as $usergal): ?>
 <div class="row">
 <div class="col-sm-3 col-xs-6">

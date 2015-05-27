@@ -121,7 +121,7 @@ $('.img-block').hover(
 //End	Set Virutal Gallery # on Page Load		
 });
 function emptyvexhibit(){
-$( "a#myx" ).click(function() {
+$( "a.myx" ).click(function() {
 	//var lightbox ="<div class='overlay' onclick=\"$('.overlay').remove();$('.lightbox').remove();\"></div> <div class='lightbox'><a href='#' class='closebutton' onclick=\"$('.overlay').remove();$('.lightbox').remove();\"><img src='http://collections.centerofthewest.org/img/close.png'></a><h2>Welcome to our Online Collections! Some basic instructions to get you started:</h2><ul>    <li>Enter a keyword in \"Search all Fields\" or try an \"Advanced Search\"</li>    <li>Select your favorite objects by clicking on the + symbol of a thumbnail or on \"Add to Virtual Exhibit\" on an object's page.</li>    <li>To complete your exhibit, click on \"My Exhibit\" in the left menu, fill out a title, your e-mail address and name, and a descriptive label.</li>    <li>Click \"Submit\" and you've curated an exhibit! Check your e-mail for a link to share your exhibit.</li></ul><img src='http://collections.centerofthewest.org/img/animation.gif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='http://collections.centerofthewest.org/img/help.jpg'></div>";
 	var vgalbox='';
 	vgalbox+='<div class="modal fade" id="vgal-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';

@@ -46,7 +46,8 @@ if (isset($this->request->query['error'])) $feedback='Error Reporting';
 			love to hear from you!</p>
 			<br />
 <? 
-//probably need some Anti-Spam thing here eventually
+//maybe need some Anti-Spam thing here eventually
+echo $this->Form->create('Feedback',array());
 			echo $this->Form->input('email',array(
 				'type'=>'email','required'=>'required','placeholder'=>'Your e-mail',
 				'label'=>false,'class'=>'form-control'

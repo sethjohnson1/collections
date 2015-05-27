@@ -35,7 +35,7 @@
 		__d('cake', 'An Internal Error Has Occurred.'),
 		"<strong>'{$url}'</strong>"
 	); ?><br /><br />
-	If you keep receiving this message please leave feedback at the bottom of <?=$this->Html->link('this page',array('controller'=>'treasures','action'=>'about','plugin'=>'','#'=>'feedback','?'=>array('src'=>$url,'error'=>$name)))?>.<br/><small>Just follow the link and send the information in the box. Include any additional information if you'd like.</small>
+	If you keep receiving this message, please leave feedback at the bottom of <?=$this->Html->link('this page',array('controller'=>'treasures','action'=>'about','plugin'=>'','#'=>'feedback','?'=>array('src'=>$url,'error'=>$name)))?>.<br/><small>Just follow the link and send information on this, or on anything else regarding our Online Collections.</small>
 	</p>
 </div>
 </div>

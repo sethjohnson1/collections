@@ -352,6 +352,7 @@ if(!empty($treasure['Relation'])):?>
 <div class="col-sm-8 related_articles">
 <h3 style="margin:5px 0px 10px 0px;">Related Articles</h3>
 	<?foreach ($treasure['Relation'] as $article):?>
+<?	//$strJson = @file_get_contents('http://centerofthewest.org/wp-json/posts/'.$article['blogid'].'/'); ?>
 	<script>
 $(document).ready(function() { 
   	$.ajax({

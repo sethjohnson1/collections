@@ -259,12 +259,12 @@ $cnt =$this->Number->format($this->Paginator->counter(array('format' => __('{:co
 echo $this->Paginator->counter(array('format' => __('Viewing records {:start} to {:end} out of '.$cnt)));
 ?>
 <?
-if (!empty($this->params['named']['searchall'])) echo ' for "'.$this->params['named']['searchall'].'" ';
+if (!empty($this->params['named']['searchall'])) echo ' for <strong>'.$this->params['named']['searchall'].'</strong> ';
 ?>
 </p>
 </div>
 <div class="col-sm-6">
-<?=$this->Html->link('Refine Search','#index-top')?>
+<?=$this->Html->link('<span class="glyphicon glyphicon-collapse-up"></span> Refine Search','#index-top',array('escape'=>false))?>
 </div>
 </div>
 <? if(empty($treasures)):?>

@@ -191,26 +191,27 @@ $(window).scroll(function() {
 });
 </script>
 <div id="mobilebuttons" class="row mnav">
-<!-- EXAMPLE OF JUSTIFIED, I don't know that I really like it
-div class="col-xs-12">
+<!-- EXAMPLE OF JUSTIFIED, I don't know that I really like it -->
+<div class="col-xs-12">
 <div class="btn-group btn-group-justified" role="group">
 <div class="btn-group" role="group">
-<button type="button" class="orange btn btn-lg btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-menu-hamburger"></span> Menu <span class="caret"></span></button>
+<button type="button" class="orange btn btn-lg btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-menu-hamburger"></span><span class="caret"></span></button>
 <ul class="dropdown-menu" role="menu">
 <?=$this->element('default_menu')?>
+<?=$this->element('default_browse-menu')?>
 </ul>
 </div>
-<div class="btn-group" role="group">
+<!-- div class="btn-group" role="group">
 <button type="button" class="btn btn-default btn-lg dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-collapse-down"></span> Museums <span class="caret"></span></button>
 <ul class="dropdown-menu" role="menu">
-<?=$this->element('default_browse-menu',array('mobile'=>1))?>
+
 </ul>
-</div>
+</div -->
 <div class="btn-group" role="group"><?=$this->Html->link('<span class="glyphicon glyphicon-user"></span>','#login-modal',array('data-toggle'=>'modal','escape'=>false,'role'=>'button','class'=>'orange btn btn-lg btn-default '))?>
 </div>
 </div>
-</div -->
-<div class="col-xs-3">
+</div>
+<!-- div class="col-xs-3">
 <div class="btn-group" role="group">
 <button type="button" class="orange btn btn-lg btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-menu-hamburger"></span> Menu <span class="caret"></span></button>
 <ul class="dropdown-menu" role="menu">
@@ -218,7 +219,7 @@ div class="col-xs-12">
 <?=$this->element('default_browse-menu')?>
 </ul>
 </div>
-</div>
+</div -->
 </div><!-- /mobile-menu row -->
 <aside class="sidebar-secondary hidden-xs hidden-sm" style="margin-top:10px;">
 
@@ -375,7 +376,7 @@ jPM.on();
       <div class="modal-header">
         <button style="color:red" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><span class="glyphicon glyphicon-remove"></span></span></button>
 		<h3 style="text-align:center">Super-easy Login</h3>
-		<p>explain something here?</p>
+		<p>Log-in to share, comment, interact!</p>
       </div>
       <div class="modal-body">
         <div class="row">
