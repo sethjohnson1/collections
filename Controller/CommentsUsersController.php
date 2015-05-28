@@ -224,6 +224,8 @@ class CommentsUsersController extends AppController {
 					'conditions'=>array('CommentsUser.comment_id'=>$id,'CommentsUser.user_id'=>$this->Auth->user('id')),
 					'recursive'=>-1
 				));
+				if (isset($commentuser['CommentsUser']['id'])) $data['id']=$commentuser['CommentsUser']['id'];
+				else $this->CommentsUser->create();
 				$commentdata=$this->CommentsUser->Comment->find('first',array(
 				'recursive'=>-1,
 				'conditions'=>array('Comment.id'=>$id)
@@ -242,10 +244,9 @@ class CommentsUsersController extends AppController {
 				}
 					if ($this->CommentsUser->User->save($votedata,array('validate' => false)));
 					
-				$this->CommentsUser->create();
 				if(!empty($commentuser)){
 					if ($vote==1 && $commentuser['CommentsUser']['upvoted']!=true){
-						$data['id']=$commentuser['CommentsUser']['id'];
+						//$data['id']=$commentuser['CommentsUser']['id'];
 						//means we're reversing direction
 						if ($commentuser['CommentsUser']['downvoted']==true){
 							$data['upvoted']=false;
@@ -261,7 +262,7 @@ class CommentsUsersController extends AppController {
 						}
 					}
 					else if ($vote==-1 && $commentuser['CommentsUser']['downvoted']!=true){
-						$data['id']=$commentuser['CommentsUser']['id'];
+						//$data['id']=$commentuser['CommentsUser']['id'];
 							if ($commentuser['CommentsUser']['upvoted']==true){
 								$data['upvoted']=false;
 								$data['downvoted']=false;
