@@ -2,7 +2,7 @@
 		<li class="menu-item"><?php echo $this->Html->link(__('Search Makers'), array('plugin'=>'','controller' => 'makers', 'action' => 'index')); ?> </li>
 		<li class="menu-item"><?php echo $this->Html->link(__('Search Mediums'), array('plugin'=>'','controller' => 'medvalues', 'action' => 'index')); ?> </li>
 		<li class="menu-item"><?php echo $this->Html->link(__('Virtual Exhibits'), array('plugin'=>'','controller' => 'usergals', 'action' => 'index')); ?></li>      				
-<? if( $this->Session->read('Auth.User')) echo '<li class="menu-item badge-purple">'.$this->Html->link('My Dashboard <span class="badge badge-hov"><span style="color:'.$color['yellow'].' " class="glyphicon glyphicon-star"></span></span>',array('plugin'=>'','controller'=>'usergals','action'=>'mine'),array('escape'=>false)).'</li>';?>                        
+<? if( $this->Session->read('Auth.User')) echo '<li class="menu-item">'.$this->Html->link('My Dashboard <span style="color:'.$color['yellow'].' " class="glyphicon glyphicon-star"></span>',array('plugin'=>'','controller'=>'usergals','action'=>'mine'),array('escape'=>false)).'</li>';?>                        
 
 		<li class="menu-item exhibit badge-orange"><?php 
 		//$ct from the AppController

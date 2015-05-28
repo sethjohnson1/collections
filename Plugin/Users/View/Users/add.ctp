@@ -9,13 +9,12 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 ?>
-<div class="row users form">
-<div class="col-xs-12">
+<div class="row">
+<div class="col-xs-12 col-md-offset-1 col-md-9">
 <h4> If you already have an account, <?=$this->Html->link('log-in now',array('action'=>'login'))?>!</h4>
 	<h2>Register with e-mail	</h2>
 
 	<p>E-mail addresses are not displayed publicly or shared</p>
-	<fieldset>
 		<?php
 			echo $this->Form->create($model);
 			echo $this->Form->input('username', array(
@@ -49,6 +48,5 @@
 				)).' I agree to the '.$tosLink;
 			echo $this->Form->end(__d('users', 'Submit'));
 		?>
-	</fieldset>
 </div>
 </div>

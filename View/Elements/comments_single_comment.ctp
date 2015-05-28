@@ -29,7 +29,8 @@ $(document).ready(function() {
 </script>
 <a href="#" id="growl_message"></a>
 <?endif?>
-<div class="container<? echo $comment['Comment']['id'] ?>" >
+<a name="comment_<?=$comment['Comment']['id']?>"></a>
+<div class="container<?=$comment['Comment']['id'] ?>" >
 <?
 
 $flagged=false;

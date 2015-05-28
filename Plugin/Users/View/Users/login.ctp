@@ -9,14 +9,14 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 ?>
-<div class="users index row">
-<div class="col-xs-12">
+<div class="row">
+<div class="col-xs-12 col-md-offset-1 col-md-9">
 <h4> <?=$this->Html->link('Click here to create an account',array('action'=>'add'))?> if you don't have one already—it's fast and free!</h4>
 	<h2><?php echo __d('users', 'Login with e-mail'); ?></h2>
 	<?php echo $this->Session->flash('auth');
 
 	?>
-	<fieldset>
+
 		<?php
 			echo $this->Form->create($model, array(
 				'action' => 'login',
@@ -38,6 +38,5 @@
 				'value' => $return_to));
 			echo $this->Form->end(__d('users', 'Submit'));
 		?>
-	</fieldset>
 	</div>
 </div>

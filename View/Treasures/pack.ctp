@@ -186,7 +186,6 @@ echo $this->Js->writeBuffer();
 		if(isset($edit) || isset($user)) :?>
 		<div class="col-xs-6"><?
 			//they already agreed so check the box for them
-			//also we DON'T want to changed 'listed' value when editing or it's a loophole for chaos
 			echo $this->Form->checkbox('tos',array('checked'=>true,'required'=>true,'div'=>'false','class'=>'regular-checkbox')).' I agree to '.$tosLink;?>
 		</div>
 		<div class="col-xs-6">
@@ -197,8 +196,7 @@ echo $this->Js->writeBuffer();
 		<?else :?>
 		<div class="col-xs-6">
 		<?
-			//benefit of the doubt on new exhibits, if it becomes a problem we'll have to make this zero (or do something on the Model)
-			echo $this->Form->input('Usergal.listed',array('type'=>'hidden','value'=>1));
+			
 			echo $this->Form->checkbox('tos',array('required'=>true,'div'=>'false','class'=>'regular-checkbox')).' I agree to '.$tosLink;?>
 		</div>
 		<div class="col-xs-6">
@@ -206,6 +204,9 @@ echo $this->Js->writeBuffer();
 			?>
 		</div>
 		<?endif;
+					//benefit of the doubt on new exhibits, if it becomes a problem we'll have to make this zero (or do something on the Model)
+					//but only if $edit is not set or its a loophole for chaos!
+					if (!isset($edit)) echo $this->Form->input('Usergal.listed',array('type'=>'hidden','value'=>1));
 					echo $this->Form->submit('Save exhibit', array('div' => false,'class'=>'ignore btn btn-danger btn-lg'));	
 	?>
 	</div>

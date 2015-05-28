@@ -1,5 +1,5 @@
-<div class="users form row">
-<div class="col-xs-12">
+<div class="row">
+<div class="col-xs-12 col-md-offset-1 col-md-9">
 <h2>Reset your password</h2>
 <?php
 	echo $this->Form->create($model, array(

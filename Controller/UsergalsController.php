@@ -76,7 +76,16 @@ public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Searc
 		$user=$this->Auth->user();
 		
 		$usergals=$this->Usergal->findAllByUser_id($this->Auth->user('id'));
-		$this->set(compact('usergals','user'));
+		$this->loadModel('Comment');
+		foreach ($usergals as $k=>$u){
+			$usergals[$k]['comment_count']=$this->Comment->find('count',array('conditions'=>array('Comment.foreign_key'=>$u['Usergal']['id'],'Comment.model'=>'Usergal','Comment.hidden != 1')));
+		}
+		$comments=$this->Comment->find('all',array('order'=>'Comment.modified desc','conditions'=>array('Comment.user_id'=>$user['id'],'Comment.hidden != 1')));
+		//if this becomes too much counting maybe the values need to be stored on the DB during save operation
+		foreach ($comments as $key=>$c){
+			$comments[$key]['reply_count']=$this->Comment->childCount($c['Comment']['id'], true);
+		}
+		$this->set(compact('usergals','user','comments'));
 
 		
 		//here is a construction of a Tree manually for Paginator, the order is important 

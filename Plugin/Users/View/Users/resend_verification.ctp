@@ -9,8 +9,8 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 ?>
-<div class="users form row">
-<div class="col-xs-12">
+<div class="row">
+<div class="col-xs-12 col-md-offset-1 col-md-9">
 	<h2>Resend the E-mail Verification</h2>
 	<p><?php echo __d('users', 'Please enter the e-mail you used for registration and you\'ll get an e-mail with further instructions.'); ?></p>
 	<?php

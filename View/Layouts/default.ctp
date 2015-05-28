@@ -196,8 +196,9 @@ $(window).scroll(function() {
 <div class="btn-group btn-group-justified" role="group">
 <div class="btn-group" role="group">
 <button type="button" class="orange btn btn-lg btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-menu-hamburger"></span><span class="caret"></span></button>
-<ul class="dropdown-menu" role="menu">
+<ul class="dropdown-menu mobile-drop" role="menu">
 <?=$this->element('default_menu')?>
+<li role="presentation" class="divider"></li>
 <?=$this->element('default_browse-menu')?>
 </ul>
 </div>
@@ -207,7 +208,11 @@ $(window).scroll(function() {
 
 </ul>
 </div -->
-<div class="btn-group" role="group"><?=$this->Html->link('<span class="glyphicon glyphicon-user"></span>','#login-modal',array('data-toggle'=>'modal','escape'=>false,'role'=>'button','class'=>'orange btn btn-lg btn-default '))?>
+<?
+$ulink=$this->Html->link('<span class="glyphicon glyphicon-user"></span>','#login-modal',array('data-toggle'=>'modal','escape'=>false,'role'=>'button','class'=>'orange btn btn-lg btn-default '));
+if( $this->Session->read('Auth.User')) $ulink=$this->Html->link('<span style="color:'.$color['yellow'].' " class="glyphicon glyphicon-star"></span>',array('action'=>'mine','controller'=>'usergals','plugin'=>''),array('escape'=>false,'role'=>'button','class'=>'orange btn btn-lg btn-default'));
+?>
+<div class="btn-group" role="group"><?=$ulink?>
 </div>
 </div>
 </div>
@@ -329,7 +334,7 @@ Cody, Wyoming 82414<br>
 
 
 <div class="wrap"><p><span class="creds">©&nbsp;<?php echo date("Y"); ?> Buffalo Bill Center of the West. All rights reserved.</span>
- 	<span class="smithsonian">Smithonian Affiliations</span>
+ 	<span class="smithsonian">Smithsonian Affiliations</span>
  	<span class="aam"><abbr title="The American Alliance of Museums">AAM</abbr></span></p></div></footer>    
   </div>
 

@@ -10,8 +10,8 @@
  */
 ?>
 
-<div class="changepass row">
-<div class="col-xs-12">
+<div class="row">
+<div class="col-xs-12 col-md-offset-1 col-md-9">
 <h2><?php echo 'Change your password'; ?></h2>
 <p><?php echo __d('users', 'Please enter your old password because of security reasons and then your new password twice.'); ?></p>
 	<?php
