@@ -328,6 +328,8 @@ if ($complete>=80) $completecolor=$color['green'];
 	?>
 </p>
 <br />
+
+<?endif?>
 <?if (!isset($ajax)):?>
 <div class="share-links">
 	<div class="g-plusone" data-href="<?='http://'.$_SERVER['HTTP_HOST'].$this->here.'?utm_source=gplus&utm_campaign=onlinecollections'?>"></div>
@@ -337,8 +339,6 @@ if ($complete>=80) $completecolor=$color['green'];
     <a href="https://twitter.com/share" class="twitter-share-button" data-via="centerofthewest" data-hashtags="OnlineCollections" data-url="<? echo $TWshorturl;?>"></a>
 	</div>
 </div>
-<?endif?>
-
 </div><!-- /data and tags and social icons -->
 <?endif?>
 
