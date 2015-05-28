@@ -27,7 +27,7 @@ class TreasuresController extends AppController {
 		//isAdmin isn't always set in CommentsPlugin when it should be, this has fixed it so far
 		$isAdmin = (bool)$this->Auth->user('is_admin');
 		$this->set('isAdmin',$isAdmin);
-		$this->set('TWshorturl',substr($this->UrlShortener->get_bitly_short_url('http://collections.centerofthewest.org'.$this->here.'?utm_source=twitterk&utm_campaign=onlinecollections'),0,-1));					
+		//$this->set('TWshorturl',substr($this->UrlShortener->get_bitly_short_url('http://collections.centerofthewest.org'.$this->here.'?utm_source=twitterk&utm_campaign=onlinecollections')));					
 	}
 	
 

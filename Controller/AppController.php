@@ -55,6 +55,8 @@ class AppController extends Controller {
 		$this->set('Vgals',$jids);
 		$this->set('editflag',$editflag);
 		
+		$this->set('TWshorturl',$this->UrlShortener->get_bitly_short_url('http://collections.centerofthewest.org'.$this->here.'?utm_source=twitter&utm_campaign=onlinecollections'));	
+		
 		
 		//bitly component giving every view a shorturl to refrence.
 		//I am shortening the final bitly url by 1 character from the end of the string because it is returning a line break and breaks twitters script.
