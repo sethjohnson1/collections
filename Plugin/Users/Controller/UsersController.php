@@ -971,7 +971,7 @@ debug($userData);
 		$gClient->setApplicationName('iScout Tour');
 		$gClient->setClientId(Configure::read('ExtAuth.Provider.Google.key'));
 		$gClient->setClientSecret(Configure::read('ExtAuth.Provider.Google.secret'));
-		$gClient->setRedirectUri(Configure::read('globalSiteURL').'/users/gauth');
+		$gClient->setRedirectUri('http://'.$_SERVER['HTTP_HOST'].Router::url(array('controller'=>'users','action'=>'gauth','plugin'=>'users')));
 
 		$google_oauthV2 = new Google_Oauth2Service($gClient);
 
