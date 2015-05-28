@@ -94,7 +94,7 @@ else $comment=$treasure['Treasure']['commonname'];
 	
     <div class="fb-share-button" data-href="<? echo 'http://collections.centerofthewest.org'.$this->here.'?utm_source=facebook&utm_campaign=onlinecollections' ?>" data-type="button_count"></div>
 	<div style="display:inline-block;">
-    <a href="https://twitter.com/share" class="twitter-share-button" data-via="centerofthewest" data-hashtags="OnlineCollections" data-url="<? echo $TWshorturl;?>"></a>
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="centerofthewest" data-hashtags="OnlineCollections" data-url="<?='http://'.$_SERVER['HTTP_HOST'].$this->here.'?utm_source=twitter&utm_campaign=onlinecollections'?>"></a>
 	</div>
 </div>
 </div>
