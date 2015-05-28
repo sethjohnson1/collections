@@ -229,10 +229,11 @@ class CommentsUsersController extends AppController {
 				$commentdata=$this->CommentsUser->Comment->find('first',array(
 				'recursive'=>-1,
 				'conditions'=>array('Comment.id'=>$id)
-				
 				));
+					if (isset($commentdata['Comment']['id'])) $commentdata['Comment']['id']=$id;
+					else $this->CommentsUser->Comment->create();
+					
 				//first save user totals, they are simply cumulative
-				//$this->CommentsUser->User->create();
 				$votedata['id']=$this->Auth->user('id');
 				if ($vote==1){
 					$votedata['upvotes']=$user['upvotes'];
@@ -297,8 +298,6 @@ class CommentsUsersController extends AppController {
 				}
 				if($this->CommentsUser->save($data)){
 					//update the actual comment with the new total
-					$this->CommentsUser->Comment->create();
-					$commentdata['Comment']['id']=$id;
 					if ($this->CommentsUser->Comment->save($commentdata['Comment'])){
 						//run a quick query to update the difference
 						$db = ConnectionManager::getDataSource('default');
