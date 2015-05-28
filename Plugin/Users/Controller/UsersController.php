@@ -959,7 +959,7 @@ debug($userData);
 		}
 	}
 	
-	//sj -added this when ExtAuth plugin quit working with Google
+	//sj -added this when ExtAuth plugin quit working with Google.
 	public function gauth() {
 		//good help here: http://www.sanwebe.com/2012/11/login-with-google-api-php
 		//include google api files - sj will try to clean up to only files I modified - moving forward for now
