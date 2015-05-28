@@ -968,7 +968,7 @@ debug($userData);
 		require_once 'gauth/src/contrib/Google_Oauth2Service.php';
 
 		$gClient = new Google_Client();
-		$gClient->setApplicationName('iScout Tour');
+		$gClient->setApplicationName('Collections auth');
 		$gClient->setClientId(Configure::read('ExtAuth.Provider.Google.key'));
 		$gClient->setClientSecret(Configure::read('ExtAuth.Provider.Google.secret'));
 		$gClient->setRedirectUri('http://'.$_SERVER['HTTP_HOST'].Router::url(array('controller'=>'users','action'=>'gauth','plugin'=>'users')));
@@ -983,7 +983,7 @@ debug($userData);
 		{ 
 			$gClient->authenticate($_GET['code']);
 			$_SESSION['token'] = $gClient->getAccessToken();
-			header('Location: ' . filter_var(Configure::read('globalSiteURL').'/users/gauth', FILTER_SANITIZE_URL));
+			header('Location: ' . filter_var('http://'.$_SERVER['HTTP_HOST'].Router::url(array('controller'=>'users','action'=>'gauth','plugin'=>'users')), FILTER_SANITIZE_URL));
 			return;
 		}
 
@@ -1001,6 +1001,7 @@ debug($userData);
 			  $_SESSION['token'] 	= $gClient->getAccessToken();
 			  //rejoin the party here, after a little fix-up to match the way everything else was working
 			  $user['oid']='https://plus.google.com/'.$user['id'];
+			  $user['provider']='Google';
 			 $this->__successfulExtAuth($user, $_SESSION['token']);
 		}
 		else 
