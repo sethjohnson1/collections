@@ -37,7 +37,7 @@ $link=Router::url(array('admin' => false, 'plugin' => 'users', 'controller' => '
 			</td>
 		</tr>
 		<tr>
-			<td style="font-family: Verdana, sans-serif; font-size: 16px; color:#bd4f19; padding:10px;">Have fun search our collections!</td>
+			<td style="font-family: Verdana, sans-serif; font-size: 16px; color:#bd4f19; padding:10px;">Have fun searching our collections!</td>
 		</tr>
 		<tr>
 		<td style="padding:10px;">
