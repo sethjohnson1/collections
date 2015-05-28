@@ -12,7 +12,7 @@ class CommentsUsersController extends AppController {
 	}
 	public function blackhole($type) {
 		//debug($type);
-		$this->Session->setFlash('CommentsUsers: '.$type,'flash_custom');
+		//$this->Session->setFlash('CommentsUsers: '.$type,'flash_custom');
 	}
 	
 	public function beforeRender() {
