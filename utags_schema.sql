@@ -1,4 +1,4 @@
-
+/* This HAS NOT been run in production yet */
 create table utags(
 	id int not null auto_increment,
 	primary key(id),

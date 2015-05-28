@@ -1,7 +1,7 @@
 alter table users
 add column given_name varchar(255) after id,
-add column	family_name varchar(255) after given_name,
-add column	ip varchar(20) after active,
+add column family_name varchar(255) after given_name,
+add column ip varchar(20) after active,
 add column provider varchar(100) after ip,
 add column oid varchar(200) after provider,
 add column user_identity varchar(255) after oid,

@@ -23,32 +23,14 @@ class TreasuresController extends AppController {
 
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow();
-		//this needs to be a single item with ID (I think)
-		//by default it will use the model name (i.e. kid, treasure, artwork)
-		//$this->Comments->viewVariable='treasure';
-		//if you look at manual, you will see there are several useful component settings		
+		$this->Auth->allow();	
 		//isAdmin isn't always set in CommentsPlugin when it should be, this has fixed it so far
 		$isAdmin = (bool)$this->Auth->user('is_admin');
 		$this->set('isAdmin',$isAdmin);
 		$this->set('TWshorturl',substr($this->UrlShortener->get_bitly_short_url('http://collections.centerofthewest.org'.$this->here.'?utm_source=twitterk&utm_campaign=onlinecollections'),0,-1));					
 	}
 	
-	/*
-	//this is straight from Comments plugin docs, could probably be done other ways - but it works
-	public function callback_commentsInitType() {
-		//Initializes the view type for comments widget
-		return 'tree'; // threaded, tree and flat supported
-	}
-	
-	public function callback_commentsAdd($modelId, $commentId, $displayType, $data = array()) {
-		if (!empty($this->request->data)) {
-		  // this means something has gone very wrong
-		}
-		return $this->Comments->callback_add($modelId, $commentId, $displayType, $data);
-	}
-	
-	*/
+
 
 	
 	public function advancedsearch(){

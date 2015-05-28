@@ -39,8 +39,8 @@ else $hiddentxt='';
 ?>
 <tr><td>
 <?
-echo $this->Html->link($usergal['Usergal']['name'],array('action'=>'view',$usergal['Usergal']['id'])).' - ['.
-$this->Html->link('Edit',array('action'=>'mine','ed'=>$usergal['Usergal']['id'])).'] '.$hiddentxt;
+echo $this->Html->link($usergal['Usergal']['name'],array('action'=>'view',$usergal['Usergal']['id'])).' - '.
+$this->Html->link('<span style="font-size:.75em" class="glyphicon glyphicon-pencil"></span>',array('action'=>'mine','ed'=>$usergal['Usergal']['id']),array('escape'=>false,'title'=>'Edit this exhibit')).' '.$hiddentxt;
 ?>
 </td><td><span class="badge badge-hov"><?=$usergal['comment_count']?></span><td></tr>
 <?
