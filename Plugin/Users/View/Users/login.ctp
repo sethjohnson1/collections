@@ -32,11 +32,12 @@
 				'label' => false,'class'=>'form-control','placeholder'=>'Password'));
 
 			//echo '<p>' . $this->Form->input('remember_me', array('class'=>'regular-checkbox','type' => 'checkbox', 'label' => false,'div'=>false)) . ' Remember me</p>';
-			echo '<p>' . $this->Html->link(__d('users', 'I forgot my password'), array('action' => 'reset_password')) . '</p>';
 
 			echo $this->Form->hidden('User.return_to', array(
 				'value' => $return_to));
 			echo $this->Form->end(__d('users', 'Submit'));
+			
+						echo '<br /><p>' . $this->Html->link(__d('users', 'I forgot my password'), array('action' => 'reset_password')) . '</p>';
 		?>
 	</div>
 </div>
