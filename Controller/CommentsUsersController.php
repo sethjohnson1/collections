@@ -1,7 +1,7 @@
 <?php
 App::uses('AppController', 'Controller');
 class CommentsUsersController extends AppController {
-	public $components = array('Paginator','Comment','Notify');
+	public $components = array('Paginator','Comment','Notify','RequestHandler');
 	public function beforeFilter() {
 		parent::beforeFilter();
 		//take notes of 
@@ -23,6 +23,33 @@ class CommentsUsersController extends AppController {
 		
 	}
 	
+	public function recent($limit=null){
+		//if ($this->request->is('ajax')){
+		if (empty($limit) || $limit > 50) $limit = 50;
+		
+		//there is probably a better way to paginate but moving on
+		$options['limit']=$limit;
+		$options['order']='Comment.modified desc';
+		$options['conditions']=array('Comment.hidden != 1');
+		$options['fields']=array('Comment.*','User.username');
+		
+		$this->loadModel('Comment');
+		$this->Paginator->settings = $options;
+		$comments=$this->Paginator->paginate('Comment');
+		
+		foreach ($comments as $key=>$c){
+			$comments[$key]['reply_count']=$this->Comment->childCount($c['Comment']['id'], true);
+			if (isset($c['User']['username'])){
+				$formattedname=explode('^',$c['User']['username']);
+				$comments[$key]['username']=str_replace('_',' ',$formattedname[0]);
+			}
+			else { $comments[$key]['username']='A Guest'; }
+			unset($comments[$key]['User']);
+			}
+		$this->set(compact('comments'));
+		$this->set('_serialize',array('comments'));
+		//} turn ajax only on someday...
+	}
 	
 	//$parent is comment ID
 	public function comment_reply($parent,$model,$fk){
