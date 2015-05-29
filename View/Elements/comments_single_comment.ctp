@@ -89,6 +89,31 @@ if (isset($user['id'])){
 
 //need a default value here.
 $avatar='truckerhat-114.png';
+//first do special Facebook picture, async AJAX call after getting ID and fixing URL
+if ($comment['User']['provider']=='Facebook'):
+//remove URL but leave slashes on either end and use as part of URL
+	$fbid=$comment['User']['oid'];
+	$fbid='https://www.facebook.com/app_scoped_user_id/899986720065542/';
+	$prefix = 'https://www.facebook.com/app_scoped_user_id';
+	if (substr($fbid, 0, strlen($prefix)) == $prefix) $fbid = substr($fbid, strlen($prefix));
+	$fburl='https://graph.facebook.com'.$fbid.'picture?redirect=false&height=200&width=200';
+	//make it empty to avoid bad request first
+	$comment['User']['picture']=false;
+	?>
+	<script>
+	$(document).ready(function() { 
+		$.ajax({
+		async:true,
+		dataType:"jsonp",
+		success:function (data, textStatus) {
+			fburl=data['data']['url'];
+			$('#avatar<?=$comment['Comment']['id']?>').attr('src', fburl);},
+		url:"<?=$fburl?>"});
+		return false;
+	});
+	</script>
+<?
+endif;
 if (!empty($comment['User']['email'])) $avatar=$this->Gravatar->get_gravatar($comment['User']['email'],true,$comment['User']['username']);
 else if (!empty($comment['User']['picture'])) $avatar=$comment['User']['picture'];
 
@@ -162,7 +187,7 @@ else if (!empty($comment['User']['picture'])) $avatar=$comment['User']['picture'
 	</div><!-- /comment_buttons -->
 
 		<div class="col-xs-8 comment_text">
-		<?=$this->Html->image($avatar,array('alt'=>'user avatar','style'=>'width:60px;float:left; padding-right:5px;','class'=>'img-responsive img-rounded'))?>
+		<?=$this->Html->image($avatar,array('alt'=>'user avatar','style'=>'width:60px;float:left; padding-right:5px;','class'=>'img-responsive img-rounded','id'=>'avatar'.$comment['Comment']['id']))?>
 		
 		<p><strong><?=$formattedname[0] ?>'s</strong> deep thoughts</p>
 
