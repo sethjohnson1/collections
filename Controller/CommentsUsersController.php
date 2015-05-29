@@ -1,7 +1,7 @@
 <?php
 App::uses('AppController', 'Controller');
 class CommentsUsersController extends AppController {
-	public $components = array('Paginator','Comment');
+	public $components = array('Paginator','Comment','Notify');
 	public function beforeFilter() {
 		parent::beforeFilter();
 		//take notes of 
@@ -36,6 +36,7 @@ class CommentsUsersController extends AppController {
 		
 		//make sure not replying to oneself
 		if ($comment['Comment']['user_id']!=$user['id'] && !empty($this->request->data[$parent]['reply'.$parent])){
+			//i think the below line does nothing
 			if (isset($this->request->data[$parent]['reply_id'])) $data['id']=$this->request->data[$parent]['reply_id'];
 			$data['user_id']=$user['id'];
 			$data['parent_id']=$parent;
@@ -46,10 +47,11 @@ class CommentsUsersController extends AppController {
 			$data['model']=$this->request->data[$parent]['model'];
 			
 			if ($this->CommentsUser->Comment->save($data)){
-				//$this->Session->setFlash('Your reply was saved','flash_growl_success',array(),'commentFlash');
+				$data['id']=$this->CommentsUser->Comment->getLastInsertID();
+				//obvious here why the extra params are not needed, will fix later
+				$this->Notify->emailNancy($data,$data['model'],$data['foreign_key'],$user);
 				$growl['type']='success';
 				$growl['msg']='Your reply was saved';
-				//$tree=$this->CommentsUser->Comment->find('threaded',array('conditions'=>array()));
 			}
 		}
 		else if (empty($this->request->data[$parent]['reply'.$parent])){
@@ -181,7 +183,9 @@ class CommentsUsersController extends AppController {
 				if (isset($parentid)) $comment['parent_id']=$parentid;
 				if ($this->CommentsUser->Comment->save($comment)){
 					$growl['type']='success';
-					$growl['msg']='Your comment was '.$noted;	
+					$growl['msg']='Your comment was '.$noted;
+					if (empty($comment['id'])) $comment['id']=$this->CommentsUser->Comment->getLastInsertID();
+					$this->Notify->emailNancy($comment,$model,$fk,$user);				
 				}
 			}
 			else {

@@ -553,7 +553,6 @@ class TreasuresController extends AppController {
 	if (isset($this->request->query['src'])) $this->request->data['message']="ERROR REPORT \n".$this->request->query['error']."\n".$this->request->query['src'];
 
 		if ($this->request->is('post')) {
-			//send an e-mail reads addresses from private config file
 			$Email = new CakeEmail();
 			$Email->from('forms@centerofthewest.org')
 				->to('web@centerofthewest.org')
