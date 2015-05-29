@@ -93,7 +93,6 @@ $avatar='truckerhat-114.png';
 if ($comment['User']['provider']=='Facebook'):
 //remove URL but leave slashes on either end and use as part of URL
 	$fbid=$comment['User']['oid'];
-	//$fbid='https://www.facebook.com/app_scoped_user_id/899986720065542/';
 	$prefix = 'https://www.facebook.com/app_scoped_user_id';
 	if (substr($fbid, 0, strlen($prefix)) == $prefix) $fbid = substr($fbid, strlen($prefix));
 	$fburl='https://graph.facebook.com'.$fbid.'picture?redirect=false&height=200&width=200';
