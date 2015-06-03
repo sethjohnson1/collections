@@ -91,7 +91,7 @@ class AppController extends Controller {
 		}
 
 public function blackhole($type) {
-    debug($type);
+ //   debug($type);
 }
 		
 }
