@@ -29,11 +29,7 @@ App::uses('UsersAppController', 'Users.Controller');
  */
 class UsersController extends UsersAppController {
 
-/**
- * Controller name
- *
- * @var string
- */
+
 	public $name = 'Users';
 
 /**
