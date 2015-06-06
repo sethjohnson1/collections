@@ -9,6 +9,7 @@
 
 <meta name="viewport" content="width=device-width,user-scalable=1, minimum-scale=1.0, maximum-scale=4.0">
 
+
 <meta name="apple-mobile-web-app-title" content="Center of the West Online Collections">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -78,15 +79,15 @@
 		echo '<title>'.$TheTitle.'</title>';
 	else 
 		echo '<title>Center of the West Online Collections</title>';
-		
+	
+//$TheDescription="hello";	
 	if(!empty($TheDescription))	
-		echo '<meta name="description" content="'.$TheDescription.'">';
+		echo '<meta name="description" content="'.$TheDescription.'" />';
 	else
-		echo '<meta name="description" content="The Buffalo Bill Center of the West Online Collections contain nearly every photographed object in our database.">';
+		echo '<meta name="description" content="The Buffalo Bill Center of the West Online Collections contain nearly every photographed object in our database." />';
 
 	
-	if(!empty($FeaturedImage))	
-		echo '<meta property="og:image" content="'.$FeaturedImage.'"/>';
+
 	
 ?>
 <script type="text/javascript">
@@ -133,6 +134,9 @@ $(function() {
 });
 });
 </script>
+<?
+	if(!empty($FeaturedImage))	echo '<meta property="og:image" content="'.$FeaturedImage.'=?v=2" />';
+?>
 </head>
 <body class="page page-id-10546 page-template-default logged-in admin-bar no-customize-support header-image altsidebar-content" itemscope="itemscope" itemtype="http://schema.org/WebPage">
 <script>

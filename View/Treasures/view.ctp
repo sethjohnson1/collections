@@ -174,16 +174,20 @@ $('.badge-hov').hover(function(e) {
 <?
 	if($treasure['Treasure']['collection']=='BBM')
 		echo $this->Html->link(
-		$this->Html->image('icons/bbm.png',array('alt'=>'Buffalo Bill Museum','class'=>'img-responsive')),
-		array('controller' => 'treasures', 'action' => 'index'.'/bbm:1/wg:0/cfm:0/pim:0/dmnh:0/'),array('escape'=>false)); 
+		$this->Html->image('icons/bbm.svg',array('alt'=>'Buffalo Bill Museum','class'=>'img-responsive','onerror'=>'this.src=\'icons/bbm.png\'; this.onerror=null;')),
+		array('controller' => 'treasures', 'action' => 'index'.'/bbm:1/wg:0/cfm:0/pim:0/dmnh:0/'),array('escape'=>false));
+		
 	if($treasure['Treasure']['collection']=='WG')
-		echo $this->Html->link($this->Html->image('icons/wg.png',array('alt'=>'Whitney Western Art Museum','class'=>'img-responsive')), array('controller' => 'treasures', 'action' =>'index'.'/bbm:0/wg:1/cfm:0/pim:0/dmnh:0/'),array('escape'=>false));
+		echo $this->Html->link($this->Html->image('icons/wg.svg',array('alt'=>'Whitney Western Art Museum','class'=>'img-responsive','onerror'=>'this.src=\'icons/wg.png\'; this.onerror=null;')), array('controller' => 'treasures', 'action' =>'index'.'/bbm:0/wg:1/cfm:0/pim:0/dmnh:0/'),array('escape'=>false));
+	
 	if($treasure['Treasure']['collection']=='PIM')
-		echo $this->Html->link($this->Html->image('icons/pim.png',array('alt'=>'Plains Indian Museum','class'=>'img-responsive')), array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:1/dmnh:0/'),array('escape'=>false)); 
+		echo $this->Html->link($this->Html->image('icons/pim.svg',array('alt'=>'Plains Indian Museum','class'=>'img-responsive','onerror'=>'this.src=\'icons/pim.png\'; this.onerror=null;')), array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:1/dmnh:0/'),array('escape'=>false)); 
+	
 	if($treasure['Treasure']['collection']=='CFM')
-		echo $this->Html->link($this->Html->image('icons/cfm.png',array('alt'=>'Cody Firearms Museum','class'=>'img-responsive')), array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:1/pim:0/dmnh:0/'),array('escape'=>false)); 
+		echo $this->Html->link($this->Html->image('icons/cfm.svg',array('alt'=>'Cody Firearms Museum','class'=>'img-responsive','onerror'=>'this.src=\'icons/cfm.png\'; this.onerror=null;')), array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:1/pim:0/dmnh:0/'),array('escape'=>false)); 
+	
 	if($treasure['Treasure']['collection']=='DMNH')
-		echo $this->Html->link($this->Html->image('icons/dmnh.png',array('alt'=>'Draper Natural History Museum','class'=>'img-responsive')), array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:0/dmnh:1/'),array('escape'=>false));							
+		echo $this->Html->link($this->Html->image('icons/dmnh.svg',array('alt'=>'Draper Natural History Museum','class'=>'img-responsive','onerror'=>'this.src=\'icons/dmnh.png\'; this.onerror=null;')), array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:0/dmnh:1/'),array('escape'=>false));							
 ?>
 </p>
 </div>
@@ -360,15 +364,15 @@ $(document).ready(function() {
 	dataType:"jsonp",
 	success:function (data, textStatus) {
 
-	var html='<div class="row"><div class="col-xs-4">';
-	html+='<a href="'+data['link']+'"><img src="'+data['featured_image']['attachment_meta']['sizes']['thumbnail']['url']+'" class="img-responsive img-thumbnail alt=" " /></a>';
-	html+='</div><div class="col-xs-8"><p style="text-align:justify;">';
-	html+='<a href="'+data['link']+'" >'+data['title']+'</a><br />';
-	html+='<span style="font-style: italic; font-size:90%"> By '+data['author']['name']+"</span><br />";
-	html+=data['excerpt'];
-	html+='</p><hr /></div></div><br />';
-	
-	$('.related_articles').append(html);
+		var html='<div class="row"><div class="col-xs-4">';
+		html+='<a href="'+data['link']+'"><img src="'+data['featured_image']['attachment_meta']['sizes']['thumbnail']['url']+'" class="img-responsive img-thumbnail alt=" " /></a>';
+		html+='</div><div class="col-xs-8"><p style="text-align:justify;">';
+		html+='<a href="'+data['link']+'" >'+data['title']+'</a><br />';
+		html+='<span style="font-style: italic; font-size:90%"> By '+data['author']['name']+"</span><br />";
+		html+=data['excerpt'];
+		html+='</p><hr /></div></div><br />';
+		
+		$('.related_articles').append(html);
 	},
 	url:"http://centerofthewest.org/wp-json/posts/<?=$article['blogid']?>/?_jsonp=?"});
 	return false;
