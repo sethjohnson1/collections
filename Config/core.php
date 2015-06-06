@@ -221,6 +221,10 @@
 		'defaults' => 'php'
 	));
 
+ //sj- changed this to cake so the sessions last for 24 hours. Keep in mind the php.ini max.session must be at least this high as well
+//	Configure::write('Session.save', 'cake');
+	Configure::write('Session.timeout', '86400');
+	
 /**
  * A random string used in security hashing methods.
  */

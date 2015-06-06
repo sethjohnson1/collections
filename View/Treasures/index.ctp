@@ -20,6 +20,18 @@ $(function() {
 </script>
 <div class="treasure-search allcaps">
 <div class="row">
+
+<!-- begin recent widget test - this is made to go INSIDE A COLUMN - and then uses its own row -->
+<div class="col-md-6 col-xs-12">
+<?=$this->element('comments_recent')?>
+</div>
+
+<div class="col-md-6 col-xs-12">
+
+</div>
+
+<!-- end experiment -->
+
 <div class="col-sm-9 col-xs-12">
 <div class="breadcrumb">
 <?php

@@ -273,6 +273,7 @@ public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Searc
 		unset($usergal['Usergal']['editcode']);
 		unset($usergal['Usergal']['email']);
 		unset($usergal['Usergal']['ip']);
+		unset($usergal['Usergal']['user_id']);
 		$this->set('usergal', $usergal);
 		$apivar['Usergal']=$usergal;
 		$apivar['Items']=$treasures;
