@@ -36,6 +36,7 @@ p{
 <?
 $feedback='Provide Feedback';
 if (isset($this->request->query['error'])) $feedback='Error Reporting';
+if (isset($this->request->query['mimg']) || isset($this->request->query['zimg'])) $feedback='Missing Image';
 
 ?>
 <a name="feedback"></a>

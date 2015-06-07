@@ -550,7 +550,10 @@ class TreasuresController extends AppController {
 	}
 	
 	public function about() {
-	if (isset($this->request->query['src'])) $this->request->data['message']="ERROR REPORT \n".$this->request->query['error']."\n".$this->request->query['src'];
+	if (isset($this->request->query['src'])) $this->request->data['Feedback']['message']="ERROR REPORT \n".$this->request->query['error']."\n".$this->request->query['src'];
+	
+	if (isset($this->request->query['zimg'])) $this->request->data['Feedback']['message']="MISSING ZOOMIFY IMAGE \n".urldecode($this->request->query['zimg']);
+	if (isset($this->request->query['mimg'])) $this->request->data['Feedback']['message']="MISSING MOBILE IMAGE \n".urldecode($this->request->query['mimg']);
 
 		if ($this->request->is('post')) {
 			$Email = new CakeEmail();

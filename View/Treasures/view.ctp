@@ -106,14 +106,18 @@ if(empty($treasure['Treasure']['img']))
 else{
 	$file = file_get_contents("http://collections.centerofthewest.org/zoomify/1/".str_replace(' ','_',str_replace('#','',$treasure['Treasure']['img']))."/ImageProperties.xml");
 	$file=str_replace('"',"'",$file);
-	/* Zoomify 3 doesn't work because of the ".JPG" at the end of the path, not much we can do about that at the moment so just moving on for now*/
-	echo '<div id="myContainer"></div>';
+	/* Zoomify 3 doesn't work because of the ".JPG" at the end of the path, not much we can do about that at the moment so just moving on for now - sj - this was fixed but still problems with Zoomify3 */
+
 }
-if(!empty($file)){?>
+if(!empty($file)):?>
+<div id="myContainer"></div>
 	<script type='text/javascript'> Z.showImage("myContainer", "http://collections.centerofthewest.org/zoomify/1/<?=str_replace(' ','_',str_replace('#','',$treasure['Treasure']['img']))?>","zImageProperties=<?=$file?>","zFullPageVisible=1"); 
 	</script>
 	<?
-	}
+	else :?>
+	<h1>Our apologies.<small>We're having trouble loading this image. <?=$this->Html->link('Click here',array('controller'=>'treasures','action'=>'about','#'=>'feedback','?'=>array('zimg'=>urlencode('http://'.$_SERVER['HTTP_HOST'].$this->here))))?> to let us know about it and we'll try to fix it.</small></h1>
+	<?
+	endif;
 
 //Prints Links - sj removed this web site is not long for this world
 /*
@@ -138,30 +142,41 @@ if (count($treasure['Image'])>1):?>
 </div><!-- hidden-xs -->
 <?endif //hidden from ajax?>
 <? //the ajax call this is still hidden, so we remove the class
-$mclass='visible-xs-inline';
+$mclass='visible-xs-inline row mobile-img-container';
 if (isset($ajax))$mclass='';
 ?>
-<div id="mobileview" class="<?=$mclass?>">
-<div class="imgcontainer">
+<div id="" class="<?=$mclass?>">
+<div class=" col-xs-12">
 <?
 $img='http://collectionimages.s3-website-us-west-1.amazonaws.com/1/'.urlencode(str_replace(' ','_',$treasure['Treasure']['img']));
 ?>
 <a href="<?=$img?>">
-<img src="<?=$img?>" class="img-responsive"></a>
+<script>
+//simple show div for missing image
+function missingImg(src) {
+	$('.missing-mobile-img-message').fadeIn();
+}
+
+</script>
+<img src="<?=$img?>" class="img-responsive" onerror="missingImg('<?=$img?>')"></a>
+
+<div class="missing-mobile-img-message" style="display:none;">
+<h1>Our apologies. <small>We're having trouble loading this image. <?=$this->Html->link('Click here',array('controller'=>'treasures','action'=>'about','#'=>'feedback','?'=>array('mimg'=>urlencode('http://'.$_SERVER['HTTP_HOST'].$this->here))))?> to let us know about it and we'll try to fix it.</small></h1>
+</div>
 </div>
 </div> <!-- /mobileview -->
 
+
+
 <div class="clear"></div>
 <div class="info-container">
-<?
-
-?>
 <div class="row">
 
 <script>
 $('.badge-hov').hover(function(e) {
     $('span.badge-hov').trigger(e.type);
 });
+
 </script>
 <div class="col-sm-4 col-sm-push-8">
 <div class="row">
@@ -174,20 +189,20 @@ $('.badge-hov').hover(function(e) {
 <?
 	if($treasure['Treasure']['collection']=='BBM')
 		echo $this->Html->link(
-		$this->Html->image('icons/bbm.svg',array('alt'=>'Buffalo Bill Museum','class'=>'img-responsive','onerror'=>'this.src=\'icons/bbm.png\'; this.onerror=null;')),
+		$this->Html->image('icons/bbm.svg',array('alt'=>'Buffalo Bill Museum','class'=>'img-responsive','onerror'=>'this.src=\'/img/icons/bbm.png\'; this.onerror=null;')),
 		array('controller' => 'treasures', 'action' => 'index'.'/bbm:1/wg:0/cfm:0/pim:0/dmnh:0/'),array('escape'=>false));
 		
 	if($treasure['Treasure']['collection']=='WG')
-		echo $this->Html->link($this->Html->image('icons/wg.svg',array('alt'=>'Whitney Western Art Museum','class'=>'img-responsive','onerror'=>'this.src=\'icons/wg.png\'; this.onerror=null;')), array('controller' => 'treasures', 'action' =>'index'.'/bbm:0/wg:1/cfm:0/pim:0/dmnh:0/'),array('escape'=>false));
+		echo $this->Html->link($this->Html->image('icons/wg.svg',array('alt'=>'Whitney Western Art Museum','class'=>'img-responsive','onerror'=>'this.src=\'/img/icons/wg.png\'; this.onerror=null;')), array('controller' => 'treasures', 'action' =>'index'.'/bbm:0/wg:1/cfm:0/pim:0/dmnh:0/'),array('escape'=>false));
 	
 	if($treasure['Treasure']['collection']=='PIM')
-		echo $this->Html->link($this->Html->image('icons/pim.svg',array('alt'=>'Plains Indian Museum','class'=>'img-responsive','onerror'=>'this.src=\'icons/pim.png\'; this.onerror=null;')), array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:1/dmnh:0/'),array('escape'=>false)); 
+		echo $this->Html->link($this->Html->image('icons/pim.svg',array('alt'=>'Plains Indian Museum','class'=>'img-responsive','onerror'=>'this.src=\'/img/icons/pim.png\'; this.onerror=null;')), array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:1/dmnh:0/'),array('escape'=>false)); 
 	
 	if($treasure['Treasure']['collection']=='CFM')
-		echo $this->Html->link($this->Html->image('icons/cfm.svg',array('alt'=>'Cody Firearms Museum','class'=>'img-responsive','onerror'=>'this.src=\'icons/cfm.png\'; this.onerror=null;')), array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:1/pim:0/dmnh:0/'),array('escape'=>false)); 
+		echo $this->Html->link($this->Html->image('icons/cfm.svg',array('alt'=>'Cody Firearms Museum','class'=>'img-responsive','onerror'=>'this.src=\'/img/icons/cfm.png\'; this.onerror=null;')), array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:1/pim:0/dmnh:0/'),array('escape'=>false)); 
 	
 	if($treasure['Treasure']['collection']=='DMNH')
-		echo $this->Html->link($this->Html->image('icons/dmnh.svg',array('alt'=>'Draper Natural History Museum','class'=>'img-responsive','onerror'=>'this.src=\'icons/dmnh.png\'; this.onerror=null;')), array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:0/dmnh:1/'),array('escape'=>false));							
+		echo $this->Html->link($this->Html->image('icons/dmnh.svg',array('alt'=>'Draper Natural History Museum','class'=>'img-responsive','onerror'=>'this.src=\'/img/icons/dmnh.png\'; this.onerror=null;')), array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:0/dmnh:1/'),array('escape'=>false));							
 ?>
 </p>
 </div>

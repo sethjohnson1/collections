@@ -165,7 +165,8 @@ $(function() {
 
 
 <div class="site-inner"><div class="wrap"><div class="content-sidebar-wrap"><main class="content" role="main" itemprop="mainContentOfPage"><article class="post-10546 page type-page status-draft entry" itemscope="itemscope" itemtype="http://schema.org/CreativeWork"><header class="entry-header">
-</header><div class="entry-content" itemprop="text">
+</header>
+<div class="entry-content" itemprop="text">
 <?php echo $this->Session->flash(); ?>
 
 <?php echo $this->fetch('content'); ?>
