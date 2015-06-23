@@ -32,8 +32,10 @@
     ((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false) || strpos($_SERVER['HTTP_USER_AGENT'], 'Trident') !== false)) {   
      echo $this->Html->script('zoomify3-custom.min');
     }
-	else echo $this->Html->script('ZoomifyImageViewer');
-	
+	else {
+echo $this->Html->script('zoomify3-custom.min');	
+	//echo $this->Html->script('ZoomifyImageViewer');
+	}
 	echo $this->Html->script('Assets/ViewResizable/sizeViewerToPage.js');
 	echo $this->Html->script('jquery.min');
 	echo $this->Html->script('placeholders.min');		//added to automagicly fix the placeholders in older versions of IE
