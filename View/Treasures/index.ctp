@@ -78,7 +78,13 @@ $i++;
 echo $this->Form->create('Treasure',array('class'=>''));
 echo $this->Form->input('searchall', array('div' => FALSE,'empty'=>true,'label'=>'','placeholder'=>'Search the Collection','class'=>'searchbox form-control'));	 
 //this is hidden with CSS right now
-echo $this->Form->submit('/img/glass.png', array('div' => false,'class'=>'search-btn'));
+$searchclass='search-btn';
+if (isset($_SERVER['HTTP_USER_AGENT']) &&
+    ((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false) || strpos($_SERVER['HTTP_USER_AGENT'], 'Trident') !== false)) {   
+     $searchclass='form-control';
+    }
+echo $this->Form->submit('Search', array('div' => false,'class'=>$searchclass));
+
 ?>
 </div>
 <div class="col-sm-3 col-xs-12" style="padding-top: 10px">

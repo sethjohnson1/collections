@@ -110,7 +110,7 @@ else{
 
 }
 if(!empty($file)):?>
-	<script type='text/javascript'> Z.showImage("myContainer", "http://collections.centerofthewest.org/zoomify/1/<?=str_replace(' ','_',str_replace('#','',$treasure['Treasure']['img']))?>","zImageProperties=<?=$file?>","zFullPageVisible=1"); 
+	<script type='text/javascript'> Z.showImage("myContainer", "http://collections.centerofthewest.org/zoomify/1/<?=str_replace(' ','_',str_replace('#','',$treasure['Treasure']['img']))?>","zFullViewVisible=0","zImageProperties=<?=$file?>","zFullPageVisible=0","zFullViewVisible=0"); 
 	</script>
 <div id="myContainer"></div>
 
