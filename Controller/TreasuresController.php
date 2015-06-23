@@ -226,9 +226,10 @@ class TreasuresController extends AppController {
 					$this->redirect(array('action' => 'view', $treasure['Treasure']['slug']));
 				}
 				else{
-					if ($cnt > 1){$searchvar='slug:'; $flash='Found more than one item like '.$slug;}
-					if ($cnt < 1){$searchvar='searchall:'; $flash='Invalid item, tried searching for '.$slug;}
-					$this->Session->setFlash($flash, 'flash_warning');
+					//sj - got rid of all this stuff, sort of pointless and causes error with IE
+					//if ($cnt > 1){$searchvar='slug:'; $flash='Found more than one item like '.$slug;}
+					//if ($cnt < 1){$searchvar='searchall:'; $flash='Invalid item, tried searching for '.$slug;}
+					//$this->Session->setFlash($flash, 'flash_warning');
 					//return $this->redirect(array('action' => 'index',$searchvar.$slug));	
 				}
 			}

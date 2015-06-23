@@ -110,9 +110,10 @@ else{
 
 }
 if(!empty($file)):?>
-<div id="myContainer"></div>
 	<script type='text/javascript'> Z.showImage("myContainer", "http://collections.centerofthewest.org/zoomify/1/<?=str_replace(' ','_',str_replace('#','',$treasure['Treasure']['img']))?>","zImageProperties=<?=$file?>","zFullPageVisible=1"); 
 	</script>
+<div id="myContainer"></div>
+
 	<?
 	else :?>
 	<h1>Our apologies.<small>We're having trouble loading this image. <?=$this->Html->link('Click here',array('controller'=>'treasures','action'=>'about','#'=>'feedback','?'=>array('zimg'=>urlencode('http://'.$_SERVER['HTTP_HOST'].$this->here))))?> to let us know about it and we'll try to fix it.</small></h1>
@@ -187,22 +188,28 @@ $('.badge-hov').hover(function(e) {
 <h3>Collection</h3>
 <p>
 <?
+$svg='svg';
+//conditional IE statement for it's terrible, shameful SVG support. Trident is IE 11. 
+if (isset($_SERVER['HTTP_USER_AGENT']) &&
+    ((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false) || strpos($_SERVER['HTTP_USER_AGENT'], 'Trident') !== false)) {   
+     $svg='png';
+    }
 	if($treasure['Treasure']['collection']=='BBM')
 		echo $this->Html->link(
-		$this->Html->image('icons/bbm.svg',array('alt'=>'Buffalo Bill Museum','class'=>'img-responsive','onerror'=>'this.src=\'/img/icons/bbm.png\'; this.onerror=null;')),
+		$this->Html->image('icons/bbm.'.$svg,array('alt'=>'Buffalo Bill Museum','class'=>'img-responsive','onerror'=>'this.src=\'/img/icons/bbm.png\'; this.onerror=null;')),
 		array('controller' => 'treasures', 'action' => 'index'.'/bbm:1/wg:0/cfm:0/pim:0/dmnh:0/'),array('escape'=>false));
 		
 	if($treasure['Treasure']['collection']=='WG')
-		echo $this->Html->link($this->Html->image('icons/wg.svg',array('alt'=>'Whitney Western Art Museum','class'=>'img-responsive','onerror'=>'this.src=\'/img/icons/wg.png\'; this.onerror=null;')), array('controller' => 'treasures', 'action' =>'index'.'/bbm:0/wg:1/cfm:0/pim:0/dmnh:0/'),array('escape'=>false));
+		echo $this->Html->link($this->Html->image('icons/wg.'.$svg,array('alt'=>'Whitney Western Art Museum','class'=>'img-responsive','onerror'=>'this.src=\'/img/icons/wg.png\'; this.onerror=null;')), array('controller' => 'treasures', 'action' =>'index'.'/bbm:0/wg:1/cfm:0/pim:0/dmnh:0/'),array('escape'=>false));
 	
 	if($treasure['Treasure']['collection']=='PIM')
-		echo $this->Html->link($this->Html->image('icons/pim.svg',array('alt'=>'Plains Indian Museum','class'=>'img-responsive','onerror'=>'this.src=\'/img/icons/pim.png\'; this.onerror=null;')), array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:1/dmnh:0/'),array('escape'=>false)); 
+		echo $this->Html->link($this->Html->image('icons/pim.'.$svg,array('alt'=>'Plains Indian Museum','class'=>'img-responsive','onerror'=>'this.src=\'/img/icons/pim.png\'; this.onerror=null;')), array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:1/dmnh:0/'),array('escape'=>false)); 
 	
 	if($treasure['Treasure']['collection']=='CFM')
-		echo $this->Html->link($this->Html->image('icons/cfm.svg',array('alt'=>'Cody Firearms Museum','class'=>'img-responsive','onerror'=>'this.src=\'/img/icons/cfm.png\'; this.onerror=null;')), array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:1/pim:0/dmnh:0/'),array('escape'=>false)); 
+		echo $this->Html->link($this->Html->image('icons/cfm.'.$svg,array('alt'=>'Cody Firearms Museum','class'=>'img-responsive','onerror'=>'this.src=\'/img/icons/cfm.png\'; this.onerror=null;')), array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:1/pim:0/dmnh:0/'),array('escape'=>false)); 
 	
 	if($treasure['Treasure']['collection']=='DMNH')
-		echo $this->Html->link($this->Html->image('icons/dmnh.svg',array('alt'=>'Draper Natural History Museum','class'=>'img-responsive','onerror'=>'this.src=\'/img/icons/dmnh.png\'; this.onerror=null;')), array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:0/dmnh:1/'),array('escape'=>false));							
+		echo $this->Html->link($this->Html->image('icons/dmnh.'.$svg,array('alt'=>'Draper Natural History Museum','class'=>'img-responsive','onerror'=>'this.src=\'/img/icons/dmnh.png\'; this.onerror=null;')), array('controller' => 'treasures', 'action' => 'index'.'/bbm:0/wg:0/cfm:0/pim:0/dmnh:1/'),array('escape'=>false));							
 ?>
 </p>
 </div>

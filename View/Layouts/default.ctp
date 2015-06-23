@@ -27,10 +27,12 @@
 	
 	//loading Zoomify on every page is needless overhead
 	
-	//this version still has toolbar issues, but getting closer
-	//echo $this->Html->script('zoomify3-custom.min');
-	
-	echo $this->Html->script('ZoomifyImageViewer');
+	//this version still has toolbar issues, but getting closer, however using as quick fix for IE problems:
+	if (isset($_SERVER['HTTP_USER_AGENT']) &&
+    ((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false) || strpos($_SERVER['HTTP_USER_AGENT'], 'Trident') !== false)) {   
+     echo $this->Html->script('zoomify3-custom.min');
+    }
+	else echo $this->Html->script('ZoomifyImageViewer');
 	
 	echo $this->Html->script('Assets/ViewResizable/sizeViewerToPage.js');
 	echo $this->Html->script('jquery.min');
