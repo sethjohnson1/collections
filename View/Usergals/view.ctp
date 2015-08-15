@@ -87,14 +87,24 @@ else $comment=$treasure['Treasure']['commonname'];
 
 <?php endforeach; ?>
 <br />
+<?
+//get rid of trailing slash in URL for sharing purposes
+$here=$this->here;
+if(substr($here, -1) == '/') $here = substr($here, 0, -1);
+
+?>
 <div class="row">
 <div class="col-sm-8">
 <div class="share-links">
-	<div class="g-plusone" data-href="<?='http://'.$_SERVER['HTTP_HOST'].$this->here.'?utm_source=gplus&utm_campaign=onlinecollections'?>"></div>
+	<div class="g-plusone" data-href="<?='http://'.$_SERVER['HTTP_HOST'].$here.'?utm_source=gplus&utm_campaign=onlinecollections'?>"></div>
 	
-    <div class="fb-share-button" data-href="<? echo 'http://collections.centerofthewest.org'.$this->here.'?utm_source=facebook&utm_campaign=onlinecollections' ?>" data-type="button_count"></div>
+	<div id="fb-root" style="display:inline-block; margin-left:-33px;"></div>
+<div style="padding-right:10px" class="fb-like"  data-href="<?='http://'.$_SERVER['HTTP_HOST'].$here.'?utm_source=facebook&utm_campaign=onlinecollections'?>" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>	
+	
+	
+    <div class="fb-share-button" data-href="<? echo 'http://collections.centerofthewest.org'.$here.'?utm_source=facebook&utm_campaign=onlinecollections' ?>" data-type="button_count"></div>
 	<div style="display:inline-block;">
-    <a href="https://twitter.com/share" class="twitter-share-button" data-via="centerofthewest" data-hashtags="OnlineCollections" data-url="<?='http://'.$_SERVER['HTTP_HOST'].$this->here.'?utm_source=twitter&utm_campaign=onlinecollections'?>"></a>
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="centerofthewest" data-hashtags="OnlineCollections" data-url="<?='http://'.$_SERVER['HTTP_HOST'].$here.'?utm_source=twitter&utm_campaign=onlinecollections'?>"></a>
 	</div>
 </div>
 </div>
