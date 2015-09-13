@@ -31,7 +31,9 @@ class TreasuresController extends AppController {
 	}
 	
 
-
+	public function contest() {
+		$this->set('TheTitle','Win Stuff: The Virtual Exhibit Contest');
+	}
 	
 	public function advancedsearch(){
 		$this->Prg->commonProcess();
@@ -572,5 +574,29 @@ class TreasuresController extends AppController {
 			else $this->redirect('/');
 		}
 		$this->set('TheTitle','Offer Feedback');
+	}
+	
+	public function order() {
+	if (isset($this->request->query['src'])) $this->request->data['Feedback']['message']="ERROR REPORT \n".$this->request->query['error']."\n".$this->request->query['src'];
+	
+	if (isset($this->request->query['zimg'])) $this->request->data['Feedback']['message']="MISSING ZOOMIFY IMAGE \n".urldecode($this->request->query['zimg']);
+	if (isset($this->request->query['mimg'])) $this->request->data['Feedback']['message']="MISSING MOBILE IMAGE \n".urldecode($this->request->query['mimg']);
+
+		if ($this->request->is('post')) {
+			$Email = new CakeEmail();
+			$Email->from('forms@centerofthewest.org')
+				->to('web@centerofthewest.org')
+				->subject('Online Collections Feedback')
+				->send(
+				"From: ".$this->request->data['Feedback']['email']."\n\n\n".
+				$this->request->data['Feedback']['message']
+				);
+			//$this->render(false);
+			$this->Session->setFlash('Your message was sent! Thank you.','flash_success');
+			
+			if ($this->Session->read('location')) $this->redirect($this->Session->read('location'));
+			else $this->redirect('/');
+		}
+		$this->set('TheTitle','Order Print');
 	}
 }

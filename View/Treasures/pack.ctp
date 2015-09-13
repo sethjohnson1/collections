@@ -183,27 +183,25 @@ echo $this->Js->writeBuffer();
 	</style>
 		<?
 	$tosLink = $this->Html->link('terms of service', array('controller' => 'pages', 'action' => 'tos'));
-		if(isset($edit) || isset($user)) :?>
+		if(isset($edit) || isset($user)) $toschecked=true;
+		else $toschecked=null ;?>
 		<div class="col-xs-6"><?
 			//they already agreed so check the box for them
-			echo $this->Form->checkbox('tos',array('checked'=>true,'required'=>true,'div'=>'false','class'=>'regular-checkbox')).' I agree to '.$tosLink;?>
+			echo $this->Form->checkbox('tos',array('checked'=>$toschecked,'required'=>true,'div'=>'false','class'=>'regular-checkbox')).' I agree to '.$tosLink;
+			?>
+			<br />
+			<?
+			echo $this->Form->checkbox('Usergal.contestentry',array('required'=>true,'div'=>'false','class'=>'regular-checkbox')).' YES, I am entering the '.$this->Html->link('awesome contest',array('action'=>'contest')).'!';
+			?>
 		</div>
 		<div class="col-xs-6">
 		<?
 			//echo $this->Form->submit(__('Save exhibit'), array('div' => false,'class'=>'ignore btn btn-danger btn-lg'));
 		?>
 		</div>
-		<?else :?>
-		<div class="col-xs-6">
+
 		<?
-			
-			echo $this->Form->checkbox('tos',array('required'=>true,'div'=>'false','class'=>'regular-checkbox')).' I agree to '.$tosLink;?>
-		</div>
-		<div class="col-xs-6">
-			<?
-			?>
-		</div>
-		<?endif;
+		
 					//benefit of the doubt on new exhibits, if it becomes a problem we'll have to make this zero (or do something on the Model)
 					//but only if $edit is not set or its a loophole for chaos!
 					if (!isset($edit)) echo $this->Form->input('Usergal.listed',array('type'=>'hidden','value'=>1));

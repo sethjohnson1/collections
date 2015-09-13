@@ -1,4 +1,8 @@
-<h2>Virtual Exhibits</h2>
+<?
+if (isset($contest)) $ctext=' -  '.$this->Html->link('Contest Entries',array('action'=>'contest','controller'=>'treasures'));
+else $ctext='';
+?>
+<h2>Virtual Exhibits<?=$ctext?></h2>
 
 <h3>Check out a few virtual exhibits created from our online collections.</h3>
 <p>You can make your own: <?=$this->Html->link('click here to get started',array('action'=>'pack','controller'=>'treasures'),array('class'=>'myx')).'!'?></p>

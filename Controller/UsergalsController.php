@@ -101,7 +101,11 @@ public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Searc
 		$this->Usergal->recursive = -1;
 		$search=$this->Usergal->parseCriteria($this->Prg->parsedParams());
 		$listed['AND']=array('Usergal.listed'=>1);
-		$pwr=array_merge($search,$listed);
+		if (isset($this->request->query['contest'])){
+			$contest['AND']['AND']=array('Usergal.contestentry'=>1);
+			$this->set('contest','contest');
+		}
+		$pwr=array_merge($search,$listed,$contest);
 		
 		//sj - added querystring check so we can only return featured
 		if (isset($this->request->query['f'])){
