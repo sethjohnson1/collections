@@ -15,7 +15,7 @@ p{
 <div class="col-sm-8">
 <p>To celebrate our Online Collection, we've launched a contest! Have some fun exploring our the collection, and then create a <?=$this->Html->link('Virtual Exhibit',array('controller'=>'treasures','action'=>'pack'))?> of the 25 objects you would save if the Center faced imminent destruction. <a href="http://centerofthewest.org/2015/09/04/win-stuff/">Click here for the full scenario</a> and to see an awesome rotating carousel of the prizes.</p>
 <p>Explore, search, even create your own , and view <?=$this->Html->link('those made by others',array('controller'=>'usergals','action'=>'index'))?>.</p>
-<h2><span id="clock"></span></h2>
+<h2 style="color:<?=$color['red']?>"><span id="clock"></span></h2>
 </div>
 <div class="col-sm-4">
 <a href="http://centerofthewest.org/wp-content/uploads/2015/09/Vgal_prizes.jpg" class="thumbnail"><?=$this->Html->image('http://centerofthewest.org/wp-content/uploads/2015/09/Vgal_prizes.jpg',array('alt'=>'Prizes for the contest winners','title'=>'Look at all those REAL prizes!','style'=>'','class'=>''))?>

@@ -20,6 +20,7 @@
 
 	Router::connect('/auth_login/*', array( 'plugin'=>'users','controller' => 'users', 'action' => 'auth_login'));
 	Router::connect('/auth_callback/*', array( 'plugin'=>'users','controller' => 'users', 'action' => 'auth_callback'));
+	Router::redirect('/contest', array('controller' => 'treasures', 'action' => 'contest'));
 	
 	Router::parseExtensions('json','xml');
 	CakePlugin::routes();
