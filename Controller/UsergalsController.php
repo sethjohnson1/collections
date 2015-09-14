@@ -101,6 +101,7 @@ public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Searc
 		$this->Usergal->recursive = -1;
 		$search=$this->Usergal->parseCriteria($this->Prg->parsedParams());
 		$listed['AND']=array('Usergal.listed'=>1);
+		$contest=array();
 		if (isset($this->request->query['contest'])){
 			$contest['AND']['AND']=array('Usergal.contestentry'=>1);
 			$this->set('contest','contest');
