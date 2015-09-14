@@ -113,7 +113,8 @@ public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Searc
 		}
 		
 		$this->Paginator->settings['conditions'] = $pwr;
-		$this->Paginator->settings['order'] = array('Usergal.featured'=>'desc','Usergal.created'=>'desc');
+		//$this->Paginator->settings['order'] = array('Usergal.featured'=>'desc','Usergal.created'=>'desc');
+		$this->Paginator->settings['order'] = array('Usergal.created'=>'desc');
 		$this->Paginator->settings['limit'] = 10;
 		$usergals=$this->Paginator->paginate();
 		//clean out personal info and make count
