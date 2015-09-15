@@ -145,8 +145,10 @@ class TreasuresController extends AppController {
 		//now do session variable for the proper neighbor values on the view
 		//don't bother with sort, ir gets ignored by neighbors
 		$this->Session->write('scond',$mega);	
-		//for the featured galleries	
-		$usergals=$this->Treasure->Usergal->find('all',array('limit'=>25,'conditions'=>array('Usergal.featured'=>true),'contain'=>false));
+		//for the featured galleries
+		//sj - updated for contest entries
+		//$usergals=$this->Treasure->Usergal->find('all',array('limit'=>25,'conditions'=>array('Usergal.featured'=>true),'contain'=>false));
+		$usergals=$this->Treasure->Usergal->find('all',array('limit'=>25,'conditions'=>array('Usergal.contestentry'=>true),'contain'=>false));
 		$x=0;
 		//remove personal information from the Usergal data
 		foreach ($usergals as $val=>$key){

@@ -190,7 +190,7 @@ if ($usergals && empty($this->request->params['named'])) :?>
 <br />
 <div class="featured-vgals hidden-xs hidden-sm">
 <div class="panel panel-default">
-<div class="panel-heading"><h1 class="panel-title">Featured Virtual Exhibits</h1></div>
+<div class="panel-heading"><h1 class="panel-title"><strike>Featured Virtual Exhibits</strike> <?=$this->html->link('Contest Entries!',array('action'=>'contest'))?></h1></div>
 <div class="panel-body">
 <?
 	echo $this->Html->script('jquery.scrollbox.js');
