@@ -1,10 +1,14 @@
+<?=$this->element('contest_banner')?>
 <?
 if (isset($contest)) $ctext=' -  '.$this->Html->link('Contest Entries',array('action'=>'contest','controller'=>'treasures'));
 else $ctext='';
 ?>
 <h2>Virtual Exhibits<?=$ctext?></h2>
 
-<h3>Check out a few virtual exhibits created from our online collections.</h3>
+<h3>Check out a few virtual exhibits created from our online collections.
+<br />
+<?=$this->Html->link('Click here',array('?'=>array('contest'=>1)))?> to see only contest entries.
+</h3>
 <p>You can make your own: <?=$this->Html->link('click here to get started',array('action'=>'pack','controller'=>'treasures'),array('class'=>'myx')).'!'?></p>
 <div class="row">    
 <div class="col-md-12">

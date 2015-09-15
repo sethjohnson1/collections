@@ -18,6 +18,8 @@ $(function() {
 });
 });
 </script>
+
+<?=$this->element('contest_banner')?>
 <div class="treasure-search allcaps">
 <div class="row">
 
