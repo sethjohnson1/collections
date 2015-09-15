@@ -17,6 +17,16 @@ $("a#openGallery").click(function(e){
 });
 });
 </script>
+<?
+if ($usergal['Usergal']['contestentry']==1):
+?>
+<div class="alert alert-success alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  This exhibit has been marked as an entry in our cool contest! <?=$this->Html->link('Click here for details.',array('action'=>'contest','controller'=>'treasures'))?>
+</div>
+<?
+endif;
+?>
 <div class="row">
 <div class="col-md-12">
 <?
