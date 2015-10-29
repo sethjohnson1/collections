@@ -191,7 +191,7 @@ echo $this->Js->writeBuffer();
 			?>
 			<br />
 			<?
-			echo $this->Form->checkbox('Usergal.contestentry',array('required'=>true,'div'=>'false','class'=>'regular-checkbox')).' YES, I am entering the '.$this->Html->link('awesome contest',array('action'=>'contest')).'!';
+			echo $this->Form->checkbox('Usergal.contestentry',array('required'=>false,'div'=>'false','class'=>'regular-checkbox')).' YES, I am entering the '.$this->Html->link('awesome contest',array('action'=>'contest')).'!';
 			?>
 		</div>
 		<div class="col-xs-6">
