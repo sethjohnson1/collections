@@ -46,7 +46,7 @@ if (isset($this->request->query['mimg']) || isset($this->request->query['zimg'])
 ?>
 
 <script>
-  $('#clock').countdown('2015/12/4', function(event) {
+  $('#clock').countdown('2015/12/5', function(event) {
     $(this).html(event.strftime('%D days %H:%M:%S remaining'));
   });
 </script>
