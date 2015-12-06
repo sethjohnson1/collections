@@ -1,4 +1,4 @@
-<?=$this->element('contest_banner')?>
+<?//=$this->element('contest_banner')?>
 <?
 if (isset($contest)) $ctext=' -  '.$this->Html->link('Contest Entries',array('action'=>'contest','controller'=>'treasures'));
 else $ctext='';
