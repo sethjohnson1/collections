@@ -3,7 +3,7 @@
 <div class="col-xs-12">
 
 <h2>We're having a contest, and time is running out!</h2>
-
+<h2 style="color:<?=$color['red']?>">Actually, time <em>has</em> run out for the contest this year. Winners will be announced soon!</h2>
 
 <style scoped>
 p{
