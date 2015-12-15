@@ -143,6 +143,8 @@ $(function() {
 ?>
 </head>
 <body class="page page-id-10546 page-template-default logged-in admin-bar no-customize-support header-image altsidebar-content" itemscope="itemscope" itemtype="http://schema.org/WebPage">
+
+
 <script>
 </script>
 <div class="site-container">
@@ -417,4 +419,10 @@ jPM.on();
     </div>
   </div>
 </div> 
+<?
+//2016 remarketing/tracking pixels
+include (WWW_ROOT.'/files/2016_madden_facebook_remarketing.txt');
+include (WWW_ROOT.'/files/2016_madden_google_remarketing.txt');
+?>
+
   </body>
