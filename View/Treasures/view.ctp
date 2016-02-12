@@ -288,6 +288,7 @@ echo $loctxt;
 </div><!-- inner grid -->
 <br />
 <div class="data col-sm-8 col-sm-pull-4 col-xs-12">
+<p style="font-size:.9em"><em><?=$this->Html->link('Order a museum-quality print of this object.',array('plugin'=>'','action'=>'order','?'=>array('accnum'=>urlencode($treasure['Treasure']['accnum']))))?></em></p>
 <? 
 
 	if(!empty($treasure['Treasure']['objtitle'])){

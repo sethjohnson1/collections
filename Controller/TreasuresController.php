@@ -581,26 +581,27 @@ class TreasuresController extends AppController {
 	}
 	
 	public function order() {
-	if (isset($this->request->query['src'])) $this->request->data['Feedback']['message']="ERROR REPORT \n".$this->request->query['error']."\n".$this->request->query['src'];
-	
-	if (isset($this->request->query['zimg'])) $this->request->data['Feedback']['message']="MISSING ZOOMIFY IMAGE \n".urldecode($this->request->query['zimg']);
-	if (isset($this->request->query['mimg'])) $this->request->data['Feedback']['message']="MISSING MOBILE IMAGE \n".urldecode($this->request->query['mimg']);
+		
+	if (isset($this->request->query['accnum'])){
+		$this->request->data['Order']['accnum']=urldecode($this->request->query['accnum']);
+	}
 
 		if ($this->request->is('post')) {
 			$Email = new CakeEmail();
-			$Email->from('forms@centerofthewest.org')
-				->to('web@centerofthewest.org')
-				->subject('Online Collections Feedback')
+			$Email->from(Configure::read('globalFromEmail'))
+				->to('mackf@centerofthewest.org')
+				->subject('Print Order Request')
 				->send(
-				"From: ".$this->request->data['Feedback']['email']."\n\n\n".
-				$this->request->data['Feedback']['message']
+				"From: ".$this->request->data['Order']['email']."\n\n\n".
+				"Phone: ".$this->request->data['Order']['phone']."\n\n\n".
+				$this->request->data['Order']['accnum']
 				);
 			//$this->render(false);
-			$this->Session->setFlash('Your message was sent! Thank you.','flash_success');
+			$this->Session->setFlash('Thank you. We will be in touch soon!','flash_success');
 			
 			if ($this->Session->read('location')) $this->redirect($this->Session->read('location'));
 			else $this->redirect('/');
 		}
-		$this->set('TheTitle','Order Print');
+		$this->set('TheTitle','Order Prints');
 	}
 }
