@@ -674,8 +674,9 @@ e the trouble of having to log in again
  * @return void
  */
 	protected function _sendNewPassword($userData) {
-		$Email = $this->_getMailInstance();
-		$Email->from(Configure::read('App.defaultEmail'))
+		//$Email = $this->_getMailInstance();
+		$Email=new CakeEmail();
+		$Email->from(Configure::read('globalFromEmail'))
 			->to($userData[$this->modelClass]['email'])
 			->replyTo(Configure::read('App.defaultEmail'))
 			->return(Configure::read('App.defaultEmail'))
@@ -768,11 +769,11 @@ e the trouble of having to log in again
 
 		$options = array_merge($defaults, $options);
 				//debug();
-debug($userData);
+//debug($userData);
 //		$Email = $this->_getMailInstance();
 		$Email = new CakeEmail();
 		$Email->to($userData[$this->modelClass]['email'])
-			->from($options['from'])
+			->from(Configure::read('globalFromEmail'))
 			->emailFormat($options['emailFormat'])
 			->subject($options['subject'])
 			->template($options['template'], $options['layout'])
@@ -793,7 +794,7 @@ debug($userData);
  */
 	protected function _sendPasswordReset($admin = null, $options = array()) {
 		$defaults = array(
-			'from' => Configure::read('App.defaultEmail'),
+			'from' => Configure::read('globalFromEmail'),
 			'subject' => __d('users', 'Password Reset'),
 			'template' => $this->_pluginDot() . 'password_reset_request',
 			//'emailFormat' => CakeEmail::MESSAGE_TEXT,
@@ -809,7 +810,8 @@ debug($userData);
 			
 			if (!empty($user)) {
 				if ($user[$this->modelClass]['email_verified'] == 1){
-				$Email = $this->_getMailInstance();
+				//$Email = $this->_getMailInstance();
+				$Email=new CakeEmail();
 				$Email->to($user[$this->modelClass]['email'])
 					->from($options['from'])
 					->emailFormat($options['emailFormat'])
@@ -890,6 +892,8 @@ debug($userData);
  *
  * @return object CakeEmail instance
  * @link http://book.cakephp.org/2.0/en/core-utility-libraries/email.html
+ sj - this doesn't work so I used regular old $Email=new CakeEmail();
+ 
  */
 	protected function _getMailInstance() {
 		return $this->{$this->modelClass}->getMailInstance();

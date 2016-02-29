@@ -8,3 +8,5 @@ alter table treasures_usergals add index (treasure_id);
 alter table treasures_usergals add index (usergal_id);
 alter table comments_users add index (user_id);
 alter table comments_users add index (comment_id);
+-- for some reason this index was missing last DB change, causing all sorts of slowness and timeouts
+alter table tags add index (id);
