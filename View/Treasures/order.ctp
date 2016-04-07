@@ -28,6 +28,10 @@ p{
 <? 
 //maybe need some Anti-Spam thing here eventually
 echo $this->Form->create('Order',array());
+			echo $this->Form->input('name',array(
+				'type'=>'input','required'=>'required','placeholder'=>'Name (required)',
+				'label'=>false,'class'=>'form-control'
+			)).'<br />';
 			echo $this->Form->input('email',array(
 				'type'=>'email','required'=>'required','placeholder'=>'E-mail (required)',
 				'label'=>false,'class'=>'form-control'

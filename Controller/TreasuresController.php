@@ -593,6 +593,7 @@ class TreasuresController extends AppController {
 				->to('mackf@centerofthewest.org')
 				->subject('Print Order Request')
 				->send(
+				"Name: ".$this->request->data['Order']['name']."\n\n\n".
 				"From: ".$this->request->data['Order']['email']."\n\n\n".
 				"Phone: ".$this->request->data['Order']['phone']."\n\n\n".
 				$this->request->data['Order']['accnum']
