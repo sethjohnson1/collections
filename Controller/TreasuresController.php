@@ -564,7 +564,7 @@ class TreasuresController extends AppController {
 
 		if ($this->request->is('post')) {
 			$Email = new CakeEmail();
-			$Email->from('NO-REPLY@bbhcspoof.org')
+			$Email->from(Configure::read('globalFromEmail'))
 				//->to('web@centerofthewest.org')
 				->to('sethj@centerofthewest.org')
 				->subject('Online Collections Feedback')
