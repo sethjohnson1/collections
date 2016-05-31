@@ -634,7 +634,8 @@ e the trouble of having to log in again
 			//return $this->redirect(array('action' => 'login'));
 		} catch (RuntimeException $e) {
 			$this->Session->setFlash($e->getMessage(),'flash_custom');
-			//return $this->redirect('/');
+			//without this redirect they get an Internal error and never see the error flash (with debug off)
+			return $this->redirect('/');
 		}
 	}
 
