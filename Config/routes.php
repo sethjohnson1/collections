@@ -21,6 +21,7 @@
 	Router::connect('/auth_login/*', array( 'plugin'=>'users','controller' => 'users', 'action' => 'auth_login'));
 	Router::connect('/auth_callback/*', array( 'plugin'=>'users','controller' => 'users', 'action' => 'auth_callback'));
 	Router::redirect('/contest', array('controller' => 'treasures', 'action' => 'contest'));
+	Router::redirect('/seth\'s_beaded_trucker_hat', array('controller' => 'pages', 'action' => 'seth\'s_beaded_trucker_hat'));
 	
 	Router::parseExtensions('json','xml');
 	CakePlugin::routes();
