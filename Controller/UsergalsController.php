@@ -26,14 +26,22 @@ public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Searc
 		invoke demons. For the rest of the code, see the $options set in the view function.
 		
 		UPDATE: but this breaks pagination on the index as well....
+		UPDATE #2: You can't get back to page 1!
+		UPDATE 3: This seems completely unneccessary now, possibly fixed by a CakePHP upgrade?
 		*/
-		if (isset($this->params['named']['page']) && $this->params['action']=='view'){
+		/*
+		if (!isset($this->params['named']['page']) && isset($this->params['named']['p']) && $this->params['action']=='view') {
+			//debug($this->params['named']['page']);
+			$this->redirect(array('action' => 'view/'.$this->params['pass'][0]));
+		}
+		else if (isset($this->params['named']['page']) && $this->params['action']=='view'){
 			$newurl=$this->params['named'];
 			$pg=$newurl['page'];
 			unset($newurl['page']);
 			$newurl['p']=$pg;
-			$this->redirect(array('action' => 'view/'.$this->params['pass'][0])+$newurl);
+			//$this->redirect(array('action' => 'view/'.$this->params['pass'][0])+$newurl);
 		}
+		*/
 		
 	}
 
@@ -270,7 +278,8 @@ public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Searc
 		$options['limit']=$limit;
 		
 		//this is the other part of the pagination fix that was described more in beforeFilter.
-		if (isset($this->params['named']['p'])) $options['page']=$this->params['named']['p'];
+		//this seems no longer necessary, possibly a cakePHP upgrade fixed it
+		//if (isset($this->params['named']['p'])) $options['page']=$this->params['named']['p'];
 		$this->Paginator->settings = $options;
 		$treasures=$this->Paginator->paginate('TreasuresUsergal');
 		$this->set('treasures',$treasures);

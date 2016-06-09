@@ -135,8 +135,8 @@ class TreasuresController extends AppController {
 		//this is useful for finding missing images after a new records are added
 		//$sortord=array('Treasure.img'=>'asc');
 			
-		//set the limit
-		if (isset($this->params['named']['n'])&&$this->params['named']['n']<=100){
+		//set the limit - SJ NEED TO CHANGE BACK to 100!, FIXING STUFF!
+		if (isset($this->params['named']['n'])&&$this->params['named']['n']<=500){
 			$limit = $this->params['named']['n'];
 		}	
 		$this->Paginator->settings = array('conditions' => $mega,'order'=>$sortord,'limit'=>$limit,'contain'=>$contain);
