@@ -195,6 +195,7 @@ class TreasuresController extends AppController {
 		$this->set('breadcrumb',$breadcrumb);
 		//$this->render('index','mobile');
 		//end breadcrumbs
+
 	}
 	
 	public function view($slug = null) {

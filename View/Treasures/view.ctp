@@ -397,7 +397,7 @@ $(document).ready(function() {
 		
 		$('.related_articles').append(html);
 	},
-	url:"http://centerofthewest.org/wp-json/posts/<?=$article['blogid']?>/?_jsonp=?"});
+	url:"https://centerofthewest.org/wp-json/posts/<?=$article['blogid']?>/?_jsonp=?"});
 	return false;
 });
 </script>

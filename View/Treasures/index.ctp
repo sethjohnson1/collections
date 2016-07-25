@@ -1,3 +1,7 @@
+<? foreach ($treasures as $object){
+	//	echo '<h3>'.$object['Treasure']['accnum'].'</h3>';
+		}
+?>
 <a name="index-top"></a>
 <script>
 $(document).ready(function(){
