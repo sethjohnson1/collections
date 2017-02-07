@@ -40,7 +40,7 @@ all hard-coded anyway.
 1. Add your own app/webroot/ayah_config.php file based on the ayah_config_sample.php - you'll need your own API keys (as of this writing was free)
 
 1. Alternatively, just disable the few references to AYAH in the Controller and View. [AYAH](http://areyouahuman.com/) is a gamified captcha alternative.
-I am not in love with it, but for now it's what we use.
+I am not in love with it, but for now it's what we use. *Edit* We no longer use AYAH so there is no need to worry about it.
 
 1. I still need to package some sample Zoomify folders, however for now the images pull from our web site (there are a couple missing still...)
 
