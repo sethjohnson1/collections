@@ -49,4 +49,4 @@ HELP US OUT!
 I welcome feedback or contributions of any sort. I am a mediocre programmer at best, and completely new to git and github. If you see any glaring
 mistakes or security issues please let me know.
 
-Copyright (C) 2012--2014 Buffalo Bill Center of the West. This repository contains some scripts and libraries that we did not write. Please be sure to review their licenses before reusing them in production.
+Copyright (C) 2012--2017 Buffalo Bill Center of the West. This repository contains some scripts and libraries that we did not write. Please be sure to review their licenses before reusing them in production.
