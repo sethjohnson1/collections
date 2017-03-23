@@ -34,6 +34,12 @@ class TreasuresController extends AppController {
 	public function contest() {
 		$this->set('TheTitle','Win Stuff: The Virtual Exhibit Contest');
 	}
+
+	//the ajax function to send a message
+	public function sendmsg() {
+		$this->loadModel('Email');
+		$this->Email->save($this->request->data);
+	}
 	
 	public function advancedsearch(){
 		$this->Prg->commonProcess();

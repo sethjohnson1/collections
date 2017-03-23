@@ -293,7 +293,8 @@ public $components = array('Auth'=>array('loginRedirect'=>''),'Paginator','Searc
 		$apivar['Usergal']=$usergal;
 		$apivar['Items']=$treasures;
 		$this->set('apivar',$apivar);
-		$this->set('_serialize',array('apivar'));
+		//this is disabled for now, new version on the way
+		//$this->set('_serialize',array('apivar'));
 		
 		//comments stuff
 		$fk=$usergal['Usergal']['id'];

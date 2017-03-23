@@ -1,6 +1,6 @@
-<? foreach ($treasures as $object){
+<? //foreach ($treasures as $object){
 	//	echo '<h3>'.$object['Treasure']['accnum'].'</h3>';
-		}
+	//	}
 ?>
 <a name="index-top"></a>
 <script>
@@ -20,11 +20,60 @@ $(function() {
     }
   });
 });
+$('.send-coffee').hover(function(event) {
+	console.log('hover');
+	$(this).toggleClass('send-coffee-hover');
+});
+
+$('.notify-me').click(function(event) {
+	$('.notify-form').fadeIn();
+	$('.update-msg').fadeOut();
+	$('.notify-me').addClass('submit-msg');
+});
+
+$('.send-coffee').click(function(event) {
+	console.log('notify');
+	$(this).addClass('send-coffee-click');
+	$('.thanks').fadeIn();
+});
+
 });
 </script>
+<style>
 
+.send-coffee-nohover{
+	background: url('<?=$this->webroot?>img/coffee_grey.png') no-repeat;
+}
+.send-coffee-hover{
+	background: url('<?=$this->webroot?>img/coffee.png') no-repeat !important;
+}
+.send-coffee-click{
+	background: url('<?=$this->webroot?>img/coffee.png') no-repeat !important;
+}
+</style>
 <?//=$this->element('contest_banner')?>
+<div class="row new-message" style="    border: 1px dashed brown;
+    padding: 21px;
+    margin: 16px;">
+<div class="col-xs-12 col-sm-6">
+<?=$this->Html->image('centennial.jpg',['class'=>'img-responsive'])?>
+</div>
+<div class="col-xs-12 col-sm-6">
+<p class="update-msg"><span style="font-size:1.5em; font-weight:bold;" >Great news! </span>We are launching an updated version of this site soon.<br /> The update will include more treasures, easier navigation, better search, enhanced interactive features, and more!<br /><strong>If you would like to be notified when the site launches or provide feedback please do.</strong><br /> If you would like to send an anonymous, Virual Cup of Coffee to our programmer simply click the coffee cup.</p>
+<div class="row">
+<div class="col-xs-12 col-sm-6">
+<span class="btn btn-lg btn-success notify-me" style="margin-top: 15px">Notify Me</span>
+</div>
+<div class="col-xs-12 col-sm-6">
+<div class="send-coffee send-coffee-nohover" style="height:71px; width: 60px; cursor:pointer;"></div>
+<p class="thanks" style="display:none;">Thanks!</p>
+<? //=$this->Html->image('coffee_grey.png',['class'=>'send-coffee','style'=>'cursor: pointer'])?>
+</div>
+</div>
+</div>
+</div><!-- /new version annouce row -->
 <div class="treasure-search allcaps">
+
 <div class="row">
 
 
@@ -189,8 +238,8 @@ if(empty($this->params['named']['bbm']))
 
 <div class="search-results" style="clear:both">
 <?
-//featured Galleries
-if ($usergals && empty($this->request->params['named'])) :?>
+//featured Galleries, seth disabled with 1=2
+if ($usergals && empty($this->request->params['named']) && 1==2) :?>
 <br />
 <div class="featured-vgals hidden-xs hidden-sm">
 <div class="panel panel-default">
