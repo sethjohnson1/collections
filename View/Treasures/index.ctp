@@ -111,7 +111,7 @@ echo $this->Form->end();
 <div class="col-xs-12 col-sm-6">
 <span class="btn btn-lg btn-success notify-me submit-msg" style="margin-top: 15px">Notify Me</span>
 </div>
-<div class="col-xs-12 col-sm-6">
+<div class="col-xs-12 col-sm-6" style="width:165px">
 <div class="send-coffee send-coffee-nohover" style="height:71px; width: 71px; cursor:pointer;">
 <span class="coffee-breaks badge-orange badge" style="display:inline; position: absolute; top:55px;right:97px; font-family:verdana; font-size:.7em; background-color:<?=$color['green']?>"><?=$coffees?></span>
 </div>
