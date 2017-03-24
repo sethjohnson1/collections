@@ -84,6 +84,7 @@ $( "#TreasureSendmsgForm" ).submit(function( event ) {
 }
 </style>
 <?if (empty($this->params['named'])):?>
+<div class="coffee-preload hidden"><?=$this->Html->image('coffee.png')?></div>
 <div class="row new-message" style="    border: 1px dashed brown; padding: 21px; margin: 16px;">
 <div class="col-xs-12 col-sm-6" style="margin-top:40px">
 <?=$this->Html->image('centennial.jpg',['class'=>'img-responsive'])?>
