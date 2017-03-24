@@ -90,7 +90,7 @@ $( "#TreasureSendmsgForm" ).submit(function( event ) {
 <?=$this->Html->image('centennial.jpg',['class'=>'img-responsive'])?>
 </div>
 <div class="col-xs-12 col-sm-6">
-<p class="update-msg"><span style="font-size:1.5em; font-weight:bold;" >Great news! </span>We are launching an updated version of this site soon.<br /> The update will include more treasures, easier navigation, better search, enhanced interactive features, and more!<br /><strong>If you would like to be notified when the site launches or provide feedback please do.</strong><br /> If you would like to send a Virtual Cup of Coffee to our programmer simply click the pewter mug.</p>
+<p class="update-msg"><span style="font-size:1.5em; font-weight:bold;" >Great news! </span>We are launching an updated version of this site soon.<br /> The update will include more treasures, easier navigation, better search, enhanced interactive features, and more!<br /><strong>If you would like to be notified when the site launches or provide feedback please do.</strong><br /> If you would like to send a Virtual Cup of Coffee to our programmer <strong>click the mug</strong>.</p>
 <div class="msg-ajax-result"></div>
 <div class="notify-form" style="display: none;">
 
