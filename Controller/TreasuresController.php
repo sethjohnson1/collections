@@ -72,7 +72,7 @@ class TreasuresController extends AppController {
 			$this->Coffee->create();
 			$this->Coffee->save($save);
 			//send them a message even if save fails
-			$messages=['Yeee-haw! How about another?','Whew, I needed that','One... More... Commit...','Perfect! Strong and black','Tastes great in the pewter mug'];
+			$messages=['Yeee-haw! How about another?','Whew, I needed that','One... More... Commit...','Perfect! Black coffee is my favorite','Tastes great in the pewter mug'];
 			$key=array_rand($messages);
 			$msg['msg']=$messages[$key];
 			$msg['class']=' alert-success ';
