@@ -38,7 +38,54 @@ class TreasuresController extends AppController {
 	//the ajax function to send a message
 	public function sendmsg() {
 		$this->loadModel('Email');
-		$this->Email->save($this->request->data);
+		$save=[];
+		foreach ($this->request->data['Treasure'] as $k=>$v) $save[$k]=$v;
+		$save['ip']=$_SERVER['REMOTE_ADDR'];
+		$this->Email->create();
+
+		if ($this->Email->save($save)){
+			$msg['class']=' alert-success ';
+			$msg['msg']='Message received, thank you.';
+		}
+		else {
+			$msg['class']=' alert-danger ';
+			$msg['msg']='There was a problem, try again later.';
+		}
+		$Email = new CakeEmail();
+		$Email->from(Configure::read('globalFromEmail'))
+			->to(Configure::read('notifyEmail'))
+			->subject('oc3: yay, a notification receipt')
+			->send(
+			"THIS INFORMATION IS ALSO STORED IN THE DATABASE \n\n From: ".$this->request->data['Treasure']['email']."\n\n".
+			$this->request->data['Treasure']['message']."\n\nTester:".$this->request->data['Treasure']['beta']
+			);
+		$this->set(compact('msg'));
+	}
+
+	public function coffee() {
+		$this->loadModel('Coffee');
+		$save=[];
+		$dedication=$this->Coffee->find('count',['conditions'=>['ip'=>$_SERVER['REMOTE_ADDR']]]);
+		if ($dedication<50){
+			$save['ip']=$_SERVER['REMOTE_ADDR'];
+			$save['useragent']=$_SERVER['HTTP_USER_AGENT'];
+			$this->Coffee->create();
+			$this->Coffee->save($save);
+			//send them a message even if save fails
+			$messages=['Yeee-haw! How about another?','Whew, I needed that','One... More... Commit...','Perfect! Strong and black','Tastes great in the pewter mug'];
+			$key=array_rand($messages);
+			$msg['msg']=$messages[$key];
+			$msg['class']=' alert-success ';
+		}
+		else{
+			$msg['msg']='Holy cow, that\'s a lot of coffee. I should probably get to work... or go to bed. Thank you, I have the jitters.';
+			$msg['class']=' alert-warning ';
+		}
+		
+		
+		$coffees=$this->Coffee->find('count');
+	
+		$this->set(compact('msg','coffees'));
 	}
 	
 	public function advancedsearch(){
@@ -57,6 +104,9 @@ class TreasuresController extends AppController {
 
 	public function index() {	
 		//debug(Configure::read('bitlyAPIkey'));
+		$this->loadModel('Coffee');
+		$coffees=$this->Coffee->find('count');
+		$this->set('coffees',$coffees);
 		$this->Prg->commonProcess();
 		$this->Treasure->recursive = 0;
 		//delete the session variable if it's around

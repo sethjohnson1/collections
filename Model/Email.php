@@ -1,7 +1,7 @@
 <?php
 App::uses('AppModel', 'Model');
 
-class Badword extends AppModel {
+class Email extends AppModel {
 
 
 

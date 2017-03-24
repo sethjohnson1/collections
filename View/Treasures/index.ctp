@@ -26,15 +26,47 @@ $('.send-coffee').hover(function(event) {
 });
 
 $('.notify-me').click(function(event) {
-	$('.notify-form').fadeIn();
-	$('.update-msg').fadeOut();
-	$('.notify-me').addClass('submit-msg');
+	
+	$(this).fadeOut();
+	$('.update-msg').slideUp(800).fadeOut();
+	$('.notify-form').delay(1000).fadeIn().slideDown(1000);
+
 });
 
 $('.send-coffee').click(function(event) {
-	console.log('notify');
+
 	$(this).addClass('send-coffee-click');
-	$('.thanks').fadeIn();
+	$.ajax({
+	async:true,
+	data:$("#TreasureSendmsgForm").serialize(),
+	//if you add this dataType as json then it will look for a view in Comments/json/
+	dataType:"html",
+	success:function (data, textStatus) {
+		$(".msg-ajax-result").html(data);
+	},
+	type:"POST",
+	url:"<?=Router::url(['controller' => 'treasures', 'action' => 'coffee'])?>"
+	});
+
+});
+
+
+$( "#TreasureSendmsgForm" ).submit(function( event ) {
+	//console.log($(this).val());
+	$.ajax({
+	async:true,
+	data:$("#TreasureSendmsgForm").serialize(),
+	//if you add this dataType as json then it will look for a view in Comments/json/
+	dataType:"html",
+	success:function (data, textStatus) {
+		$(".msg-ajax-result").html(data);
+	},
+	type:"POST",
+	url:"<?=Router::url(['controller' => 'treasures', 'action' => 'sendmsg'])?>"
+	});
+	event.preventDefault();
+	//do I need the return false?
+	return false;
 });
 
 });
@@ -51,27 +83,44 @@ $('.send-coffee').click(function(event) {
 	background: url('<?=$this->webroot?>img/coffee.png') no-repeat !important;
 }
 </style>
-<?//=$this->element('contest_banner')?>
-<div class="row new-message" style="    border: 1px dashed brown;
-    padding: 21px;
-    margin: 16px;">
-<div class="col-xs-12 col-sm-6">
+<?if (empty($this->params['named'])):?>
+<div class="row new-message" style="    border: 1px dashed brown; padding: 21px; margin: 16px;">
+<div class="col-xs-12 col-sm-6" style="margin-top:40px">
 <?=$this->Html->image('centennial.jpg',['class'=>'img-responsive'])?>
 </div>
 <div class="col-xs-12 col-sm-6">
 <p class="update-msg"><span style="font-size:1.5em; font-weight:bold;" >Great news! </span>We are launching an updated version of this site soon.<br /> The update will include more treasures, easier navigation, better search, enhanced interactive features, and more!<br /><strong>If you would like to be notified when the site launches or provide feedback please do.</strong><br /> If you would like to send an anonymous, Virual Cup of Coffee to our programmer simply click the coffee cup.</p>
+<div class="msg-ajax-result"></div>
+<div class="notify-form" style="display: none;">
+
+<?
+echo $this->Form->create('Treasure',['action'=>'sendmsg','controller'=>'treasures']);
+echo $this->Form->input('email',['required'=>'required','class'=>'form-control','placeholder'=>'E-mail address']); 
+echo $this->Form->input('message',['type'=>'textarea','class'=>'form-control','placeholder'=>'Suggestions, comments, feedback, or encouragement welcome (optional)']); ?>
+<br />
+<?
+echo $this->Form->input('beta', ['label'=>false,'type'=>'select','options'=>[0=>'Notify me when it\'s launched',1=>'I\'m willing to test the pre-release']]);
+echo '<br />';
+echo $this->Form->submit('Send',['class'=>'btn btn-lg btn-success send-button']);
+echo $this->Form->end();
+?>
+
+</div>
 <div class="row">
 <div class="col-xs-12 col-sm-6">
-<span class="btn btn-lg btn-success notify-me" style="margin-top: 15px">Notify Me</span>
+<span class="btn btn-lg btn-success notify-me submit-msg" style="margin-top: 15px">Notify Me</span>
 </div>
 <div class="col-xs-12 col-sm-6">
-<div class="send-coffee send-coffee-nohover" style="height:71px; width: 60px; cursor:pointer;"></div>
-<p class="thanks" style="display:none;">Thanks!</p>
+<div class="send-coffee send-coffee-nohover" style="height:71px; width: 71px; cursor:pointer;">
+<span class="coffee-breaks badge-orange badge" style="display:inline; position: absolute; top:55px;right:97px; font-family:verdana; font-size:.7em; background-color:<?=$color['green']?>"><?=$coffees?></span>
+</div>
+<p style="font-size: .7em">1.67.228, pewter mug</p>
 <? //=$this->Html->image('coffee_grey.png',['class'=>'send-coffee','style'=>'cursor: pointer'])?>
 </div>
 </div>
 </div>
 </div><!-- /new version annouce row -->
+<?endif //only show when no named params?>
 <div class="treasure-search allcaps">
 
 <div class="row">
