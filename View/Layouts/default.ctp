@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
 <head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TFFW7S6');</script>
+<!-- End Google Tag Manager -->
 <meta name="msapplication-TileColor"    content="#ede9e7"/>
 <meta name="msapplication-square150x150logo" content="http://collections.centerofthewest.org/img/truckerhat-114.png"/>
 
@@ -94,33 +101,9 @@ echo $this->Html->script('zoomify3-custom.min');
 
 	
 ?>
-<script type="text/javascript">
-var _gas = _gas || [];
-_gas.push(['_setAccount', 'UA-46559601-1']); 
-_gas.push(['_setDomainName', '.centerofthewest.org']);
-_gas.push(['_require', 'inpage_linkid','//www.google-analytics.com/plugins/ga/inpage_linkid.js']);
-_gas.push(['_trackPageview']);
-_gas.push(['_gasTrackForms']);
-_gas.push(['_gasTrackOutboundLinks']);
-_gas.push(['_gasTrackMaxScroll']);
-_gas.push(['_gasTrackDownloads']);
-_gas.push(['_gasTrackVideo']); _gas.push(['_gasTrackAudio']);
-_gas.push(['_gasTrackYoutube', {force: true}]);
-_gas.push(['_gasTrackMailto']);
 
-(function() {
-var ga = document.createElement('script');
-ga.id = 'gas-script';
-ga.setAttribute('data-use-dcjs', 'true'); // CHANGE TO TRUE FOR DC.JS SUPPORT
-ga.type = 'text/javascript';
-ga.async = true;
-ga.src = '//cdnjs.cloudflare.com/ajax/libs/gas/1.11.0/gas.min.js';
-var s = document.getElementsByTagName('script')[0];
-s.parentNode.insertBefore(ga, s);
-})();
-</script>
 <script>
-$(document).ready(function(){
+/*$(document).ready(function(){
 //smooth scrolling, easy copy-paste! - makes modal not work if applied globally
 $(function() {
   $('a[href*=#search-results]:not([href=#])').click(function() {
@@ -137,16 +120,17 @@ $(function() {
   });
 });
 });
+*/
 </script>
 <?
 	if(!empty($FeaturedImage))	echo '<meta property="og:image" content="'.$FeaturedImage.'=?v=2" />';
 ?>
 </head>
 <body class="page page-id-10546 page-template-default logged-in admin-bar no-customize-support header-image altsidebar-content" itemscope="itemscope" itemtype="http://schema.org/WebPage">
-
-
-<script>
-</script>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TFFW7S6"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <div class="site-container">
 
 

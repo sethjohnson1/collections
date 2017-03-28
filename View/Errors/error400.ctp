@@ -39,7 +39,7 @@ div.desc{
 <div class="row">
 <div class="col-xs-5">
 <img src="http://collectionimages.s3-website-us-west-1.amazonaws.com/1/112.67.jpg" alt="The End of the Trail" class="img-responsive" style="">
-<p style="font-size:.75em"><?=$this->Html->link('End of the Trail',array('controller'=>'treasures','plugin'=>'','action'=>'view','end_of_the_trail')).' - 112.67'?></p>
+<p style="font-size:.75em"><?=$this->Html->link('End of the Trail',array('controller'=>'treasures','plugin'=>null,'action'=>'view','end_of_the_trail')).' - 112.67'?></p>
 </div>
 <div class="col-xs-7">
 <h1>Uh-oh. <small>
