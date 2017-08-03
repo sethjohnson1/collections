@@ -1,5 +1,6 @@
-Center of the West Collections
+OLD - Center of the West Collections CakePHP 2.x
 ===========
+(this is old and not in use any longer)
 
 OVERVIEW
 ------
